@@ -33,4 +33,17 @@ $ python manage.py runserver 0.0.0.0:8000
   - [`http://0.0.0.0:8000/`](http://0.0.0.0:8000/)
   - [`http://47.94.7.26:8000/`](http://47.94.7.26:8000/)
 
+### 报错
 
+若报错
+```
+File "/home/admin/.local/lib/python3.7/site-packages/django/db/backends/mysql/operations.py", line 146, in last_executed_query
+    query = query.decode(errors='replace')
+AttributeError: 'str' object has no attribute 'decode'
+```
+则注释掉该文件的`145-146`行
+```
+145         # if query is not None:
+146         # query = query.decode(errors='replace')
+147         return query
+```
