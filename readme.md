@@ -1,18 +1,22 @@
-<h1 align="center">SE2022_Backend</h1>
+<h1 align="center">SE2022 Backend</h1>
 
 ## Run
 
 建议使用`python3.7`
 
+### Local
+
 ```
-// 安装环境
 pip install -r requirements.txt
-
-- 本地
-    python manage.py runserver 8000
-    运行在：http://127.0.0.1:8000/
-
-- 服务器端
-    python manage.py runserver 0.0.0.0:8000
-    运行在：http://0.0.0.0:8000/ 和 http://47.94.7.26:8000/
+python manage.py runserver 8000
 ```
+- 运行于 http://127.0.0.1:8000/
+
+### Server
+
+```
+pip install -r requirements.txt
+python manage.py runserver 0.0.0.0:8000
+```
+- 运行于 http://0.0.0.0:8000/ 和 http://47.94.7.26:8000/
+
