@@ -33,5 +33,5 @@ script/
 coverage
 test_report
 
-cache/
-static/
+# cache/
+# static/
