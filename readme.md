@@ -9,7 +9,10 @@
 ### Local
 
 ```
+// install dependencies
 $ pip install -r requirements.txt
+
+// run server 
 $ python manage.py runserver 8000
 ```
 
@@ -19,7 +22,10 @@ $ python manage.py runserver 8000
 ### Server
 
 ```
+// install dependencies
 $ pip install -r requirements.txt
+
+// run server
 $ python manage.py runserver 0.0.0.0:8000
 ```
 
