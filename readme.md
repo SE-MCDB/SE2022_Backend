@@ -47,3 +47,23 @@ AttributeError: 'str' object has no attribute 'decode'
 146         # query = query.decode(errors='replace')
 147         return query
 ```
+
+
+
+## 账户
+
+目前设置已有的管理员账户为：
+
+```
+'USER': admin
+'PASSWORD': 123456
+```
+
+也可以自行创建管理员账户：
+
+```
+python manage.py createsuperuser
+```
+
+
+
