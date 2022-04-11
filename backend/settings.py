@@ -104,7 +104,12 @@ DATABASES = {
         'HOST': 'rm-2zeu3f7e1n5yt10v0co.mysql.rds.aliyuncs.com', 
         'USER': 'root',
         'PASSWORD': 'myja&*$4X579cKr',
-        'PORT': 3306
+        'PORT': 3306,
+        'OPTIONS': {
+            'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"',
+            'charset': 'utf8mb4'
+        }
+
     }
 }
 
