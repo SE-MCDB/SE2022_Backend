@@ -4,12 +4,24 @@
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from .enterprise_info import Enterprise_info
 from django.core.validators import validate_comma_separated_integer_list
 
 USER_TYPE_CHOICES = (
     (0, 'Individual'),
     (1, 'College'),
     (2, 'Company'),
+)
+
+
+#用户状态
+USER_STATE_CHOICES = (
+    (0, '普通用户'),
+    (1, '专家认证中'),
+    (2, '企业认证中'),
+    (3, '封禁中'),
+    (4, '认证专家'),
+    (5, '认证企业')
 )
 
 BASE_DIR = 'http://127.0.0.1:8000/api/' 
@@ -23,7 +35,7 @@ class AdminUser(models.Model):
     def super_authenticate(self,name,password):
         return self.nick_name == name and self.password == password
 
-  
+
 
 
 class User(AbstractUser):
@@ -41,6 +53,7 @@ class User(AbstractUser):
     """
 
     nick_name = models.CharField(max_length=20)
+
     email = models.CharField(max_length=30)
     institution = models.CharField(max_length=20,blank=True,null=True)
     icon = models.ImageField(upload_to= "images/%Y%m/%d/icons",
@@ -52,8 +65,13 @@ class User(AbstractUser):
     followers = models.ManyToManyField('User')
     favorites = models.ManyToManyField('PapModel', related_name='favorites')
     is_confirmed = models.BooleanField(default=False)
-    
-    
+
+    #用户目前状态
+    state = models.IntegerField(choices=USER_STATE_CHOICES, default=0)
+
+    enterprise_info = models.OneToOneField("Enterprise_info", on_delete=models.CASCADE, related_name="enterprise_info", null=True, blank=True)
+
+
     #super users
     #objects = AdminUser()
 
@@ -80,7 +98,7 @@ class User(AbstractUser):
             'nickname': self.nick_name,
             'institution': self.institution
         }
-    
+
     # def to_dict(self):
     #     return ({
     #         'id': self.id,

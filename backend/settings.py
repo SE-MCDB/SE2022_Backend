@@ -186,3 +186,27 @@ DATETIME_FMT = f'%Y-%m-%d %H:%M:%S'
 
 CACHE_DIR = os.path.join(BASE_DIR, 'cache')
 PDF_CACHE_DIR = os.path.join(CACHE_DIR, 'pdfs')
+
+CORS_ALLOW_METHODS = (
+ 'GET',
+ 'POST',
+ 'PUT',
+ 'PATCH',
+ 'DELETE',
+ 'OPTIONS'
+)
+
+CORS_ALLOW_HEADERS = (
+ 'XMLHttpRequest',
+ 'X_FILENAME',
+ 'accept',
+ 'accept-encoding',
+ 'authorization',
+ 'content-type',
+ 'dnt',
+ 'origin',
+ 'user-agent',
+ 'x-csrftoken',
+ 'x-requested-with',
+ 'Pragma',
+ )
