@@ -55,22 +55,37 @@ def set_info(request:HttpRequest):
     if not legal_person_ID:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "need a valid legal_person_ID")
 
-    enterprise_info = Enterprise_info()
-    enterprise_info.name = name
-    enterprise_info.address = address
-    enterprise_info.website = website
-    enterprise_info.instruction = instruction
-    enterprise_info.phone = phone
-    enterprise_info.legal_representative = legal_representative
-    enterprise_info.register_capital = register_capital
-    enterprise_info.field = field
-    enterprise_info.business_license = business_license
-    enterprise_info.legal_person_ID = legal_person_ID
-    enterprise_info.save()
     user = User.objects.get(id=id)
-    user.enterprise_info = enterprise_info
-    user.state = 5
-    user.save()
+    if user.state == 0:
+        enterprise_info = Enterprise_info()
+        enterprise_info.name = name
+        enterprise_info.address = address
+        enterprise_info.website = website
+        enterprise_info.instruction = instruction
+        enterprise_info.phone = phone
+        enterprise_info.legal_representative = legal_representative
+        enterprise_info.register_capital = register_capital
+        enterprise_info.field = field
+        enterprise_info.business_license = business_license
+        enterprise_info.legal_person_ID = legal_person_ID
+        enterprise_info.save()
+        user.enterprise_info = enterprise_info
+        user.state = 5
+        user.save()
+    elif user.state == 5:
+        enterprise_info = user.enterprise_info
+        enterprise_info.name = name
+        enterprise_info.address = address
+        enterprise_info.website = website
+        enterprise_info.instruction = instruction
+        enterprise_info.phone = phone
+        enterprise_info.legal_representative = legal_representative
+        enterprise_info.register_capital = register_capital
+        enterprise_info.field = field
+        enterprise_info.business_license = business_license
+        enterprise_info.legal_person_ID = legal_person_ID
+        enterprise_info.save()
+        user.save()
 
     return success_api_response("enterprise register successfully")
 
