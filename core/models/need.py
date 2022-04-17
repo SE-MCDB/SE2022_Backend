@@ -29,7 +29,7 @@ class Need(models.Model):
     #需求标题
     title = models.CharField(max_length=20)
     #需求描述
-    description = models.CharField(max_length=50)
+    description = models.TextField()
     #预计经费（报酬）
     money = models.IntegerField()
     #需求创建时间，自动填充
