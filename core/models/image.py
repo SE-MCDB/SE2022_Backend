@@ -1,6 +1,7 @@
 from django.db import models
 from .user import User
 
+
 class Image(models.Model):
     """
         created_at: datetime

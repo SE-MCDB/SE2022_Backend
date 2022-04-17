@@ -27,7 +27,11 @@ from core.api.interpretation import createInterpretation, INTERPRETATION_API, \
 
 from core.api.user import get_all_user_info,delete_user,change_user_info
 
+<<<<<<< HEAD
 from core.api.platform import create_need, get_all_need
+=======
+from core.api.enterprise import set_info, get_info
+>>>>>>> refs/remotes/origin/main
 
 urlpatterns = [
 
@@ -125,6 +129,12 @@ urlpatterns = [
 
     # platform<---需求平台
     path('need', create_need), # 发布新的需求
-    path('need/all', get_all_need)
+    path('need/all', get_all_need),
+
+    #enterprise
+    path('enterprise/setinfo', set_info),
+    path('enterprise/getinfo', get_info),
+
+
 ]
 

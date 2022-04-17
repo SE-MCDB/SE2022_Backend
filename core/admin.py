@@ -16,15 +16,11 @@ from django.contrib.auth.models import Group
 
 # Register your models here.
 # for test
-
 admin.site.register([User])
 admin.site.register([AdminUser])
-
 admin.site.register([Enterprise_info])
 admin.site.register([Need])
 admin.site.register([Order])
-
-
 #admin.site.register([Notification,PapModel,Notation,Interpretation,Updating])
 
 #super user
