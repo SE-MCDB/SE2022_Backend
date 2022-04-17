@@ -27,6 +27,8 @@ from core.api.interpretation import createInterpretation, INTERPRETATION_API, \
 
 from core.api.user import get_all_user_info,delete_user,change_user_info
 
+from core.api.enterprise import set_info, get_info
+
 urlpatterns = [
 
     #user apis
@@ -120,6 +122,11 @@ urlpatterns = [
 
     # downloads
     path('download/Interpretation/<int:id>', downloadInterpretation),
+
+    #enterprise
+    path('enterprise/setinfo', set_info),
+    path('enterprise/getinfo', get_info),
+
 
 ]
 

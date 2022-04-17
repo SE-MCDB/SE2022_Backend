@@ -24,9 +24,9 @@ def get_user_icon(request: HttpRequest):
 
 
 
-# @jwt_auth()
-# @response_wrapper
-# @require_http_methods('POST')
+#@jwt_auth()
+@response_wrapper
+@require_http_methods('POST')
 def change_user_icon(request):
     """
     change user icon

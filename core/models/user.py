@@ -36,8 +36,6 @@ class AdminUser(models.Model):
         return self.nick_name == name and self.password == password
 
 
-
-
 class User(AbstractUser):
     """
     Field:
@@ -62,16 +60,16 @@ class User(AbstractUser):
     biogrpahy = models.CharField(max_length=50,null=True)
 
     user_type = models.IntegerField(choices=USER_TYPE_CHOICES,default= 0)
-    followers = models.ManyToManyField('User')
-    favorites = models.ManyToManyField('PapModel', related_name='favorites')
+    followers = models.ManyToManyField('User', null=True, blank=True)
+    favorites = models.ManyToManyField('PapModel', related_name='favorites', null=True, blank=True)
     is_confirmed = models.BooleanField(default=False)
 
     #用户目前状态
     state = models.IntegerField(choices=USER_STATE_CHOICES, default=0)
 
     enterprise_info = models.OneToOneField("Enterprise_info", on_delete=models.CASCADE, related_name="enterprise_info", null=True, blank=True)
-
-
+    
+    
     #super users
     #objects = AdminUser()
 
@@ -98,7 +96,7 @@ class User(AbstractUser):
             'nickname': self.nick_name,
             'institution': self.institution
         }
-
+    
     # def to_dict(self):
     #     return ({
     #         'id': self.id,
