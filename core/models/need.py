@@ -33,11 +33,11 @@ class Need(models.Model):
     #预计经费（报酬）
     money = models.IntegerField()
     #需求创建时间，自动填充
-    start_time = models.DateTimeField(auto_now_add=True)
+    start_time = models.CharField(max_length=30)
     #有效时间（预计结束时间）
-    valid_time = models.DateTimeField(blank=True, null=True)
+    valid_time = models.CharField(max_length=30,blank=True, null=True)
     #关键字
-    key_word = models.CharField(max_length=10)
+    key_word = models.CharField(max_length=20)
     #技术领域
     field = models.IntegerField(choices=NEED_FIELD_CHOICES, default=8)
     #地址

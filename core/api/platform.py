@@ -1,4 +1,5 @@
 from ast import keyword
+from curses import ERR
 import re
 from django.views.decorators.http import require_http_methods, require_POST, require_GET
 from django.http import HttpRequest
@@ -25,13 +26,19 @@ def create_need(request: HttpRequest):
     parms:
 		- 
     """
-    data = parse_data(request)
+    data:dict = parse_data(request)
     if not data:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "Invalid request args.")
-    user: User = request.user
+    user: User = User.objects.filter(id=data.get('company_id'))[0]
+
+    if user.state != 5:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "User is not Company")
+
+
     title = data.get('title')
     description = data.get('description')
     money = data.get('money')
+    start_time = data.get('start_time')
     valid_time = data.get('valid_time')
     key_word = data.get('key_word') 
     field = data.get('field')
@@ -40,7 +47,7 @@ def create_need(request: HttpRequest):
     emergency = data.get('emergency')
     predict = data.get('predict')
     
-    need = Need(title=title, description=description, money=money,
+    need = Need(title=title, description=description, money=money, start_time=start_time,
     valid_time=valid_time, key_word=key_word, field=field, address=address,
     enterprise=user, state=state, emergency=emergency, predict=predict)
     need.save()
@@ -63,6 +70,11 @@ def get_all_need(request: HttpRequest):
         data.append(need_info)
     return success_api_response(data)
 
+
+
+@response_wrapper
+# @jwt_auth()
+@require_GET
 def get_finished_order(request: HttpRequest, uid: int):
     """
     get finished order
@@ -71,8 +83,45 @@ def get_finished_order(request: HttpRequest, uid: int):
 
     parms:
         - uid: 企业或专家的id 
+    """ 
+    user: User = User.objects.filter(id=uid)
+    if user is None:   
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "Invalid user id")
+    orders = []
+    if user.user_type == 2:
+        # 企业
+        # need_list = 
+        pass
+    elif user.user_type == 1:
+        # 专家
+        order_list = user.order_set.filter(state=1)
+        for order in order_list:
+            order_info = {}
+            orders.append(order_info)
+
+
+    else:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "user type is not college or company")
+
+    return success_api_response(orders)
+
+
+
+@response_wrapper
+# @jwt_auth()
+@require_GET
+def get_proceding_order(request: HttpRequest, uid: int):
     """
+    get proceding order
+
+    [method]: GET
+
+    parms:
+        - uid: 企业或专家的id
+    """
+    user: User = User.objects.filter(id=uid)
     
+
 
 
 # @response_wrapper
