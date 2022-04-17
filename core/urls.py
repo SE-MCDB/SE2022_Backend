@@ -27,11 +27,8 @@ from core.api.interpretation import createInterpretation, INTERPRETATION_API, \
 
 from core.api.user import get_all_user_info,delete_user,change_user_info
 
-<<<<<<< HEAD
 from core.api.platform import create_need, get_all_need
-=======
 from core.api.enterprise import set_info, get_info
->>>>>>> refs/remotes/origin/main
 
 urlpatterns = [
 
