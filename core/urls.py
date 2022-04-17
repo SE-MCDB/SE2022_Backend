@@ -27,11 +27,7 @@ from core.api.interpretation import createInterpretation, INTERPRETATION_API, \
 
 from core.api.user import get_all_user_info,delete_user,change_user_info
 
-from core.api.enterprise import set_info, test_image
-
-from core.api.id import create_id_image
-
-from core.api.license import create_license_image
+from core.api.enterprise import set_info, get_info
 
 urlpatterns = [
 
@@ -129,12 +125,8 @@ urlpatterns = [
 
     #enterprise
     path('enterprise/setinfo', set_info),
+    path('enterprise/getinfo', get_info),
 
-    #id
-    path('id/addid', create_id_image),
-
-    #license
-    path('license/addlicense', create_license_image),
 
 ]
 

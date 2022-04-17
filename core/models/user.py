@@ -35,8 +35,6 @@ class AdminUser(models.Model):
     def super_authenticate(self,name,password):
         return self.nick_name == name and self.password == password
 
-  
-
 
 class User(AbstractUser):
     """
@@ -62,8 +60,8 @@ class User(AbstractUser):
     biogrpahy = models.CharField(max_length=50,null=True)
 
     user_type = models.IntegerField(choices=USER_TYPE_CHOICES,default= 0)
-    followers = models.ManyToManyField('User')
-    favorites = models.ManyToManyField('PapModel', related_name='favorites')
+    followers = models.ManyToManyField('User', null=True, blank=True)
+    favorites = models.ManyToManyField('PapModel', related_name='favorites', null=True, blank=True)
     is_confirmed = models.BooleanField(default=False)
 
     #用户目前状态

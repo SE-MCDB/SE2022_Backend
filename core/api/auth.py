@@ -291,20 +291,63 @@ def getUserInfo(user):
     total_like = 0
     for post in all_post:
         total_like += post.likers.count()
-    userInfo={
-        'id': user.id,
-        'username': user.username,
-        'userpic': user.get_icon(),
-        'nickname': user.nick_name,
-        'email': user.email,
-        'institution': user.institution,
-        'usertype': user.user_type,
-        'total_post': user.created_by.count(),
-        'total_like': total_like,
-        'total_fan': user.user_set.count(),
-        'is_following': user.user_set.filter(id=user.id).exists(),
-        'is_followed': user.followers.filter(id=user.id).exists(),
-    }
+
+    if user.state == 0 or user.state == 1 or user.state == 2:
+        userInfo={
+            'id': user.id,
+            'username': user.username,
+            'userpic': user.get_icon(),
+            'nickname': user.nick_name,
+            'email': user.email,
+            'institution': user.institution,
+            'usertype': user.user_type,
+            'total_post': user.created_by.count(),
+            'total_like': total_like,
+            'total_fan': user.user_set.count(),
+            'is_following': user.user_set.filter(id=user.id).exists(),
+            'is_followed': user.followers.filter(id=user.id).exists(),
+            'type': user.state,
+        }
+    elif user.state == 5:
+        userInfo={
+            'id': user.id,
+            'username': user.username,
+            'userpic': user.get_icon(),
+            'nickname': user.nick_name,
+            'email': user.email,
+            'institution': user.institution,
+            'usertype': user.user_type,
+            'total_post': user.created_by.count(),
+            'total_like': total_like,
+            'total_fan': user.user_set.count(),
+            'is_following': user.user_set.filter(id=user.id).exists(),
+            'is_followed': user.followers.filter(id=user.id).exists(),
+            'type': user.state,
+            'enterprise_name': user.enterprise_info.name,
+            'enterprise_address': user.enterprise_info.address,
+            'enterprise_website': user.enterprise_info.website,
+            'enterprise_instruction': user.enterprise_info.instruction,
+            'enterprise_phone': user.enterprise_info.phone,
+            'enterprise_legal_representative': user.enterprise_info.legal_representative,
+            'enterprise_register_capital': user.enterprise_info.register_capital,
+            'enterprise_field': user.enterprise_info.field
+        }
+    else:
+        userInfo = {
+            'id': user.id,
+            'username': user.username,
+            'userpic': user.get_icon(),
+            'nickname': user.nick_name,
+            'email': user.email,
+            'institution': user.institution,
+            'usertype': user.user_type,
+            'total_post': user.created_by.count(),
+            'total_like': total_like,
+            'total_fan': user.user_set.count(),
+            'is_following': user.user_set.filter(id=user.id).exists(),
+            'is_followed': user.followers.filter(id=user.id).exists(),
+            'type': user.state,
+        }
     return userInfo
 
 
