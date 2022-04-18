@@ -43,7 +43,7 @@ class Need(models.Model):
     #地址
     address = models.CharField(max_length=20)
     #需求公司
-    enterprise = models.ForeignKey(User, on_delete=models.CASCADE, related_name="enterprise")
+    enterprise = models.ForeignKey(User, on_delete=models.CASCADE, related_name="enterprise_need")
     #订单状态
     state = models.IntegerField(choices=NEED_STATE, default=0)
     #紧急程度

@@ -27,7 +27,8 @@ from core.api.interpretation import createInterpretation, INTERPRETATION_API, \
 
 from core.api.user import get_all_user_info,delete_user,change_user_info
 
-from core.api.platform import create_need, get_all_need, get_proceding_order, get_finished_order
+from core.api.platform import create_need, get_all_need, get_proceding_order, get_finished_order,  \
+  get_need_info
 from core.api.enterprise import set_info, get_info
 
 urlpatterns = [
@@ -127,7 +128,8 @@ urlpatterns = [
     # platform<---需求平台
     path('need', create_need), # 发布新的需求
     path('need/all', get_all_need),
-    
+    path('need/<int:id>', get_need_info),
+
     path('order/<int:uid>/finished', get_finished_order),
     path('order/<int:uid>/procedings', get_proceding_order),
 
