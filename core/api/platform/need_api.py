@@ -5,7 +5,7 @@ from urllib import response
 from django.views.decorators.http import require_http_methods, require_POST, require_GET
 from django.http import HttpRequest
 
-from .utils import (failed_api_response, ErrorCode,
+from core.api.utils import (failed_api_response, ErrorCode,
                     success_api_response, parse_data,
                     wrapped_api, response_wrapper)
 from core.models.user import User
@@ -90,66 +90,13 @@ def get_all_need(request: HttpRequest):
 
 
 
-@response_wrapper
-# @jwt_auth()
-@require_GET
-def get_finished_order(request: HttpRequest, uid: int):
-    """
-    get finished order
-
-    [method]: GET
-
-    parms:
-        - uid: 企业或专家的id 
-    """ 
-    user: User = User.objects.filter(id=uid)
-    if user is None:   
-        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "Invalid user id")
-    orders = []
-    if user.user_type == 2:
-        # 企业
-        # need_list = 
-        pass
-    elif user.user_type == 1:
-        # 专家
-        order_list = user.order_set.filter(state=1)
-        for order in order_list:
-            order_info = {}
-            orders.append(order_info)
+def get_finished_need(request: HttpRequest):
+    pass
 
 
-    else:
-        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "user type is not college or company")
-
-    return success_api_response(orders)
+def finish_need(request: HttpRequest):
+    pass
 
 
-
-@response_wrapper
-# @jwt_auth()
-@require_GET
-def get_proceding_order(request: HttpRequest, uid: int):
-    """
-    get proceding order
-
-    [method]: GET
-
-    parms:
-        - uid: 企业或专家的id
-    """
-    user: User = User.objects.filter(id=uid)
-    
-
-
-
-# @response_wrapper
-# @jwt_auth()
-# @require_http_methods('POST')
-# def createCollect(request: HttpRequest):
-#     data : dict = parse_data(request)
-#     id = data.get("id") # 论文解读id
-#     uid = data.get("uid") # 用户id
-#     ret = {
-#         'id': 233,  # main key id of interpretation
-#     }
-#     return success_api_response(ret)
+def get_proceeding_need(request: HttpRequest):
+    pass

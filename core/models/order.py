@@ -4,8 +4,10 @@ from .need import Need
 from .user import User
 
 ORDER_STATE = (
-    (0, "正在合作中"),
-    (1, "合作结束")
+    (0, "待接受"),
+    (1, "正在合作中"),
+    (2, "已拒绝"),
+    (3, "合作结束"),
 )
 
 

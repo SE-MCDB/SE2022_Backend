@@ -27,8 +27,12 @@ from core.api.interpretation import createInterpretation, INTERPRETATION_API, \
 
 from core.api.user import get_all_user_info,delete_user,change_user_info
 
-from core.api.platform import create_need, get_all_need, get_proceding_order, get_finished_order,  \
-  get_need_info
+from core.api.platform.need_api import create_need, get_all_need, get_need_info, get_finished_need, \
+  finish_need, get_proceeding_need
+
+from core.api.platform.order_api import get_proceeding_order, get_finished_order, finish_order, accept_order, \
+  refuse_order, get_order_info, create_order
+
 from core.api.enterprise import set_info, get_info
 
 urlpatterns = [
@@ -127,12 +131,20 @@ urlpatterns = [
 
     # platform<---需求平台
     path('need', create_need), # 发布新的需求
-    path('need/all', get_all_need),
-    path('need/<int:id>', get_need_info),
-
-    path('order/<int:uid>/finished', get_finished_order),
-    path('order/<int:uid>/procedings', get_proceding_order),
-
+    path('need/all', get_all_need), # 获取全部待解决需求
+    path('need/<int:id>', get_need_info), # 获取某个需求的信息
+    path('user/<int:uid>/need/<int:id>/finish', finish_need), # 企业结束需求
+    path('user/<int:uid>/need/finished', get_finished_need), # 获取某个企业正在进行的需求
+    path('user/<int:uid>/need/proceeding', get_proceeding_need), # 获取某个企业已结束的需求
+ 
+    path('order', create_order),  # 企业创建新订单
+    path('order/<int:id>', get_order_info), # 获取某个订单的信息
+    path('user/<int:uid>/order/<int:id>/refuse', refuse_order), # 专家拒绝订单
+    path('user/<int:uid>/order/<int:id>/accept', accept_order), # 专家接受订单
+    path('user/<int:uid>/order/<int:id>/finish', finish_order), # 企业结束订单
+    path('user/<int:uid>/order/finished', get_finished_order), # 获取某个用户（企业或专家）已完成订单（拒绝和结束）
+    path('user/<int:uid>/order/proceeding', get_proceeding_order), # 获取某个用户（企业或专家）正在进行的订单（待接受和正在合作）
+  
     #enterprise
     path('enterprise/setinfo', set_info),
     path('enterprise/getinfo', get_info),
