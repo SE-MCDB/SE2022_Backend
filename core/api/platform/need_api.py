@@ -16,7 +16,7 @@ def get_need_info(request: HttpRequest, id: int):
     try:
         need = Need.objects.get(id=id)
     except Need.DoesNotExist:
-        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-exist user")
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-exist need")
 
     enterprise : User = need.enterprise
     enterprise_info : Enterprise_info = enterprise.enterprise_info
@@ -57,16 +57,20 @@ def create_need(request: HttpRequest):
 
     title = data.get('title')
     description = data.get('description')
-    money = data.get('money')
     start_time = data.get('start_time')
     end_time = data.get('end_time')
     key_word = data.get('key_word') 
-    field = data.get('field')
     address = data.get('address')
-    state = data.get('state')
-    emergency = data.get('emergency')
-    predict = data.get('predict')
-    real = data.get('real')
+
+    try:
+        money = int(data.get('money'))
+        predict = int(data.get('predict'))
+        real = int(data.get('real'))
+        emergency = int(data.get('emergency'))
+        state = int(data.get('state'))
+        field = int(data.get('field'))
+    except:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-digit value(some digit value is wrong)")
 
     print("title", title)
     print("descrption", description)
@@ -84,15 +88,16 @@ def create_need(request: HttpRequest):
 
     if title is None or description is None or money is None or start_time is None  or end_time is None or key_word is None \
         or field is None or address is None or emergency is None or predict is None or real is None  or state is None:
-        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "Invalid requset value 1")
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "Invalid requset value")
+    
+    if not title or not description or not start_time:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "title or description or start_time cannot be empty")
+
     need = Need(title=title, description=description, money=money, start_time=start_time,
         end_time=end_time, key_word=key_word, field=field, address=address,
             enterprise=user, state=state, emergency=emergency, predict=predict, real=real)
     
-    try:
-        need.save()
-    except Exception:
-        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "Invalid request value 2")
+    need.save()
     return success_api_response({})
 
 @response_wrapper
@@ -203,16 +208,27 @@ def edit_need(request: HttpRequest, uid: int, id: int):
 
     title = data.get('title')
     description = data.get('description')
-    money = data.get('money')
     start_time = data.get('start_time')
     end_time = data.get('end_time')
     key_word = data.get('key_word') 
-    field = data.get('field')
     address = data.get('address')
-    state = data.get('state')
-    emergency = data.get('emergency')
-    predict = data.get('predict')
     
+    try:
+        money = int(data.get('money'))
+        predict = int(data.get('predict'))
+        emergency = int(data.get('emergency'))
+        state = int(data.get('state'))
+        field = int(data.get('field'))
+    except:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-digit value(some digit value is wrong)")
+
+    if title is None or description is None or money is None or start_time is None  or end_time is None or key_word is None \
+        or field is None or address is None or emergency is None or predict is None or state is None:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "Invalid requset value")
+
+    if not title or not description or not start_time:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "title or description or start_time cannot be empty")
+
     Need.objects.filter(id=id).update(title=title, description=description, money=money, 
     start_time=start_time, end_time=end_time, key_word=key_word, field=field, address=address, state=state,
     emergency=emergency, predict=predict)
