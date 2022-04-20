@@ -112,7 +112,7 @@ def get_all_need(request: HttpRequest):
     data = []
     for need in needs:
         need_info = {"need_id" : need.id, "title": need.title, "description": need.description,
-        "end_time": need.end_time, "field": need.field, "state": need.state, "emergency": need.emergency, "real": need.real}
+        "end_time": need.end_time, "field": need.field, "state": need.state, "emergency": need.emergency, "predict": need.predict,"real": need.real}
         data.append(need_info)
     return success_api_response({"data": data})
 
@@ -136,7 +136,7 @@ def get_finished_need(request: HttpRequest, uid: int):
     data = []
     for need in needs:
         need_info = {"need_id" : need.id, "title": need.title, "description": need.description,
-        "end_time": need.end_time, "field": need.field, "state": need.state, "emergency": need.emergency}
+        "end_time": need.end_time, "field": need.field, "state": need.state, "emergency": need.emergency, "predict": need.predict,"real": need.real}
         data.append(need_info)
     
     return success_api_response({"data": data})
@@ -180,7 +180,7 @@ def get_proceeding_need(request: HttpRequest, uid: int):
     data = []
     for need in needs:
         need_info = {"need_id" : need.id, "title": need.title, "description": need.description,
-        "end_time": need.end_time, "field": need.field, "state": need.state, "emergency": need.emergency}
+        "end_time": need.end_time, "field": need.field, "state": need.state, "emergency": need.emergency, "predict": need.predict,"real": need.real}
         data.append(need_info)
     
     return success_api_response({"data": data})
@@ -217,20 +217,19 @@ def edit_need(request: HttpRequest, uid: int, id: int):
         money = int(data.get('money'))
         predict = int(data.get('predict'))
         emergency = int(data.get('emergency'))
-        state = int(data.get('state'))
         field = int(data.get('field'))
     except:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-digit value(some digit value is wrong)")
 
     if title is None or description is None or money is None or start_time is None  or end_time is None or key_word is None \
-        or field is None or address is None or emergency is None or predict is None or state is None:
+        or field is None or address is None or emergency is None or predict is None:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "Invalid requset value")
 
     if not title or not description or not start_time:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "title or description or start_time cannot be empty")
 
     Need.objects.filter(id=id).update(title=title, description=description, money=money, 
-    start_time=start_time, end_time=end_time, key_word=key_word, field=field, address=address, state=state,
+    start_time=start_time, end_time=end_time, key_word=key_word, field=field, address=address,
     emergency=emergency, predict=predict)
 
     return success_api_response({})
