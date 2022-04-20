@@ -35,9 +35,9 @@ class Need(models.Model):
     #需求创建时间，自动填充
     start_time = models.CharField(max_length=30)
     #有效时间（预计结束时间）
-    valid_time = models.CharField(max_length=30,blank=True, null=True)
+    end_time = models.CharField(max_length=30,blank=True, null=True)
     #关键字
-    key_word = models.CharField(max_length=20)
+    key_word = models.CharField(max_length=100)
     #技术领域
     field = models.IntegerField(choices=NEED_FIELD_CHOICES, default=8)
     #地址

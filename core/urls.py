@@ -28,7 +28,7 @@ from core.api.interpretation import createInterpretation, INTERPRETATION_API, \
 from core.api.user import get_all_user_info,delete_user,change_user_info
 
 from core.api.platform.need_api import create_need, get_all_need, get_need_info, get_finished_need, \
-  finish_need, get_proceeding_need
+  finish_need, get_proceeding_need, edit_need
 
 from core.api.platform.order_api import get_proceeding_order, get_finished_order, finish_order, accept_order, \
   refuse_order, get_order_info, create_order
@@ -133,6 +133,7 @@ urlpatterns = [
     path('need', create_need), # 发布新的需求
     path('need/all', get_all_need), # 获取全部待解决需求
     path('need/<int:id>', get_need_info), # 获取某个需求的信息
+    path('user/<int:uid>/need/<int:id>/edit', edit_need), # 修改需求
     path('user/<int:uid>/need/<int:id>/finish', finish_need), # 企业结束需求
     path('user/<int:uid>/need/finished', get_finished_need), # 获取某个企业正在进行的需求
     path('user/<int:uid>/need/proceeding', get_proceeding_need), # 获取某个企业已结束的需求
