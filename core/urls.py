@@ -35,6 +35,8 @@ from core.api.platform.order_api import get_pending_order, get_cooperating_order
 
 from core.api.enterprise import set_info, get_info
 
+from core.api.expert import setinfo
+
 urlpatterns = [
 
     #user apis
@@ -150,6 +152,9 @@ urlpatterns = [
     #enterprise
     path('enterprise/setinfo', set_info),
     path('enterprise/getinfo', get_info),
+
+    #expert
+    path('expert/setinfo', setinfo)
 
 
 ]

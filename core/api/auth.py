@@ -347,6 +347,11 @@ def getUserInfo(user):
             'is_following': user.user_set.filter(id=user.id).exists(),
             'is_followed': user.followers.filter(id=user.id).exists(),
             'type': user.state,
+            'expert_name': user.expert_info.name,
+            'expert_organization': user.expert_info.organization,
+            'expert_field': user.expert_info.field,
+            'expert_scholarprofile': user.expert_info.self_profile,
+            'expert_phone': user.expert_info.phone,
         }
     return userInfo
 

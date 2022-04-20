@@ -107,7 +107,13 @@ def get_profile(request: HttpRequest):
             'total_follow': user.followers.count(),
             'is_following': user.user_set.filter(id=request.user.id).exists(),
             'is_followed': user.followers.filter(id=request.user.id).exists(),
-            'state': user.state
+            'state': user.state,
+            'expert_name': user.expert_info.name,
+            'expert_organization': user.expert_info.organization,
+            'expert_field': user.expert_info.field,
+            'expert_scholarprofile': user.expert_info.self_profile,
+            'expert_phone': user.expert_info.phone,
+
         }
     return success_api_response(data)
 
