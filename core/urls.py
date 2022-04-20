@@ -30,7 +30,7 @@ from core.api.user import get_all_user_info,delete_user,change_user_info
 from core.api.platform.need_api import create_need, get_all_need, get_need_info, get_finished_need, \
   finish_need, get_proceeding_need, edit_need
 
-from core.api.platform.order_api import get_proceeding_order, get_finished_order, finish_order, accept_order, \
+from core.api.platform.order_api import get_pending_order, get_cooperating_order, get_finished_order, finish_order, accept_order, \
   refuse_order, get_order_info, create_order
 
 from core.api.enterprise import set_info, get_info
@@ -144,7 +144,8 @@ urlpatterns = [
     path('user/<int:uid>/order/<int:id>/accept', accept_order), # 专家接受订单
     path('user/<int:uid>/order/<int:id>/finish', finish_order), # 企业结束订单
     path('user/<int:uid>/order/finished', get_finished_order), # 获取某个用户（企业或专家）已完成订单（拒绝和结束）
-    path('user/<int:uid>/order/proceeding', get_proceeding_order), # 获取某个用户（企业或专家）正在进行的订单（待接受和正在合作）
+    path('user/<int:uid>/order/pending', get_pending_order), # 获取某个用户（企业或专家）新请求的订单
+    path('user/<int:uid>/order/cooperating', get_cooperating_order), # 获取某个用户（企业或专家）正在合作的订单
   
     #enterprise
     path('enterprise/setinfo', set_info),

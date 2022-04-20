@@ -60,7 +60,7 @@ def get_finished_order(request: HttpRequest, uid: int):
 @response_wrapper
 # @jwt_auth()
 @require_GET
-def get_proceeding_order(request: HttpRequest, uid: int):
+def get_pending_order(request: HttpRequest, uid: int):
     """
     get proceding order
 
@@ -77,10 +77,53 @@ def get_proceeding_order(request: HttpRequest, uid: int):
     
     if user.state == 5:
         # 企业
-        order_list = user.enterprise_order.filter(state__in=[0, 1])
+        order_list = user.enterprise_order.filter(state=0)
     elif user.state == 4:
         # 专家
-        order_list = user.expert_order.filter(state__in=[0, 1])
+        order_list = user.expert_order.filter(state=0)
+    else:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "user type is not expert or company")
+    
+    orders = []
+    for order in order_list:
+        expert: User = order.user
+        enterprise: User = order.enterprise
+        need: Need = order.need
+        order_info = {"order_id": order.id, "create_time": order.create_time, "end_time": order.end_time,
+            "state": order.state, "expert_id":expert.id, "expert_name": expert.username, "need":{
+                "need_id": need.id,
+                "title": need.title,
+                "enterprise_id": enterprise.id,
+                "enterprise_name": enterprise.enterprise_info.name
+            }}
+        orders.append(order_info)
+
+    return success_api_response({"data": orders})
+
+@response_wrapper
+# @jwt_auth()
+@require_GET
+def get_cooperating_order(request: HttpRequest, uid: int):
+    """
+    get proceding order
+
+    [method]: GET
+
+    parms:
+        - uid: 企业或专家的id
+    """
+    try:
+        user: User = User.objects.get(id=uid)
+    except User.DoesNotExist:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-exist user")
+    
+    
+    if user.state == 5:
+        # 企业
+        order_list = user.enterprise_order.filter(state=1)
+    elif user.state == 4:
+        # 专家
+        order_list = user.expert_order.filter(state=1)
     else:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "user type is not expert or company")
     
@@ -107,7 +150,8 @@ def get_proceeding_order(request: HttpRequest, uid: int):
     path('user/<int:uid>/order/<int:id>/accept', accept_order), # 专家接受订单
     path('user/<int:uid>/order/<int:id>/finish', finish_order), # 企业结束订单
 ok  path('user/<int:uid>/order/finished', get_finished_order), # 获取某个用户（企业或专家）已完成订单（拒绝和结束）
-ok  path('user/<int:uid>/order/proceeding', get_proceeding_order), # 获取某个用户（企业或专家）正在进行的订单（待接受和正在合作）  
+ok  path('user/<int:uid>/order/pending', get_pending_order), # 获取某个用户（企业或专家）新请求的订单
+ok  path('user/<int:uid>/order/cooperating', get_cooperating_order), # 获取某个用户（企业或专家）正在合作的订单
 """
 
 @response_wrapper
