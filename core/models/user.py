@@ -68,7 +68,8 @@ class User(AbstractUser):
     state = models.IntegerField(choices=USER_STATE_CHOICES, default=0)
 
     enterprise_info = models.OneToOneField("Enterprise_info", on_delete=models.CASCADE, related_name="enterprise_info", null=True, blank=True)
-    
+
+    expert_info = models.OneToOneField("Expert", on_delete=models.CASCADE, related_name="expert_info", null=True, blank=True)
     
     #super users
     #objects = AdminUser()
