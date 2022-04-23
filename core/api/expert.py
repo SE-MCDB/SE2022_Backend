@@ -65,3 +65,65 @@ def setinfo(request:HttpRequest):
     return success_api_response("correct")
 
 
+"""
+应该添加一个认证成功提示
+"""
+#@jwt_auth()
+@response_wrapper
+@require_http_methods('GET')
+def agree_expert(request:HttpRequest, id:int):
+    data = request.GET.dict()
+    scholarID = data.get('scholarID')
+    url = data.get('url')
+    print(scholarID)
+    print(url)
+    print(id)
+    user = User.objects.get(id=id)
+    if user.state != 1:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "invalid user state")
+    user.state = 4
+    expert_info = user.expert_info
+    expert_info.scholarID = scholarID
+    expert_info.url = url
+    expert_info.save()
+    user.save()
+    return success_api_response({})
+
+
+"""
+应该添加一个认证失败提示
+对于专家信息的删除可能有bug，这里需要测试一下
+"""
+@jwt_auth()
+@response_wrapper
+@require_http_methods('GET')
+def refuse_expert(request:HttpRequest, id:int):
+    user = User.objects.get(id=id)
+    if user.state != 1:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "invalid user state")
+    user.expert_info.delete()
+    user.state = 0
+    user.save()
+    return success_api_response({})
+
+
+"""
+通过id获得相应用户申请成为企业的信息
+"""
+@jwt_auth()
+@response_wrapper
+@require_http_methods('GET')
+def get_expertInfo(request:HttpRequest, id:int):
+    user = User.objects.get(id=id)
+    if user.state != 1:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "invalid user state")
+    expert_info = user.expert_info
+    return success_api_response({
+        "name": expert_info.name,
+        "ID_num": expert_info.ID_num,
+        "organization": expert_info.organization,
+        "field": expert_info.field,
+        "self_profile": expert_info.self_profile,
+        "phone": expert_info.phone,
+        "ID_pic": str(expert_info.ID_pic)
+    })

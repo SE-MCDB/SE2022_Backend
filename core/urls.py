@@ -33,9 +33,9 @@ from core.api.platform.need_api import create_need, get_all_need, get_need_info,
 from core.api.platform.order_api import get_pending_order, get_cooperating_order, get_finished_order, finish_order, accept_order, \
   refuse_order, get_order_info, create_order
 
-from core.api.enterprise import set_info, get_info
+from core.api.enterprise import set_info, agree_enterprise, refuse_enterprise, get_enterpriseInfo
 
-from core.api.expert import setinfo
+from core.api.expert import setinfo, agree_expert, refuse_expert, get_expertInfo
 
 urlpatterns = [
 
@@ -151,10 +151,15 @@ urlpatterns = [
   
     #enterprise
     path('enterprise/setinfo', set_info),
-    path('enterprise/getinfo', get_info),
+    path('enterprise/getinfo/<int:id>', get_enterpriseInfo),
+    path('enterprise/agree/<int:id>', agree_enterprise),
+    path('enterprise/refuse/<int:id>', refuse_enterprise),
 
     #expert
-    path('expert/setinfo', setinfo)
+    path('expert/setinfo', setinfo),
+    path('expert/getinfo/<int:id>', get_expertInfo),
+    path('expert/agree/<int:id>', agree_expert),
+    path('expert/refuse/<int:id>', refuse_expert),
 
 
 ]

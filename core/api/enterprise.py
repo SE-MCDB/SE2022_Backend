@@ -111,3 +111,82 @@ def get_info(request:HttpRequest):
         "field": enterprise_info.field,
     }
     return success_api_response(dic)
+
+
+"""
+应该添加一个认证成功提示
+"""
+@jwt_auth()
+@response_wrapper
+@require_http_methods('GET')
+def agree_enterprise(request:HttpRequest, id: int):
+    user = User.objects.get(id=id)
+    if user.state != 2:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "wrong user state")
+    user.state = 5
+    user.save()
+    return success_api_response({})
+
+
+"""
+应该添加一个认证失败提示
+对于企业信息的删除可能有bug，这里需要测试一下
+"""
+@jwt_auth()
+@response_wrapper
+@require_http_methods('GET')
+def refuse_enterprise(request:HttpRequest, id: int):
+    user = User.objects.get(id=id)
+    if user.state != 2:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "wrong user state")
+    user.enterprise_info.delete()
+    user.state = 0
+    user.save()
+    return success_api_response({})
+
+
+"""
+通过id获得相应用户申请成为企业的信息
+"""
+@jwt_auth()
+@response_wrapper
+@require_http_methods('GET')
+def get_enterpriseInfo(request:HttpRequest, id:int):
+    user = User.objects.get(id=id)
+    if user.state != 2:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "wrong user state")
+    enterprise_info = user.enterprise_info
+    return success_api_response({
+        "name": enterprise_info.name,
+        "address": enterprise_info.address,
+        "website": enterprise_info.website,
+        "instruction": enterprise_info.instruction,
+        "phone": enterprise_info.phone,
+        "legal_representative": enterprise_info.legal_representative,
+        "register_capital": enterprise_info.register_capital,
+        "field": enterprise_info.field,
+        "business_license": str(enterprise_info.business_license),
+        "legal_person_ID": str(enterprise_info.legal_person_ID)
+    })
+
+
+"""
+@jwt_auth()
+@response_wrapper
+@require_http_methods('GET')
+def get_all_enterprise(request:HttpRequest):
+    users = User.objects.filter(state=2)
+    info = []
+    for user in users:
+        user_info = {
+            "id": user.id,
+            "username": user.username,
+            "email": user.email,
+            "icon": str(user.icon)
+        }
+        info.append(user_info)
+    return success_api_response({
+        "data": info
+    })
+"""
+
