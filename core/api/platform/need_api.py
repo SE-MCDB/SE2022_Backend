@@ -12,6 +12,32 @@ from core.models.need import Need
 @response_wrapper
 # @jwt_auth()
 @require_GET
+def search_need(request: HttpRequest):
+    pass
+
+@response_wrapper
+# @jwt_auth()
+@require_http_methods(['DELETE'])
+def delete_need(request: HttpRequest, uid: int, id: int):
+    try:
+        enterrpise: User = User.objects.get(id=uid)
+        need: Need = Need.objects.get(id=id)
+    except User.DoesNotExist:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-exist user")
+    except Need.DoesNotExist:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-exist need")
+    
+    if enterrpise.state != 5:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-enterprise user")
+    if need.enterprise != enterrpise:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "not the enterpreise's need")
+
+    need.delete()
+    return success_api_response({})
+
+@response_wrapper
+# @jwt_auth()
+@require_GET
 def get_need_info(request: HttpRequest, id: int):
     try:
         need = Need.objects.get(id=id)

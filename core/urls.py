@@ -28,7 +28,7 @@ from core.api.interpretation import createInterpretation, INTERPRETATION_API, \
 from core.api.user import get_all_user_info,delete_user,change_user_info
 
 from core.api.platform.need_api import create_need, get_all_need, get_need_info, get_finished_need, \
-  finish_need, get_proceeding_need, edit_need
+  finish_need, get_proceeding_need, edit_need, delete_need, search_need
 
 from core.api.platform.order_api import get_pending_order, get_cooperating_order, get_finished_order, finish_order, accept_order, \
   refuse_order, get_order_info, create_order
@@ -132,6 +132,8 @@ urlpatterns = [
     path('download/Interpretation/<int:id>', downloadInterpretation),
 
     # platform<---需求平台
+
+    ## need
     path('need', create_need), # 发布新的需求
     path('need/all', get_all_need), # 获取全部待解决需求
     path('need/<int:id>', get_need_info), # 获取某个需求的信息
@@ -139,7 +141,10 @@ urlpatterns = [
     path('user/<int:uid>/need/<int:id>/finish', finish_need), # 企业结束需求
     path('user/<int:uid>/need/finished', get_finished_need), # 获取某个企业正在进行的需求
     path('user/<int:uid>/need/proceeding', get_proceeding_need), # 获取某个企业已结束的需求
- 
+    path('user/<int:uid>/need/<int:id>', delete_need), # 企业删除需求
+    path('need/search', search_need),
+
+    ## order
     path('order', create_order),  # 企业创建新订单
     path('order/<int:id>', get_order_info), # 获取某个订单的信息
     path('user/<int:uid>/order/<int:id>/refuse', refuse_order), # 专家拒绝订单

@@ -12,6 +12,16 @@ from core.api.auth import jwt_auth
 from core.models.need import Need
 from core.models.order import Order
 
+def get_now_time():
+    """获取当前时间"""
+    from django.utils import timezone
+    import pytz
+    tz = pytz.timezone('Asia/Shanghai')
+    # 返回时间格式的字符串
+    now_time = timezone.now().astimezone(tz=tz)
+    now_time_str = now_time.strftime("%Y-%m-%d %H:%M:%S")
+    return now_time_str
+
 @response_wrapper
 # @jwt_auth()
 @require_GET
@@ -45,7 +55,7 @@ def get_finished_order(request: HttpRequest, uid: int):
         enterprise: User = order.enterprise
         need: Need = order.need
         order_info = {"order_id": order.id, "create_time": order.create_time, "end_time": order.end_time,
-            "state": order.state, "expert_id":expert.id, "expert_name": expert.username, "need":{
+            "state": order.state, "expert_id":expert.id, "expert_name": expert.expert_info.name, "need":{
                 "need_id": need.id,
                 "title": need.title,
                 "enterprise_id": enterprise.id,
@@ -90,7 +100,7 @@ def get_pending_order(request: HttpRequest, uid: int):
         enterprise: User = order.enterprise
         need: Need = order.need
         order_info = {"order_id": order.id, "create_time": order.create_time, "end_time": order.end_time,
-            "state": order.state, "expert_id":expert.id, "expert_name": expert.username, "need":{
+            "state": order.state, "expert_id":expert.id, "expert_name": expert.expert_info.name, "need":{
                 "need_id": need.id,
                 "title": need.title,
                 "enterprise_id": enterprise.id,
@@ -133,7 +143,7 @@ def get_cooperating_order(request: HttpRequest, uid: int):
         enterprise: User = order.enterprise
         need: Need = order.need
         order_info = {"order_id": order.id, "create_time": order.create_time, "end_time": order.end_time,
-            "state": order.state, "expert_id":expert.id, "expert_name": expert.username, "need":{
+            "state": order.state, "expert_id":expert.id, "expert_name": expert.expert_info.name, "need":{
                 "need_id": need.id,
                 "title": need.title,
                 "enterprise_id": enterprise.id,
@@ -173,7 +183,9 @@ def finish_order(request: HttpRequest, uid: int, id: int):
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-enterprise user")
 
     if order.state == 1 or order.state == 0:
-        Order.objects.filter(id=id).update(state=3)
+        order.state = 3
+        order.end_time = get_now_time()
+        order.save()
     else:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "The order is not in cooperation")
 
@@ -236,7 +248,9 @@ def refuse_order(request: HttpRequest, uid: int, id: int):
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-expert user")
 
     if order.state == 0:
-        Order.objects.filter(id=id).update(state=2)
+        order.state=2
+        order.end_time = get_now_time()
+        order.save()
     else:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "The order is not pending state(state=0)")
     return success_api_response({})
@@ -257,7 +271,7 @@ def get_order_info(request: HttpRequest, id: int):
     order_info = {"order_id": order.id, "create_time": order.create_time, "end_time": order.end_time,
         "address": need.address, "description": need.description, "phone": enterprise.enterprise_info.phone,
         "predict": need.predict, "real": need.real,
-        "state": order.state, "expert_id":expert.id, "expert_name": expert.username, "need":{
+        "state": order.state, "expert_id":expert.id, "expert_name": expert.expert_info.name, "need":{
             "need_id": need.id,
             "title": need.title,
             "enterprise_id": enterprise.id,
@@ -293,6 +307,8 @@ def create_order(request: HttpRequest):
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-enterprise user")
     if need.state != 0:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "the need is finished")
+    if Order.objects.filter(user_id=expert_id, enterprise_id=enterprise_id, need_id=need_id).exists():
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "already exist order")
 
     order: Order = Order(user_id=expert_id, enterprise_id=enterprise_id, need_id=need_id, state=0)
     order.save()
