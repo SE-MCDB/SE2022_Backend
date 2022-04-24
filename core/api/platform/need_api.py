@@ -13,7 +13,7 @@ from core.models.need import Need
 # @jwt_auth()
 @require_GET
 def search_need(request: HttpRequest, *args, **kwargs):
-    
+
     pass
 
 @response_wrapper
@@ -137,7 +137,7 @@ def get_all_need(request: HttpRequest):
     
     data = []
     for need in needs:
-        need_info = {"need_id" : need.id, "title": need.title, "description": need.description,
+        need_info = {"need_id" : need.id, "title": need.title, "description": need.description, "start_time": need.start_time,
         "end_time": need.end_time, "field": need.field, "state": need.state, "emergency": need.emergency, "predict": need.predict,"real": need.real}
         data.append(need_info)
     return success_api_response({"data": data})
@@ -161,7 +161,7 @@ def get_finished_need(request: HttpRequest, uid: int):
     needs = user.enterprise_need.filter(state=1)
     data = []
     for need in needs:
-        need_info = {"need_id" : need.id, "title": need.title, "description": need.description,
+        need_info = {"need_id" : need.id, "title": need.title, "description": need.description, "start_time": need.start_time,
         "end_time": need.end_time, "field": need.field, "state": need.state, "emergency": need.emergency, "predict": need.predict,"real": need.real}
         data.append(need_info)
     
@@ -205,7 +205,7 @@ def get_proceeding_need(request: HttpRequest, uid: int):
     needs = user.enterprise_need.filter(state=0)
     data = []
     for need in needs:
-        need_info = {"need_id" : need.id, "title": need.title, "description": need.description,
+        need_info = {"need_id" : need.id, "title": need.title, "description": need.description, "start_time": need.start_time,
         "end_time": need.end_time, "field": need.field, "state": need.state, "emergency": need.emergency, "predict": need.predict,"real": need.real}
         data.append(need_info)
     
