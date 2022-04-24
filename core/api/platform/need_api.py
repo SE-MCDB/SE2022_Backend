@@ -13,6 +13,12 @@ from core.models.need import Need
 # @jwt_auth()
 @require_GET
 def search_need(request: HttpRequest, *args, **kwargs):
+    key_word = kwargs.get('key_word')
+    if key_word is None or key_word == '': # not key_word 是判空，也可以判None
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "none key word")
+    
+    
+
 
     pass
 
