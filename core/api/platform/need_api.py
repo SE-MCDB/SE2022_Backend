@@ -12,7 +12,8 @@ from core.models.need import Need
 @response_wrapper
 # @jwt_auth()
 @require_GET
-def search_need(request: HttpRequest):
+def search_need(request: HttpRequest, *args, **kwargs):
+    
     pass
 
 @response_wrapper

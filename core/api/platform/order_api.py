@@ -59,7 +59,8 @@ def get_finished_order(request: HttpRequest, uid: int):
                 "need_id": need.id,
                 "title": need.title,
                 "enterprise_id": enterprise.id,
-                "enterprise_name": enterprise.enterprise_info.name
+                "enterprise_name": enterprise.enterprise_info.name,
+                "enterprise_pic":  str(enterprise.icon)
             }}
         orders.append(order_info)
 
@@ -104,7 +105,8 @@ def get_pending_order(request: HttpRequest, uid: int):
                 "need_id": need.id,
                 "title": need.title,
                 "enterprise_id": enterprise.id,
-                "enterprise_name": enterprise.enterprise_info.name
+                "enterprise_name": enterprise.enterprise_info.name,
+                "enterprise_pic":  str(enterprise.icon)
             }}
         orders.append(order_info)
 
@@ -147,7 +149,8 @@ def get_cooperating_order(request: HttpRequest, uid: int):
                 "need_id": need.id,
                 "title": need.title,
                 "enterprise_id": enterprise.id,
-                "enterprise_name": enterprise.enterprise_info.name
+                "enterprise_name": enterprise.enterprise_info.name,
+                "enterprise_pic": str(enterprise.icon)
             }}
         orders.append(order_info)
 
