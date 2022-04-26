@@ -143,7 +143,7 @@ def get_all_need(request: HttpRequest):
     
     data = []
     for need in needs:
-        need_info = {"need_id" : need.id, "title": need.title, "description": need.description, "start_time": need.start_time,
+        need_info = {"need_id" : need.id, "title": need.title, "description": need.description, "start_time": need.start_time, "money": need.money, 
         "end_time": need.end_time, "field": need.field, "state": need.state, "emergency": need.emergency, "predict": need.predict,"real": need.real}
         data.append(need_info)
     return success_api_response({"data": data})

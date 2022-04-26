@@ -12,6 +12,17 @@ from core.api.utils import (ErrorCode, failed_api_response, parse_data,
 
 from core.models import Comment, Interpretation, User
 
+
+def get_now_time():
+    """获取当前时间"""
+    from django.utils import timezone
+    import pytz
+    tz = pytz.timezone('Asia/Shanghai')
+    # 返回时间格式的字符串
+    now_time = timezone.now().astimezone(tz=tz)
+    now_time_str = now_time.strftime("%Y-%m-%d %H:%M:%S")
+    return now_time_str
+
 @jwt_auth()
 @require_POST
 @response_wrapper
@@ -65,7 +76,7 @@ def create_comment(request: HttpRequest):
             return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "Bad Comment ID.")
     #if (pc is None)^(tu is None):
     #    return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "Bad parent Comment and to User.")
-    comment = Comment(interpretation = interpretation, user=user, created_at = timezone.localtime(timezone.now()), text=content, to_user=tu, parent_comment = pc)
+    comment = Comment(interpretation = interpretation, user=user, created_at = get_now_time(), text=content, to_user=tu, parent_comment = pc)
     comment.save()
     ret_data = {'id': comment.pk}
     return success_api_response(ret_data)
