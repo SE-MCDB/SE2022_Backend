@@ -13,12 +13,9 @@ from core.models.needContact import NeedContact
 @response_wrapper
 # @jwt_auth()
 @require_GET
-def get_need_contact(request: HttpRequest):
-    data: dict = parse_data(request)
-    if not data:
-        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "data not found")
-    enterprise_id = data.get('enterprise_id')
-    expert_id = data.get('expert_id')
+def get_need_contact(request: HttpRequest, *args, **kwargs):
+    enterprise_id = kwargs.get('enterprise_id')
+    expert_id = kwargs.get('expert_id')
     try:
         enterprise = User.objects.get(id=enterprise_id)
         expert = User.objects.get(id=expert_id)
@@ -32,6 +29,9 @@ def get_need_contact(request: HttpRequest):
     if NeedContact.objects.filter(expert=expert,enterprise=enterprise).exists():
         need_contact = NeedContact.objects.get(expert=expert, enterprise=enterprise)
         info:dict =  {"need_id": need_contact.need.id}
+
+        print(get_need_info(need_contact.need.id))
+
         return success_api_response(info)
     else:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "cannot find need")
