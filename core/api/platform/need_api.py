@@ -167,7 +167,7 @@ def get_finished_need(request: HttpRequest, uid: int):
     needs = user.enterprise_need.filter(state=1)
     data = []
     for need in needs:
-        need_info = {"need_id" : need.id, "title": need.title, "description": need.description, "start_time": need.start_time,
+        need_info = {"need_id" : need.id, "title": need.title, "description": need.description, "start_time": need.start_time, "money": need.money,
         "end_time": need.end_time, "field": need.field, "state": need.state, "emergency": need.emergency, "predict": need.predict,"real": need.real}
         data.append(need_info)
     
@@ -211,7 +211,7 @@ def get_proceeding_need(request: HttpRequest, uid: int):
     needs = user.enterprise_need.filter(state=0)
     data = []
     for need in needs:
-        need_info = {"need_id" : need.id, "title": need.title, "description": need.description, "start_time": need.start_time,
+        need_info = {"need_id" : need.id, "title": need.title, "description": need.description, "start_time": need.start_time, "money": need.money, 
         "end_time": need.end_time, "field": need.field, "state": need.state, "emergency": need.emergency, "predict": need.predict,"real": need.real}
         data.append(need_info)
     
