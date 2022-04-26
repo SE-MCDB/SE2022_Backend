@@ -48,7 +48,7 @@ def get_profile(request: HttpRequest):
             'nickname': user.nick_name,
             'userpic': str(user.icon),
             'email': user.email,
-            'type' : user.user_type,
+            'type' : user.state,
             'institution': user.institution,
             'total_post': user.created_by.count(),
             'total_like': total_like,
