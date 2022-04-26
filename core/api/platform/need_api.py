@@ -62,7 +62,7 @@ def create_need_contact(request: HttpRequest):
         NeedContact.objects.filter(expert=expert,enterprise=enterprise).delete()
 
     needContact = NeedContact(expert=expert, enterprise=enterprise, need=need)
-    needContact.sava()
+    needContact.save()
     return success_api_response({})
 
 @response_wrapper
