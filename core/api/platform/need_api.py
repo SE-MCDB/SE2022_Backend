@@ -57,10 +57,10 @@ def create_need_contact(request: HttpRequest):
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-expert user")
     
     if NeedContact.objects.filter(expert=expert,enterprise=enterprise).exists():
-        NeedContact.objects.filter(expert=expert,enterprise=enterprise).delete()
-
-    needContact = NeedContact(expert=expert, enterprise=enterprise, need=need)
-    needContact.save()
+        NeedContact.objects.filter(expert=expert,enterprise=enterprise).update(need=need)
+    else:
+        needContact = NeedContact(expert=expert, enterprise=enterprise, need=need)
+        needContact.save()
     return success_api_response({})
 
 @response_wrapper
