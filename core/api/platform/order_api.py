@@ -23,6 +23,35 @@ def get_now_time():
 @response_wrapper
 # @jwt_auth()
 @require_GET
+def get_order_id(request: HttpRequest):
+    data = request.GET.dict()
+    enterprise_id = data.get('enterprise_id')
+    expert_id = data.get("expert_id")
+    need_id = data.get('need_id')
+    
+    try:
+        enterprise = User.objects.get(id=enterprise_id)
+        expert = User.objects.get(id=expert_id)
+        need = Need.objects.get(id=need_id)
+    except:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "invalid id")
+
+    if expert.state != 4:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-expert user")
+    if enterprise.state != 5 :
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-enterprise user")
+
+    if Order.objects.filter(enterprise=enterprise, need=need, user=expert).exclude(state=2).exists():
+        order = Order.objects.filter(enterprise=enterprise, need=need, user=expert).exclude(state=2)[0]
+        
+        return success_api_response({"order_id": order.id})
+    else:
+        return success_api_response({"order_id": 0})
+
+
+@response_wrapper
+# @jwt_auth()
+@require_GET
 def get_finished_order(request: HttpRequest, uid: int):
     """
     get finished order
