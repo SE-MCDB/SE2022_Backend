@@ -8,6 +8,62 @@ from core.models.user import User
 from core.models.enterprise_info import Enterprise_info
 from core.api.auth import jwt_auth
 from core.models.need import Need
+from core.models.needContact import NeedContact
+
+@response_wrapper
+# @jwt_auth()
+@require_GET
+def get_need_contact(request: HttpRequest):
+    data: dict = parse_data(request)
+    if not data:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "data not found")
+    enterprise_id = data.get('enterprise_id')
+    expert_id = data.get('expert_id')
+    try:
+        enterprise = User.objects.get(id=enterprise_id)
+        expert = User.objects.get(id=expert_id)
+    except:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "enterprise or expert or need not found")
+    if enterprise.state != 5:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-enterprise user")
+    if expert.state != 4:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-expert user")
+    
+    if NeedContact.objects.filter(expert=expert,enterprise=enterprise).exists():
+        need_contact = NeedContact.objects.get(expert=expert, enterprise=enterprise)
+        info:dict =  {"need_id": need_contact.need.id}
+        return success_api_response(info)
+    else:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "cannot find need")
+
+
+@response_wrapper
+# @jwt_auth()
+@require_POST
+def create_need_contact(request: HttpRequest):
+    data: dict = parse_data(request)
+    if not data:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "data not found")
+    enterprise_id = data.get('enterprise_id')
+    expert_id = data.get('expert_id')
+    need_id = data.get('need_id')
+    try:
+        enterprise = User.objects.get(id=enterprise_id)
+        expert = User.objects.get(id=expert_id)
+        need = Need.objects.get(id=need_id)
+    except:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "enterprise or expert or need not found")
+    if enterprise.state != 5:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-enterprise user")
+    if expert.state != 4:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-expert user")
+    
+    if NeedContact.objects.filter(expert=expert,enterprise=enterprise).exists():
+        NeedContact.objects.filter(expert=expert,enterprise=enterprise).delete()
+
+    needContact = NeedContact(expert=expert, enterprise=enterprise, need=need)
+    needContact.sava()
+    return success_api_response({})
 
 @response_wrapper
 # @jwt_auth()
@@ -72,7 +128,7 @@ def create_need(request: HttpRequest):
     """
     data:dict = parse_data(request)
     if not data:
-        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "data int none")
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "data is none")
 
     id = data.get('company_id')
     if not id:
