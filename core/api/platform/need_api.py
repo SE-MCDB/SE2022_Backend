@@ -14,8 +14,9 @@ from core.models.needContact import NeedContact
 # @jwt_auth()
 @require_GET
 def get_need_contact(request: HttpRequest, *args, **kwargs):
-    enterprise_id = kwargs.get('enterprise_id')
-    expert_id = kwargs.get('expert_id')
+    data = request.GET.dict()
+    enterprise_id = data.get('enterprise_id')
+    expert_id = data.get("expert_id")
     try:
         enterprise = User.objects.get(id=enterprise_id)
         expert = User.objects.get(id=expert_id)
@@ -29,9 +30,6 @@ def get_need_contact(request: HttpRequest, *args, **kwargs):
     if NeedContact.objects.filter(expert=expert,enterprise=enterprise).exists():
         need_contact = NeedContact.objects.get(expert=expert, enterprise=enterprise)
         info:dict =  {"need_id": need_contact.need.id}
-
-        print(get_need_info(need_contact.need.id))
-
         return success_api_response(info)
     else:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "cannot find need")
@@ -70,6 +68,7 @@ def create_need_contact(request: HttpRequest):
 @require_GET
 def search_need(request: HttpRequest, *args, **kwargs):
     key_word = kwargs.get('key_word')
+
     if key_word is None or key_word == '': # not key_word 是判空，也可以判None
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "none key word")
     
