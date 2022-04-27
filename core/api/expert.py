@@ -4,7 +4,7 @@ from django.http import HttpRequest
 from .utils import (failed_api_response, ErrorCode,
                     success_api_response, parse_data,
                     wrapped_api, response_wrapper)
-from core.api.auth import jwt_auth
+from core.api.auth import jwt_auth, getUserInfo
 from core.models.user import User
 
 
@@ -94,7 +94,7 @@ def agree_expert(request:HttpRequest, id:int):
 应该添加一个认证失败提示
 对于专家信息的删除可能有bug，这里需要测试一下
 """
-@jwt_auth()
+#@jwt_auth()
 @response_wrapper
 @require_http_methods('GET')
 def refuse_expert(request:HttpRequest, id:int):
@@ -102,6 +102,7 @@ def refuse_expert(request:HttpRequest, id:int):
     if user.state != 1:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "invalid user state")
     user.expert_info.delete()
+    user.expert_info = None
     user.state = 0
     user.save()
     return success_api_response({})
@@ -110,7 +111,7 @@ def refuse_expert(request:HttpRequest, id:int):
 """
 通过id获得相应用户申请成为企业的信息
 """
-@jwt_auth()
+#@jwt_auth()
 @response_wrapper
 @require_http_methods('GET')
 def get_expertInfo(request:HttpRequest, id:int):
@@ -127,3 +128,17 @@ def get_expertInfo(request:HttpRequest, id:int):
         "phone": expert_info.phone,
         "ID_pic": str(expert_info.ID_pic)
     })
+
+"""
+获取全部申请专家的用户基本信息
+"""
+#@jwt_auth()
+@response_wrapper
+@require_http_methods('GET')
+def get_all_expert(request:HttpRequest):
+    users = User.objects.filter(state=1)
+    data = list()
+    for user in users:
+        if user.is_superuser != 1:
+            data.append(getUserInfo(user))
+    return success_api_response(data)
