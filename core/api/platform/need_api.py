@@ -248,7 +248,11 @@ def finish_need(request: HttpRequest, uid: int, id: int):
 
     if need.enterprise != user:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "Not the enterprise's need")
+
     Need.objects.filter(id=id).update(state=1)
+    
+    need.NeedContact_set.delete()
+
     return success_api_response({})
 
 

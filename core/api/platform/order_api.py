@@ -194,6 +194,8 @@ ok  path('user/<int:uid>/order/pending', get_pending_order), # 获取某个用�
 ok  path('user/<int:uid>/order/cooperating', get_cooperating_order), # 获取某个用户（企业或专家）正在合作的订单
 """
 
+from .need_api import finish_need
+
 @response_wrapper
 # @jwt_auth()
 @require_POST
@@ -213,6 +215,10 @@ def finish_order(request: HttpRequest, uid: int, id: int):
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-enterprise user")
 
     if order.state == 1 or order.state == 0:
+        if order.state == 1:
+            need = order.need
+            if need.need_order.filter(state=3) + 1 >= need.predict:
+                finish_need(request, uid, id)
         order.state = 3
         order.end_time = get_now_time()
         order.save()
@@ -337,7 +343,7 @@ def create_order(request: HttpRequest):
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-enterprise user")
     if need.state != 0:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "the need is finished")
-    if Order.objects.filter(user_id=expert_id, enterprise_id=enterprise_id, need_id=need_id).exists():
+    if Order.objects.filter(user_id=expert_id, enterprise_id=enterprise_id, need_id=need_id).exclude(state=2).exists():
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "already exist order")
 
     order: Order = Order(user_id=expert_id, enterprise_id=enterprise_id, need_id=need_id, state=0)
