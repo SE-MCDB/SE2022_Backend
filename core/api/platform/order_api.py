@@ -217,7 +217,7 @@ def finish_order(request: HttpRequest, uid: int, id: int):
     if order.state == 1 or order.state == 0:
         if order.state == 1:
             need = order.need
-            if need.need_order.filter(state=3) + 1 >= need.predict:
+            if need.need_order.filter(state=3).count() + 1 >= need.predict:
                 finish_need(request, uid, id)
         order.state = 3
         order.end_time = get_now_time()
