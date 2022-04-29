@@ -299,12 +299,15 @@ def accept_order(request: HttpRequest, uid: int, id: int):
     if expert.state != 4:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-expert user")
 
+    need: Need = order.need 
+    if need.real >= need.predict:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "need is full")
+
     if order.state == 0:
         Order.objects.filter(id=id).update(state=1)
     else:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "The order is not pending state(state=0)")
 
-    need: Need = order.need 
     need.real = need.real + 1
     need.save()
     return success_api_response({})
