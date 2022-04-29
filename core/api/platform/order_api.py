@@ -10,6 +10,14 @@ from core.api.auth import jwt_auth
 from core.models.need import Need
 from core.models.order import Order
 
+
+def get_info(s):
+    max = 20
+    if len(s) > max:
+        s = s[:20] + '...'
+    return s
+        
+
 def get_now_time():
     """获取当前时间"""
     from django.utils import timezone
@@ -19,6 +27,44 @@ def get_now_time():
     now_time = timezone.now().astimezone(tz=tz)
     now_time_str = now_time.strftime("%Y-%m-%d %H:%M:%S")
     return now_time_str
+
+@response_wrapper
+# @jwt_auth()
+@require_GET
+def get_all_order(request: HttpRequest, uid: int):
+    try:
+        user: User = User.objects.get(id=uid)
+    except User.DoesNotExist:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-exist user")
+    
+    
+    if user.state == 5:
+        # 企业
+        order_list = user.enterprise_order.all()
+    elif user.state == 4:
+        # 专家
+        order_list = user.expert_order.all()
+    else:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "user type is not expert or company")
+    
+    orders = []
+    for order in order_list:
+        expert: User = order.user
+        enterprise: User = order.enterprise
+        need: Need = order.need
+        order_info = {"order_id": order.id, "create_time": order.create_time, "end_time": order.end_time,
+            "state": order.state, "expert_id":expert.id, "expert_name": expert.expert_info.name, "need":{
+                "need_id": need.id,
+                "title": need.title,
+                "enterprise_id": enterprise.id,
+                "enterprise_name": enterprise.enterprise_info.name,
+                "enterprise_pic": str(enterprise.icon),
+                "enterprise_description": get_info(enterprise.enterprise_info.instruction),
+            }}
+        orders.append(order_info)
+
+    return success_api_response({"data": orders})
+
 
 @response_wrapper
 # @jwt_auth()
@@ -87,7 +133,8 @@ def get_finished_order(request: HttpRequest, uid: int):
                 "title": need.title,
                 "enterprise_id": enterprise.id,
                 "enterprise_name": enterprise.enterprise_info.name,
-                "enterprise_pic":  str(enterprise.icon)
+                "enterprise_pic":  str(enterprise.icon),
+                "enterprise_description": get_info(enterprise.enterprise_info.instruction),
             }}
         orders.append(order_info)
 
@@ -133,7 +180,8 @@ def get_pending_order(request: HttpRequest, uid: int):
                 "title": need.title,
                 "enterprise_id": enterprise.id,
                 "enterprise_name": enterprise.enterprise_info.name,
-                "enterprise_pic":  str(enterprise.icon)
+                "enterprise_pic":  str(enterprise.icon),
+                "enterprise_description": get_info(enterprise.enterprise_info.instruction),
             }}
         orders.append(order_info)
 
@@ -177,7 +225,8 @@ def get_cooperating_order(request: HttpRequest, uid: int):
                 "title": need.title,
                 "enterprise_id": enterprise.id,
                 "enterprise_name": enterprise.enterprise_info.name,
-                "enterprise_pic": str(enterprise.icon)
+                "enterprise_pic": str(enterprise.icon),
+                "enterprise_description": get_info(enterprise.enterprise_info.instruction),
             }}
         orders.append(order_info)
 
@@ -346,6 +395,8 @@ def create_order(request: HttpRequest):
     if Order.objects.filter(user_id=expert_id, enterprise_id=enterprise_id, need_id=need_id).exclude(state=2).exists():
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "already exist order")
 
+    if need.real >= need.predict:
+        return failed_api_response(ErrorCode.INVAzLID_REQUEST_ARGS, "the need recruitment is full")
     order: Order = Order(user_id=expert_id, enterprise_id=enterprise_id, need_id=need_id, state=0)
     order.save()
     return success_api_response({})
