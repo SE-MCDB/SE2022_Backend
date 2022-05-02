@@ -38,7 +38,7 @@ def setinfo(request:HttpRequest):
     if not phone:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "need valid phone")
     user = User.objects.get(id=id)
-    if user.state != 0:
+    if user.expert_info is not None:
         expert = user.expert_info
         expert.name = name
         expert.organization = organization
@@ -108,10 +108,6 @@ def refuse_expert(request:HttpRequest, id:int):
     print(1)
     if user.state != 1:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "invalid user state")
-    print(2)
-    user.expert_info.delete()
-    user.expert_info = None
-    print(3)
     user.state = 0
     user.save()
     print(4)

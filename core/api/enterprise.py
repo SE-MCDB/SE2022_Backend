@@ -56,7 +56,7 @@ def set_info(request:HttpRequest):
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "need a valid legal_person_ID")
 
     user = User.objects.get(id=id)
-    if user.state == 0:
+    if user.enterprise_info is None:
         enterprise_info = Enterprise_info()
         enterprise_info.name = name
         enterprise_info.address = address
@@ -72,7 +72,7 @@ def set_info(request:HttpRequest):
         user.enterprise_info = enterprise_info
         user.state = 2
         user.save()
-    elif user.state == 5:
+    else:
         enterprise_info = user.enterprise_info
         enterprise_info.name = name
         enterprise_info.address = address
@@ -140,8 +140,6 @@ def refuse_enterprise(request:HttpRequest, id: int):
     user = User.objects.get(id=id)
     if user.state != 2:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "wrong user state")
-    user.enterprise_info.delete()
-    user.enterprise_info = None
     user.state = 0
     user.save()
     return success_api_response("success")
