@@ -29,8 +29,7 @@ from core.api.user import get_all_user_info,delete_user,change_user_info
 
 from core.api.platform.need_api import create_need, get_all_need, get_need_info, get_finished_need, \
   finish_need, get_proceeding_need, edit_need, delete_need, search_need, create_need_contact,\
-    get_need_contact
-
+    get_need_contact, expert_recommend
 
 from core.api.platform.order_api import get_pending_order, get_cooperating_order, get_finished_order, finish_order, accept_order, \
   refuse_order, get_order_info, create_order, get_order_id, get_all_order
@@ -147,6 +146,8 @@ urlpatterns = [
     path('need/search', search_need),
     path('need/contact', create_need_contact),
     path('need/get_contact', get_need_contact),
+
+    path('need/<int:id>/expert_recommend', expert_recommend), # 基于需求的专家推荐
 
     ## order
     path('order', create_order),  # 企业创建新订单

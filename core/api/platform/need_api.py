@@ -1,14 +1,38 @@
+import random
 from django.views.decorators.http import require_http_methods, require_POST, require_GET
 from django.http import HttpRequest
+from django.db.models import Q
 
 from core.api.utils import (failed_api_response, ErrorCode,
                     success_api_response, parse_data,
                     wrapped_api, response_wrapper)
 from core.models.user import User
 from core.models.enterprise_info import Enterprise_info
+from core.models.expert import Expert
 from core.api.auth import jwt_auth
 from core.models.need import Need
 from core.models.needContact import NeedContact
+
+@response_wrapper
+# @jwt_auth()
+@require_GET
+def expert_recommend(request: HttpRequest, id: int):
+    try:
+        need = Need.objects.get(id=id)
+    except Need.DoesNotExist:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-exist need")
+    
+    experts = User.objects.filter(state=4)
+
+    lst = [] 
+    for expert in experts:
+        if random.randint(1,2) == 1:
+            lst.append({"scholar_id": expert.expert_info, "name": expert.expert_info.name, "phone": expert.expert_info.phone, "profile": expert.expert_info.self_profile,
+            "organization": expert.expert_info.organization , "paper": expert.expert_info.paper})
+            
+    return success_api_response({"data" : lst})
+
+
 
 @response_wrapper
 # @jwt_auth()
@@ -67,15 +91,28 @@ def create_need_contact(request: HttpRequest):
 # @jwt_auth()
 @require_GET
 def search_need(request: HttpRequest, *args, **kwargs):
-    key_word = kwargs.get('key_word')
-
+    data = request.GET.dict()
+    key_word = data.get('key_word')
     if key_word is None or key_word == '': # not key_word 是判空，也可以判None
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "none key word")
     
+    key_words = key_word.split()
     
+    results = []
+    needs = Need.objects.none()
+    for key_word in key_words:
+        needs = needs.union(Need.objects.filter(Q(title__icontains=key_word) | Q(description__icontains=key_word)
+            | Q(key_word__icontains=key_word)).all())
+        print(needs.count())
+
+    for need in needs:
+        need_info = {"need_id" : need.id, "title": need.title, "description": need.description, "start_time": need.start_time, "money": need.money, "key_word": need.key_word,
+        "end_time": need.end_time, "field": need.field, "state": need.state, "emergency": need.emergency, "predict": need.predict,"real": need.real}
+        results.append(need_info)
+    return success_api_response({"data": results})
 
 
-    pass
+    
 
 @response_wrapper
 # @jwt_auth()
@@ -198,7 +235,7 @@ def get_all_need(request: HttpRequest):
     
     data = []
     for need in needs:
-        need_info = {"need_id" : need.id, "title": need.title, "description": need.description, "start_time": need.start_time, "money": need.money, 
+        need_info = {"need_id" : need.id, "title": need.title, "description": need.description, "start_time": need.start_time, "money": need.money,  "key_word": need.key_word,
         "end_time": need.end_time, "field": need.field, "state": need.state, "emergency": need.emergency, "predict": need.predict,"real": need.real}
         data.append(need_info)
     return success_api_response({"data": data})
@@ -222,7 +259,7 @@ def get_finished_need(request: HttpRequest, uid: int):
     needs = user.enterprise_need.filter(state=1)
     data = []
     for need in needs:
-        need_info = {"need_id" : need.id, "title": need.title, "description": need.description, "start_time": need.start_time, "money": need.money,
+        need_info = {"need_id" : need.id, "title": need.title, "description": need.description, "start_time": need.start_time, "money": need.money, "key_word": need.key_word, 
         "end_time": need.end_time, "field": need.field, "state": need.state, "emergency": need.emergency, "predict": need.predict,"real": need.real}
         data.append(need_info)
     
@@ -270,7 +307,7 @@ def get_proceeding_need(request: HttpRequest, uid: int):
     needs = user.enterprise_need.filter(state=0)
     data = []
     for need in needs:
-        need_info = {"need_id" : need.id, "title": need.title, "description": need.description, "start_time": need.start_time, "money": need.money, 
+        need_info = {"need_id" : need.id, "title": need.title, "description": need.description, "start_time": need.start_time, "money": need.money, "key_word": need.key_word, 
         "end_time": need.end_time, "field": need.field, "state": need.state, "emergency": need.emergency, "predict": need.predict,"real": need.real}
         data.append(need_info)
     

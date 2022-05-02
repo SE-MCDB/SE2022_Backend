@@ -62,7 +62,7 @@ def get_all_order(request: HttpRequest, uid: int):
                 "enterprise_description": get_info(enterprise.enterprise_info.instruction),
             }}
         orders.append(order_info)
-
+    orders.sort(key=lambda x: x["state"])
     return success_api_response({"data": orders})
 
 
