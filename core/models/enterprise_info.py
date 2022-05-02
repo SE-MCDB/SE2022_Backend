@@ -6,6 +6,7 @@ from django.db import models
 
 
 class Enterprise_info(models.Model):
+    create_time = models.DateTimeField(auto_now=True, null=True)
     #企业名
     name = models.CharField(max_length=100, blank=True, null=True)
     #地址

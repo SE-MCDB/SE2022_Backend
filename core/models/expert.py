@@ -1,6 +1,7 @@
 from django.db import models
 
 class Expert(models.Model):
+    create_time = models.DateTimeField(auto_now=True, null=True)
     #知兔平台唯一的学者号
     scholarID = models.CharField(max_length=20, blank=True, null=True)
     #学者姓名
@@ -20,3 +21,7 @@ class Expert(models.Model):
     url = models.CharField(max_length=60, blank=True, null=True)
     #学者电话
     phone = models.CharField(max_length=15, blank=True, null=True)
+    #专利
+    patent = models.CharField(max_length=50, blank=True, null=True)
+    #论文
+    paper = models.CharField(max_length=50, blank=True, null=True)

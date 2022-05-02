@@ -70,7 +70,7 @@ def set_info(request:HttpRequest):
         enterprise_info.legal_person_ID = legal_person_ID
         enterprise_info.save()
         user.enterprise_info = enterprise_info
-        user.state = 5
+        user.state = 2
         user.save()
     elif user.state == 5:
         enterprise_info = user.enterprise_info
@@ -85,6 +85,7 @@ def set_info(request:HttpRequest):
         enterprise_info.business_license = business_license
         enterprise_info.legal_person_ID = legal_person_ID
         enterprise_info.save()
+        user.state = 2
         user.save()
 
     return success_api_response("enterprise register successfully")
@@ -125,7 +126,7 @@ def agree_enterprise(request:HttpRequest, id: int):
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "wrong user state")
     user.state = 5
     user.save()
-    return success_api_response({})
+    return success_api_response("success")
 
 
 """
@@ -143,7 +144,7 @@ def refuse_enterprise(request:HttpRequest, id: int):
     user.enterprise_info = None
     user.state = 0
     user.save()
-    return success_api_response({})
+    return success_api_response("success")
 
 
 """
@@ -174,7 +175,7 @@ def get_enterpriseInfo(request:HttpRequest, id:int):
 """
 获取全部申请企业的用户基本信息
 """
-@jwt_auth()
+#@jwt_auth()
 @response_wrapper
 @require_http_methods('GET')
 def get_all_enterprise(request:HttpRequest):
@@ -182,5 +183,8 @@ def get_all_enterprise(request:HttpRequest):
     data = list()
     for user in users:
         if user.is_superuser != 1:
-            data.append(getUserInfo(user))
+            dic = getUserInfo(user)
+            dic['profile'] = user.enterprise_info.instruction
+            dic['create_time'] = user.enterprise_info.create_time
+            data.append(dic)
     return success_api_response(data)

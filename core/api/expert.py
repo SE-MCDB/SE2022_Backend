@@ -38,7 +38,7 @@ def setinfo(request:HttpRequest):
     if not phone:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "need valid phone")
     user = User.objects.get(id=id)
-    if user.state == 4:
+    if user.state != 0:
         expert = user.expert_info
         expert.name = name
         expert.organization = organization
@@ -47,7 +47,10 @@ def setinfo(request:HttpRequest):
         expert.ID_pic = scholar_ID
         expert.self_profile = scholar_profile
         expert.phone = phone
+        expert.patent = patent
+        expert.paper = paper
         expert.save()
+        user.state = 1
         user.save()
     else:
         expert = Expert()
@@ -58,9 +61,11 @@ def setinfo(request:HttpRequest):
         expert.ID_pic = scholar_ID
         expert.self_profile = scholar_profile
         expert.phone = phone
+        expert.patent = patent
+        expert.paper = paper
         expert.save()
         user.expert_info = expert
-        user.state = 4
+        user.state = 1
         user.save()
     return success_api_response("correct")
 
@@ -87,7 +92,7 @@ def agree_expert(request:HttpRequest, id:int):
     expert_info.url = url
     expert_info.save()
     user.save()
-    return success_api_response({})
+    return success_api_response("success")
 
 
 """
@@ -98,14 +103,19 @@ def agree_expert(request:HttpRequest, id:int):
 @response_wrapper
 @require_http_methods('GET')
 def refuse_expert(request:HttpRequest, id:int):
+    print(0)
     user = User.objects.get(id=id)
+    print(1)
     if user.state != 1:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "invalid user state")
+    print(2)
     user.expert_info.delete()
     user.expert_info = None
+    print(3)
     user.state = 0
     user.save()
-    return success_api_response({})
+    print(4)
+    return success_api_response("success")
 
 
 """
@@ -123,10 +133,12 @@ def get_expertInfo(request:HttpRequest, id:int):
         "name": expert_info.name,
         "ID_num": expert_info.ID_num,
         "organization": expert_info.organization,
-        "field": expert_info.field,
+        "field": field_decode(expert_info.field),
         "self_profile": expert_info.self_profile,
         "phone": expert_info.phone,
-        "ID_pic": str(expert_info.ID_pic)
+        "ID_pic": str(expert_info.ID_pic),
+        "paper": expert_info.paper,
+        "patent": expert_info.patent
     })
 
 """
@@ -140,5 +152,31 @@ def get_all_expert(request:HttpRequest):
     data = list()
     for user in users:
         if user.is_superuser != 1:
-            data.append(getUserInfo(user))
+            dic = getUserInfo(user)
+            dic['profile'] = user.expert_info.self_profile
+            dic['create_time'] = user.expert_info.create_time
+            data.append(dic)
     return success_api_response(data)
+
+
+def field_decode(field):
+    ans = []
+    dic = {
+        0: '信息技术',
+        1: '装备制造',
+        2: '新材料',
+        3: '新能源',
+        4: '节能环保',
+        5: '生物医药',
+        6: '科学创意',
+        7: '检验检测',
+        8: '其他'
+    }
+    i = 0
+    while i < 9:
+        if field[i] == '1':
+            print(dic[i])
+            ans.append(dic[i])
+        i = i + 1
+    return ans
+
