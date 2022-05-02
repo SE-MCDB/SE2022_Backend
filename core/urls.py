@@ -29,7 +29,7 @@ from core.api.user import get_all_user_info,delete_user,change_user_info
 
 from core.api.platform.need_api import create_need, get_all_need, get_need_info, get_finished_need, \
   finish_need, get_proceeding_need, edit_need, delete_need, search_need, create_need_contact,\
-    get_need_contact, expert_recommend
+    get_need_contact, expert_recommend, get_saved_need, transform_need
 
 from core.api.platform.order_api import get_pending_order, get_cooperating_order, get_finished_order, finish_order, accept_order, \
   refuse_order, get_order_info, create_order, get_order_id, get_all_order
@@ -142,7 +142,9 @@ urlpatterns = [
     path('user/<int:uid>/need/<int:id>/finish', finish_need), # 企业结束需求
     path('user/<int:uid>/need/finished', get_finished_need), # 获取某个企业正在进行的需求
     path('user/<int:uid>/need/proceeding', get_proceeding_need), # 获取某个企业已结束的需求
+    path('user/<int:uid>/need/saved', get_saved_need), # 获取某个企业未发布的需求
     path('user/<int:uid>/need/<int:id>', delete_need), # 企业删除需求
+    path('user/<int:uid>/need/<int:id>/transform', transform_need), # 企业将未发布需求发布
     path('need/search', search_need),
     path('need/contact', create_need_contact),
     path('need/get_contact', get_need_contact),

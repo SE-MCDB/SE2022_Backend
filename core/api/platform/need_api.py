@@ -22,6 +22,31 @@ def get_info(s):
 
 @response_wrapper
 # @jwt_auth()
+@require_POST
+def transform_need(request: HttpRequest, uid: int, id: int):
+    try:
+        enterrpise: User = User.objects.get(id=uid)
+        need: Need = Need.objects.get(id=id)
+    except User.DoesNotExist:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-exist user")
+    except Need.DoesNotExist:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-exist need")
+    
+    if enterrpise.state != 5:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-enterprise user")
+    if need.enterprise != enterrpise:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "not the enterpreise's need")
+
+    if need.state != 2:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "not a saved need")
+    
+    need.state = 0
+    need.save()
+    return success_api_response({})
+
+
+@response_wrapper
+# @jwt_auth()
 @require_GET
 def expert_recommend(request: HttpRequest, id: int):
     try:
@@ -277,6 +302,26 @@ def get_finished_need(request: HttpRequest, uid: int):
     
     return success_api_response({"data": data})
 
+@response_wrapper
+# @jwt_auth()
+@require_GET
+def get_saved_need(request: HttpRequest, uid: int):
+    try:
+        user: User = User.objects.get(id=uid)
+    except User.DoesNotExist:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-exist user")
+
+    if user.state != 5:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-enterprise user")
+
+    needs = user.enterprise_need.filter(state=2)
+    data = []
+    for need in needs:
+        need_info = {"need_id" : need.id, "title": need.title, "description": get_info(need.description), "start_time": need.start_time, "money": need.money, "key_word": need.key_word, 
+        "end_time": need.end_time, "field": need.field, "state": need.state, "emergency": need.emergency, "predict": need.predict,"real": need.real}
+        data.append(need_info)
+    
+    return success_api_response({"data": data})
 
 @response_wrapper
 # @jwt_auth()
