@@ -1,5 +1,6 @@
 from django.views.decorators.http import require_http_methods, require_POST, require_GET
 from django.http import HttpRequest
+from pytz import timezone
 
 from core.api.utils import (failed_api_response, ErrorCode,
                     success_api_response, parse_data,
@@ -9,7 +10,8 @@ from core.models.enterprise_info import Enterprise_info
 from core.api.auth import jwt_auth
 from core.models.need import Need
 from core.models.order import Order
-
+from django.utils import timezone
+import pytz
 
 def get_info(s):
     max = 20
@@ -20,13 +22,39 @@ def get_info(s):
 
 def get_now_time():
     """获取当前时间"""
-    from django.utils import timezone
-    import pytz
     tz = pytz.timezone('Asia/Shanghai')
     # 返回时间格式的字符串
     now_time = timezone.now().astimezone(tz=tz)
     now_time_str = now_time.strftime("%Y-%m-%d %H:%M:%S")
     return now_time_str
+
+def format_time(time):
+    if time != None:
+        time = str(time)[0:19]
+    else:
+        print(2)
+    return time
+
+def get_diff_time(time):
+
+    if time == None:
+        return time
+    diff = str(timezone.now()-time)
+
+    if diff.__contains__("day"):
+        diff = int(diff[0:diff.find('day') - 1])
+        if diff <= 4:
+            return str(diff) + "天前"
+        else:
+            return str(time)[0:10]
+    elif diff.startswith('0:00'):
+        return str(int(diff[5:7])) + "秒前"
+    elif diff.startswith('0:'):
+        diff = diff[diff.find(':') + 1: diff.find(':')+ 3]
+        return str(int(diff)) + '分钟前'
+    else:
+        return diff[0:diff.find(':')] + "小时前"
+
 
 @response_wrapper
 # @jwt_auth()
@@ -52,7 +80,7 @@ def get_all_order(request: HttpRequest, uid: int):
         expert: User = order.user
         enterprise: User = order.enterprise
         need: Need = order.need
-        order_info = {"order_id": order.id, "create_time": order.create_time, "end_time": order.end_time,
+        order_info = {"order_id": order.id, "create_time": get_diff_time(order.create_time), "end_time": get_diff_time(order.end_time),
             "state": order.state, "expert_id":expert.id, "expert_name": expert.expert_info.name, "need":{
                 "need_id": need.id,
                 "title": need.title,
@@ -127,7 +155,7 @@ def get_finished_order(request: HttpRequest, uid: int):
         expert: User = order.user
         enterprise: User = order.enterprise
         need: Need = order.need
-        order_info = {"order_id": order.id, "create_time": order.create_time, "end_time": order.end_time,
+        order_info = {"order_id": order.id, "create_time": get_diff_time(order.create_time), "end_time": get_diff_time(order.end_time),
             "state": order.state, "expert_id":expert.id, "expert_name": expert.expert_info.name, "need":{
                 "need_id": need.id,
                 "title": need.title,
@@ -174,7 +202,7 @@ def get_pending_order(request: HttpRequest, uid: int):
         expert: User = order.user
         enterprise: User = order.enterprise
         need: Need = order.need
-        order_info = {"order_id": order.id, "create_time": order.create_time, "end_time": order.end_time,
+        order_info = {"order_id": order.id, "create_time": get_diff_time(order.create_time), "end_time": get_diff_time(order.end_time),
             "state": order.state, "expert_id":expert.id, "expert_name": expert.expert_info.name, "need":{
                 "need_id": need.id,
                 "title": need.title,
@@ -219,7 +247,7 @@ def get_cooperating_order(request: HttpRequest, uid: int):
         expert: User = order.user
         enterprise: User = order.enterprise
         need: Need = order.need
-        order_info = {"order_id": order.id, "create_time": order.create_time, "end_time": order.end_time,
+        order_info = {"order_id": order.id, "create_time": get_diff_time(order.create_time), "end_time": get_diff_time(order.end_time),
             "state": order.state, "expert_id":expert.id, "expert_name": expert.expert_info.name, "need":{
                 "need_id": need.id,
                 "title": need.title,
@@ -356,7 +384,7 @@ def get_order_info(request: HttpRequest, id: int):
     expert: User = order.user
     enterprise: User = order.enterprise
     need: Need = order.need
-    order_info = {"order_id": order.id, "create_time": order.create_time, "end_time": order.end_time,
+    order_info = {"order_id": order.id, "create_time": format_time(order.create_time), "end_time": format_time(order.end_time),
         "address": need.address, "description": need.description, "phone": enterprise.enterprise_info.phone,
         "predict": need.predict, "real": need.real,
         "state": order.state, "expert_id":expert.id, "expert_name": expert.expert_info.name, "need":{
