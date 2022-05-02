@@ -29,12 +29,17 @@ def expert_recommend(request: HttpRequest, id: int):
     except Need.DoesNotExist:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-exist need")
     
-    experts = User.objects.filter(state=4)
+    experts = User.objects.filter(state=4).all()
 
     lst = [] 
     for expert in experts:
         if random.randint(1,2) == 1:
-            lst.append({"scholar_id": expert.expert_info, "name": expert.expert_info.name, "phone": expert.expert_info.phone, "profile": expert.expert_info.self_profile,
+            lst.append({"expert_id": expert.id,"scholar_id": expert.expert_info.scholarID, "name": expert.expert_info.name, "phone": expert.expert_info.phone, "profile": expert.expert_info.self_profile,
+            "organization": expert.expert_info.organization , "paper": expert.expert_info.paper})
+            
+    if not lst:
+        expert = experts[random.randint(0, experts.count() - 1)]
+        lst.append({"expert_id": expert.id,"scholar_id": expert.expert_info.scholarID, "name": expert.expert_info.name, "phone": expert.expert_info.phone, "profile": expert.expert_info.self_profile,
             "organization": expert.expert_info.organization , "paper": expert.expert_info.paper})
             
     return success_api_response({"data" : lst})

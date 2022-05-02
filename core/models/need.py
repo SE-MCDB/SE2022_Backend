@@ -15,7 +15,8 @@ NEED_FIELD_CHOICES = (
 
 NEED_STATE = (
     (0, '进行中'),
-    (1, '已结束')
+    (1, '已结束'),
+    (2, '未发布')
 )
 
 EMERGENCY_CODE = (
