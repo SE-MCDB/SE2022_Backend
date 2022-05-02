@@ -13,6 +13,13 @@ from core.api.auth import jwt_auth
 from core.models.need import Need
 from core.models.needContact import NeedContact
 
+
+def get_info(s):
+    max = 60
+    if len(s) > max:
+        s = s[:max] + '...'
+    return s
+
 @response_wrapper
 # @jwt_auth()
 @require_GET
@@ -106,7 +113,7 @@ def search_need(request: HttpRequest, *args, **kwargs):
         print(needs.count())
 
     for need in needs:
-        need_info = {"need_id" : need.id, "title": need.title, "description": need.description, "start_time": need.start_time, "money": need.money, "key_word": need.key_word,
+        need_info = {"need_id" : need.id, "title": need.title, "description": get_info(need.description), "start_time": need.start_time, "money": need.money, "key_word": need.key_word,
         "end_time": need.end_time, "field": need.field, "state": need.state, "emergency": need.emergency, "predict": need.predict,"real": need.real}
         results.append(need_info)
     return success_api_response({"data": results})
@@ -235,7 +242,7 @@ def get_all_need(request: HttpRequest):
     
     data = []
     for need in needs:
-        need_info = {"need_id" : need.id, "title": need.title, "description": need.description, "start_time": need.start_time, "money": need.money,  "key_word": need.key_word,
+        need_info = {"need_id" : need.id, "title": need.title, "description": get_info(need.description), "start_time": need.start_time, "money": need.money,  "key_word": need.key_word,
         "end_time": need.end_time, "field": need.field, "state": need.state, "emergency": need.emergency, "predict": need.predict,"real": need.real}
         data.append(need_info)
     return success_api_response({"data": data})
@@ -259,7 +266,7 @@ def get_finished_need(request: HttpRequest, uid: int):
     needs = user.enterprise_need.filter(state=1)
     data = []
     for need in needs:
-        need_info = {"need_id" : need.id, "title": need.title, "description": need.description, "start_time": need.start_time, "money": need.money, "key_word": need.key_word, 
+        need_info = {"need_id" : need.id, "title": need.title, "description": get_info(need.description), "start_time": need.start_time, "money": need.money, "key_word": need.key_word, 
         "end_time": need.end_time, "field": need.field, "state": need.state, "emergency": need.emergency, "predict": need.predict,"real": need.real}
         data.append(need_info)
     
@@ -307,7 +314,7 @@ def get_proceeding_need(request: HttpRequest, uid: int):
     needs = user.enterprise_need.filter(state=0)
     data = []
     for need in needs:
-        need_info = {"need_id" : need.id, "title": need.title, "description": need.description, "start_time": need.start_time, "money": need.money, "key_word": need.key_word, 
+        need_info = {"need_id" : need.id, "title": need.title, "description": get_info(need.description), "start_time": need.start_time, "money": need.money, "key_word": need.key_word, 
         "end_time": need.end_time, "field": need.field, "state": need.state, "emergency": need.emergency, "predict": need.predict,"real": need.real}
         data.append(need_info)
     
