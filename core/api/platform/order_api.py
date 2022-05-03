@@ -1,7 +1,7 @@
 from django.views.decorators.http import require_http_methods, require_POST, require_GET
 from django.http import HttpRequest
 from pytz import timezone
-
+import functools
 from core.api.utils import (failed_api_response, ErrorCode,
                     success_api_response, parse_data,
                     wrapped_api, response_wrapper)
@@ -56,6 +56,22 @@ def get_diff_time(time):
         return diff[0:diff.find(':')] + "小时前"
 
 
+def cmp(x, y):
+    if x['state'] < y['state']:
+        return -1
+    elif x['state'] > y['state']:
+        return 1
+    else: 
+        if x['state'] == 0 or x['state'] == 1:
+            if x['create_time'] > y['create_time']:
+                return -1
+            else: return 1
+        else:
+            if x['end_time'] > y['end_time']:
+                return -1
+            else: return 1
+            
+
 @response_wrapper
 # @jwt_auth()
 @require_GET
@@ -80,7 +96,7 @@ def get_all_order(request: HttpRequest, uid: int):
         expert: User = order.user
         enterprise: User = order.enterprise
         need: Need = order.need
-        order_info = {"order_id": order.id, "create_time": get_diff_time(order.create_time), "end_time": get_diff_time(order.end_time),
+        order_info = {"order_id": order.id, "create_time": (order.create_time), "end_time": (order.end_time),
             "state": order.state, "expert_id":expert.id, "expert_name": expert.expert_info.name, "need":{
                 "need_id": need.id,
                 "title": need.title,
@@ -90,7 +106,12 @@ def get_all_order(request: HttpRequest, uid: int):
                 "enterprise_description": get_info(enterprise.enterprise_info.instruction),
             }}
         orders.append(order_info)
-    orders.sort(key=lambda x: x["state"])
+    orders.sort(key=functools.cmp_to_key(cmp))
+
+    for order in orders:
+        order["create_time"] = get_diff_time(order['create_time'])
+        order["end_time"] = get_diff_time(order['end_time'])
+    
     return success_api_response({"data": orders})
 
 
@@ -155,7 +176,7 @@ def get_finished_order(request: HttpRequest, uid: int):
         expert: User = order.user
         enterprise: User = order.enterprise
         need: Need = order.need
-        order_info = {"order_id": order.id, "create_time": get_diff_time(order.create_time), "end_time": get_diff_time(order.end_time),
+        order_info = {"order_id": order.id, "create_time": order.create_time, "end_time": order.end_time,
             "state": order.state, "expert_id":expert.id, "expert_name": expert.expert_info.name, "need":{
                 "need_id": need.id,
                 "title": need.title,
@@ -165,7 +186,12 @@ def get_finished_order(request: HttpRequest, uid: int):
                 "enterprise_description": get_info(enterprise.enterprise_info.instruction),
             }}
         orders.append(order_info)
-
+    
+    orders.sort(key=lambda x: (x['state'], x["end_time"]), reverse=True)
+    for order in orders:
+        order["create_time"] = get_diff_time(order['create_time'])
+        order["end_time"] = get_diff_time(order['end_time'])
+    
     return success_api_response({"data":orders})
 
 
@@ -202,7 +228,7 @@ def get_pending_order(request: HttpRequest, uid: int):
         expert: User = order.user
         enterprise: User = order.enterprise
         need: Need = order.need
-        order_info = {"order_id": order.id, "create_time": get_diff_time(order.create_time), "end_time": get_diff_time(order.end_time),
+        order_info = {"order_id": order.id, "create_time": order.create_time, "end_time": order.end_time,
             "state": order.state, "expert_id":expert.id, "expert_name": expert.expert_info.name, "need":{
                 "need_id": need.id,
                 "title": need.title,
@@ -212,6 +238,11 @@ def get_pending_order(request: HttpRequest, uid: int):
                 "enterprise_description": get_info(enterprise.enterprise_info.instruction),
             }}
         orders.append(order_info)
+
+    orders.sort(key=lambda x: x["create_time"], reverse=True)
+    for order in orders:
+        order["create_time"] = get_diff_time(order['create_time'])
+        order["end_time"] = get_diff_time(order['end_time'])
 
     return success_api_response({"data": orders})
 
@@ -247,7 +278,7 @@ def get_cooperating_order(request: HttpRequest, uid: int):
         expert: User = order.user
         enterprise: User = order.enterprise
         need: Need = order.need
-        order_info = {"order_id": order.id, "create_time": get_diff_time(order.create_time), "end_time": get_diff_time(order.end_time),
+        order_info = {"order_id": order.id, "create_time": order.create_time, "end_time": order.end_time,
             "state": order.state, "expert_id":expert.id, "expert_name": expert.expert_info.name, "need":{
                 "need_id": need.id,
                 "title": need.title,
@@ -257,6 +288,10 @@ def get_cooperating_order(request: HttpRequest, uid: int):
                 "enterprise_description": get_info(enterprise.enterprise_info.instruction),
             }}
         orders.append(order_info)
+    orders.sort(key=lambda x: x["create_time"], reverse=True)
+    for order in orders:
+        order["create_time"] = get_diff_time(order['create_time'])
+        order["end_time"] = get_diff_time(order['end_time'])
 
     return success_api_response({"data": orders})
 

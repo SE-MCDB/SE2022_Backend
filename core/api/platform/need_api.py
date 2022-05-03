@@ -275,6 +275,7 @@ def get_all_need(request: HttpRequest):
         need_info = {"need_id" : need.id, "title": need.title, "description": get_info(need.description), "start_time": need.start_time, "money": need.money,  "key_word": need.key_word,
         "end_time": need.end_time, "field": need.field, "state": need.state, "emergency": need.emergency, "predict": need.predict,"real": need.real}
         data.append(need_info)
+    data.sort(key=lambda x: x["end_time"])
     return success_api_response({"data": data})
 
 
@@ -299,7 +300,7 @@ def get_finished_need(request: HttpRequest, uid: int):
         need_info = {"need_id" : need.id, "title": need.title, "description": get_info(need.description), "start_time": need.start_time, "money": need.money, "key_word": need.key_word, 
         "end_time": need.end_time, "field": need.field, "state": need.state, "emergency": need.emergency, "predict": need.predict,"real": need.real}
         data.append(need_info)
-    
+    data.sort(key=lambda x: x["end_time"])
     return success_api_response({"data": data})
 
 @response_wrapper
@@ -320,7 +321,7 @@ def get_saved_need(request: HttpRequest, uid: int):
         need_info = {"need_id" : need.id, "title": need.title, "description": get_info(need.description), "start_time": need.start_time, "money": need.money, "key_word": need.key_word, 
         "end_time": need.end_time, "field": need.field, "state": need.state, "emergency": need.emergency, "predict": need.predict,"real": need.real}
         data.append(need_info)
-    
+    data.sort(key=lambda x: x["end_time"])
     return success_api_response({"data": data})
 
 @response_wrapper
@@ -367,7 +368,7 @@ def get_proceeding_need(request: HttpRequest, uid: int):
         need_info = {"need_id" : need.id, "title": need.title, "description": get_info(need.description), "start_time": need.start_time, "money": need.money, "key_word": need.key_word, 
         "end_time": need.end_time, "field": need.field, "state": need.state, "emergency": need.emergency, "predict": need.predict,"real": need.real}
         data.append(need_info)
-    
+    data.sort(key=lambda x: x["end_time"])
     return success_api_response({"data": data})
 
 @response_wrapper
