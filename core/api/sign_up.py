@@ -1,10 +1,15 @@
 """User Management APIs
 """
-
+import requests
+import hashlib
+import os
+import random
 from django.http import HttpRequest
 from django.views.decorators.http import require_POST, require_http_methods
+from backend.settings import STATICFILES_DIRS, BASE_DIR
 
 from core.api.auth import jwt_auth
+from core.api.comment import get_now_time
 from core.api.utils import (ErrorCode, failed_api_response, parse_data,
                             response_wrapper, success_api_response, wrapped_api)
 from core.api.send_email import make_confirm_string, send_email, send_forget
@@ -98,7 +103,15 @@ def create_user(request: HttpRequest):
     return success_api_response({'msg': 'Check code is sent'})
 
 
-
+def get_avatar(mail):
+    size = 256
+    styles = ['identicon']
+    m1 = hashlib.md5("{}".format(mail.lower()).encode("utf-8")).hexdigest()
+    url = 'https://sdn.geekzu.org/avatar/{}?s={}&d={}'.format(m1, size, random.choice(styles))
+    res = requests.get(url)
+    return res
+    # with open('image.jpg', 'wb') as f:
+    #     f.write(res.content)
 
 @response_wrapper
 @require_http_methods('PUT')
@@ -137,6 +150,15 @@ def confirm_create(request: HttpRequest):
                                    "Confirm code is wrong")
     new_user = User.objects.create_user(
         username=username, password=password, email=email, is_confirmed=True)
+    
+    try:
+        avatar = get_avatar(email)
+        print(BASE_DIR)
+        with open(BASE_DIR + "/static/" + "images/202205/02/icons/"  + username + ".jpg", 'wb') as f:
+            f.write(avatar.content)
+        new_user.icon = 'images/202205/02/icons/' + username + ".jpg"
+    except Exception:
+        print("error")
     new_user.save()
     data = {"id": new_user.id}
     return success_api_response(data)
