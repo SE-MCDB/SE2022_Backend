@@ -98,6 +98,8 @@ def create_user(request: HttpRequest):
     return success_api_response({'msg': 'Check code is sent'})
 
 
+
+
 @response_wrapper
 @require_http_methods('PUT')
 def confirm_create(request: HttpRequest):
@@ -154,7 +156,7 @@ def forget_password(request: HttpRequest):
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "Invalid request args.")
     email = data.get("email")
     if User.objects.filter(email=email).exists():
-        user = User.objects.get(email=email)
+        user = User.objects.filter(email=email)[0]
         code = make_confirm_string(email)
         send_forget(email, str(code))
     else:
