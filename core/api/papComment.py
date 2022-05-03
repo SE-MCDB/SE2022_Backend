@@ -33,7 +33,7 @@ def get_papComment(request: HttpRequest, id: int):
         "uid": 4,
         "tid": 1,#论文解读id
         "username": "frank909",
-        "userpic": "http://122.9.14.73/api/images/202104/27/icons/16195110527980.png",
+        "userpic": "http://122.9.14.73:8000/api/images/202104/27/icons/16195110527980.png",
         "children":None
     }]
     },{
