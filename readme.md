@@ -1,41 +1,30 @@
 <h1 align="center">SE2022 Backend</h1>
 
-<div align="center">waiting badge</div>
+## Description
+
+This is a backend project based on [`django2.2`](https://docs.djangoproject.com/en/2.2/).
 
 ## Usage
 
-建议使用 `python3.7`
+1. Install python3.7 or later
 
-### Local
+2. Install dependencies
 
 ```
-// install dependencies
 $ pip install -r requirements.txt
-
-// run server 
-$ python manage.py runserver 8000
 ```
 
-- 运行于
-  - [`http://127.0.0.1:8000/`](http://127.0.0.1:8000/)
-
-### Server
+3. Run server 
 
 ```
-// install dependencies
-$ pip install -r requirements.txt
-
-// run server
-$ python manage.py runserver 0.0.0.0:8000
+$ python manage.py runserver 0:8000
 ```
 
-- 运行于 
-  - [`http://0.0.0.0:8000/`](http://0.0.0.0:8000/)
-  - [`http://122.9.14.73:8000`](http://122.9.14.73:8000)
+### Error
 
-### 报错
-
-若报错
+  
+<details><summary>if error</summary>
+   
 ```
 File "/home/admin/.local/lib/python3.7/site-packages/django/db/backends/mysql/operations.py", line 146, in last_executed_query
     query = query.decode(errors='replace')
@@ -48,9 +37,9 @@ AttributeError: 'str' object has no attribute 'decode'
 147         return query
 ```
 
-
-
-## 账户
+</details>
+    
+## Account
 
 目前设置已有的管理员账户为：
 
@@ -64,6 +53,10 @@ AttributeError: 'str' object has no attribute 'decode'
 ```
 python manage.py createsuperuser
 ```
+
+## License
+
+[MIT](./LICENSE)
 
 
 
