@@ -38,7 +38,11 @@ AttributeError: 'str' object has no attribute 'decode'
 ```
 
 </details>
-    
+
+## Server
+
+[`http://122.9.14.73:8000/`](http://122.9.14.73:8000/)
+
 ## Account
 
 目前设置已有的管理员账户为：
