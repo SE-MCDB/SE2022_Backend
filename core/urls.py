@@ -32,7 +32,7 @@ from core.api.platform.need_api import create_need, get_all_need, get_need_info,
     get_need_contact, expert_recommend, get_saved_need, transform_need
 
 from core.api.platform.order_api import get_pending_order, get_cooperating_order, get_finished_order, finish_order, accept_order, \
-  refuse_order, get_order_info, create_order, get_order_id, get_all_order
+  refuse_order, get_order_info, create_order, get_order_id, get_all_order, abandon_order
 
 from core.api.enterprise import set_info, agree_enterprise, refuse_enterprise, get_enterpriseInfo, get_all_enterprise
 
@@ -145,9 +145,9 @@ urlpatterns = [
     path('user/<int:uid>/need/saved', get_saved_need), # 获取某个企业未发布的需求
     path('user/<int:uid>/need/<int:id>', delete_need), # 企业删除需求
     path('user/<int:uid>/need/<int:id>/transform', transform_need), # 企业将未发布需求发布
-    path('need/search', search_need),
-    path('need/contact', create_need_contact),
-    path('need/get_contact', get_need_contact),
+    path('need/search', search_need),               # 搜索需求
+    path('need/contact', create_need_contact),      # 创建专家与企业的有关需求信息
+    path('need/get_contact', get_need_contact),     # 根据专家与企业获取最近需求
 
     path('need/<int:id>/expert_recommend', expert_recommend), # 基于需求的专家推荐
 
@@ -157,11 +157,12 @@ urlpatterns = [
     path('user/<int:uid>/order/<int:id>/refuse', refuse_order), # 专家拒绝订单
     path('user/<int:uid>/order/<int:id>/accept', accept_order), # 专家接受订单
     path('user/<int:uid>/order/<int:id>/finish', finish_order), # 企业结束订单
+    path('user/<int:uid>/order/<int:id>/abandon', abandon_order), # 企业放弃在合作的订单
     path('user/<int:uid>/order/finished', get_finished_order), # 获取某个用户（企业或专家）已完成订单（拒绝和结束）
     path('user/<int:uid>/order/pending', get_pending_order), # 获取某个用户（企业或专家）新请求的订单
     path('user/<int:uid>/order/cooperating', get_cooperating_order), # 获取某个用户（企业或专家）正在合作的订单
-    path('user/<int:uid>/order/all', get_all_order),
-    path('order/get', get_order_id),
+    path('user/<int:uid>/order/all', get_all_order),  # 获取全部订单，按state排序
+    path('order/get', get_order_id),          # 根据专家、企业、需求获取对于订单 
 
     #enterprise
     path('enterprise/setinfo', set_info),

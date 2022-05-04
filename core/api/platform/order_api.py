@@ -466,3 +466,31 @@ def create_order(request: HttpRequest):
     order: Order = Order(user_id=expert_id, enterprise_id=enterprise_id, need_id=need_id, state=0)
     order.save()
     return success_api_response({})
+
+
+@response_wrapper
+# @jwt_auth()
+@require_POST
+def abandon_order(request: HttpRequest, uid: int, id: int):
+    try:
+        enterprise: User = User.objects.get(id=uid)
+        order: Order = Order.objects.get(id=id)
+    except User.DoesNotExist:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-exist enterprise")
+    except Order.DoesNotExist:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-exist order")
+    
+    if order.enterprise != enterprise:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "not the enterprise's order")
+
+    if enterprise.state != 5:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-enterprise user")
+
+    if order.state == 1 or order.state == 0:
+        if order.state == 1:
+            need = order.need
+            need.real -= 1
+        order.delete()
+    else:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "The order is not in cooperation")
+    return success_api_response({})

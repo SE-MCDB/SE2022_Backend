@@ -82,7 +82,7 @@ def expert_recommend(request: HttpRequest, id: int):
 @response_wrapper
 # @jwt_auth()
 @require_GET
-def get_need_contact(request: HttpRequest, *args, **kwargs):
+def get_need_contact(request: HttpRequest):
     data = request.GET.dict()
     enterprise_id = data.get('enterprise_id')
     expert_id = data.get("expert_id")
@@ -147,7 +147,7 @@ def search_need(request: HttpRequest, *args, **kwargs):
     needs = Need.objects.none()
     for key_word in key_words:
         needs = needs.union(Need.objects.filter(Q(title__icontains=key_word) | Q(description__icontains=key_word)
-            | Q(key_word__icontains=key_word)).all())
+            | Q(key_word__icontains=key_word)).all().filter(state=0))
         print(needs.count())
 
     for need in needs:
@@ -281,8 +281,8 @@ def get_all_need(request: HttpRequest):
     
     need_finish = Need.objects.filter(Q(end_time__lt=time) & Q(state=0))
     need_finish.update(state=1)
-    for need in need_finish:
-        need.need_contact.all().delete()
+    # for need in need_finish:
+    #     need.need_contact.all().delete()
 
     data = []
     for need in needs:
