@@ -282,7 +282,7 @@ def get_all_need(request: HttpRequest):
     need_finish = Need.objects.filter(end_time__lt=time)
     need_finish.update(state=1)
     for need in need_finish:
-        need.NeedContact_set.delete()
+        need.need_contact.all().delete()
 
     data = []
     for need in needs:
