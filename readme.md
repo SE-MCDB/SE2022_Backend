@@ -4,7 +4,7 @@
 
 This is a backend project based on [`django2.2`](https://docs.djangoproject.com/en/2.2/).
 
-## Usage
+## Quickstart
 
 1. Install python3.7 or later
 
