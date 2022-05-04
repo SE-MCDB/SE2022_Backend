@@ -279,7 +279,7 @@ def get_all_need(request: HttpRequest):
     time=get_now_time()
     needs = Need.objects.filter(Q(state=0) & Q(end_time__gt=time))
     
-    need_finish = Need.objects.filter(end_time__lt=time)
+    need_finish = Need.objects.filter(Q(end_time__lt=time) & Q(state=0))
     need_finish.update(state=1)
     for need in need_finish:
         need.need_contact.all().delete()
