@@ -290,7 +290,7 @@ def transmitInterpretation(request: HttpRequest, id: int):
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_http_methods('GET')
 def recommendInterpretation(request: HttpRequest):
     NUM_RECOMMEND = 10
@@ -306,7 +306,7 @@ def recommendInterpretation(request: HttpRequest):
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_http_methods('GET')
 def randomWalkInterpretation(request: HttpRequest):
     NUM_SELECT = 10
