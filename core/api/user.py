@@ -136,7 +136,7 @@ def change_organization(request: HttpRequest):
 @jwt_auth()
 @require_http_methods('GET')
 def get_all_user_info(request: HttpRequest):
-    models = User.objects.all()
+    models = User.objects.all().order_by('-id')
     data = list()
     for user in models:
         if user.is_superuser != 1:
