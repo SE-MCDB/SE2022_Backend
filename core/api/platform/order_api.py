@@ -11,6 +11,7 @@ from core.api.auth import jwt_auth
 from core.models.need import Need
 from core.models.order import Order
 from django.utils import timezone
+from core.api.platform.need_api import finish_need
 import pytz
 
 def get_info(s):
@@ -306,7 +307,6 @@ ok  path('user/<int:uid>/order/pending', get_pending_order), # 获取某个用�
 ok  path('user/<int:uid>/order/cooperating', get_cooperating_order), # 获取某个用户（企业或专家）正在合作的订单
 """
 
-from .need_api import finish_need
 
 @response_wrapper
 # @jwt_auth()
@@ -330,7 +330,7 @@ def finish_order(request: HttpRequest, uid: int, id: int):
         if order.state == 1:
             need = order.need
             if need.need_order.filter(state=3).count() + 1 >= need.predict:
-                finish_need(request, uid, id)
+                finish_need(request, uid, need.id)
         order.state = 3
         order.end_time = get_now_time()
         order.save()

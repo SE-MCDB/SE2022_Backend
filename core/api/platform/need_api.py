@@ -2,7 +2,6 @@ import random
 from django.views.decorators.http import require_http_methods, require_POST, require_GET
 from django.http import HttpRequest
 from django.db.models import Q
-
 from core.api.utils import (failed_api_response, ErrorCode,
                     success_api_response, parse_data,
                     wrapped_api, response_wrapper)
@@ -12,7 +11,16 @@ from core.models.expert import Expert
 from core.api.auth import jwt_auth
 from core.models.need import Need
 from core.models.needContact import NeedContact
+import pytz
+from django.utils import timezone
 
+def get_now_time():
+    """获取当前时间"""
+    tz = pytz.timezone('Asia/Shanghai')
+    # 返回时间格式的字符串
+    now_time = timezone.now().astimezone(tz=tz)
+    now_time_str = now_time.strftime("%Y-%m-%d %H:%M:%S")
+    return now_time_str[0:10]
 
 def get_info(s):
     max = 60
@@ -268,8 +276,14 @@ def get_all_need(request: HttpRequest):
     """
     get all need whose state == 0
     """
-    needs = Need.objects.filter(state=0)
+    time=get_now_time()
+    needs = Need.objects.filter(Q(state=0) & Q(end_time__gt=time))
     
+    need_finish = Need.objects.filter(end_time__lt=time)
+    need_finish.update(state=1)
+    for need in need_finish:
+        need.NeedContact_set.delete()
+
     data = []
     for need in needs:
         need_info = {"need_id" : need.id, "title": need.title, "description": get_info(need.description), "start_time": need.start_time, "money": need.money,  "key_word": need.key_word,
@@ -346,7 +360,7 @@ def finish_need(request: HttpRequest, uid: int, id: int):
 
     Need.objects.filter(id=id).update(state=1)
     
-    need.NeedContact_set.delete()
+    need.need_contact.all().delete()
 
     return success_api_response({})
 
