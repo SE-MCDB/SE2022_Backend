@@ -6,6 +6,10 @@ from .utils import (failed_api_response, ErrorCode,
                     wrapped_api, response_wrapper)
 from core.api.auth import jwt_auth, getUserInfo
 from core.models.user import User
+import json
+import requests
+import os
+import demjson
 
 
 @response_wrapper
@@ -175,4 +179,73 @@ def field_decode(field):
             ans.append(dic[i])
         i = i + 1
     return ans
+
+
+@response_wrapper
+@require_http_methods('GET')
+def get_json(request:HttpRequest):
+    f = open("computer_paper.txt",'rb')
+    num = 0
+    while num < 500:
+        line = f.readline()[:-1].decode('utf-8')
+        num += 1
+        dic = demjson.decode(line)
+        add_expert(dic)
+    f.close()
+    return success_api_response("success")
+
+
+
+name_num = 0
+password_num = 0
+email_num = 0
+def add_expert(dic):
+    global name_num
+    global  password_num
+    global email_num
+    #dic = {'id': '3733221342', 'title': 'Nonlinear Modeling Method Based on RBF Neural Network Trained by AFSA with Adaptive Adjustment', 'keywords': ['Radial basis function', 'Neural network', 'Artificial fish swarm algorithm', 'Nonlinear function']}
+    id = dic['id']
+    url = "https://zhitulist.com/zhitu-data-service/search/paper?id="+id
+    response = requests.get(url)
+    dic = json.loads(response.text)["data"]
+    op = True
+    if dic is not None and dic.__contains__("scholars"):
+        scholars = dic["scholars"]
+        for scholar in scholars:
+            scholarId = scholar['scholarId']
+            users = User.objects.all()
+            for user in users:
+                if user.expert_info is not None and int(scholarId) == int(user.expert_info.scholarID):
+                    op = False
+                    break
+            if op is False:
+                op = True
+                continue
+            name_num += 1
+            password_num += 1
+            email_num += 1
+
+            new_user = User()
+            new_user.username = "expert"+str(name_num)
+            new_user.password = "200145"+str(password_num)
+            new_user.email = "expert"+str(email_num)+"@163.com"
+            new_user.is_confirmed = True
+
+            expert_info = Expert()
+            expert_info.scholarID = scholarId
+            url1 = "https://zhitulist.com/zhitu-data-service/search/scholar?id="+str(scholarId)
+            response = requests.get(url1)
+            dic1 = json.loads(response.text)["data"]
+            if dic1 is not None and dic1.__contains__("scholarName"):
+                expert_info.name = dic1["scholarName"]
+            if dic1 is not None and dic1.__contains__("org"):
+                expert_info.organization = dic1["org"]
+            if dic1 is not None and dic1.__contains__("url"):
+                expert_info.url = dic1["url"]
+            expert_info.save()
+            new_user.save()
+            new_user.state = 5
+            new_user.expert_info = expert_info
+            new_user.save()
+
 

@@ -1,4 +1,7 @@
 from django.db import models
+from .papers import Papers
+from .patents import Patents
+from .projects import Projects
 
 class Expert(models.Model):
     create_time = models.DateTimeField(auto_now=True, null=True)
@@ -25,3 +28,9 @@ class Expert(models.Model):
     patent = models.CharField(max_length=50, blank=True, null=True)
     #论文
     paper = models.CharField(max_length=50, blank=True, null=True)
+    #所有论文
+    papers = models.ManyToManyField("Papers", related_name="expert_papers")
+    #所有专利
+    patents = models.ManyToManyField("Patents", related_name="expert_patents")
+    #所有项目
+    projects = models.ManyToManyField("Projects", related_name="expert_projects")

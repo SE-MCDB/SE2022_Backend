@@ -36,7 +36,7 @@ from core.api.platform.order_api import get_pending_order, get_cooperating_order
 
 from core.api.enterprise import set_info, agree_enterprise, refuse_enterprise, get_enterpriseInfo, get_all_enterprise
 
-from core.api.expert import setinfo, agree_expert, refuse_expert, get_expertInfo, get_all_expert
+from core.api.expert import setinfo, agree_expert, refuse_expert, get_expertInfo, get_all_expert, get_json
 
 urlpatterns = [
 
@@ -177,6 +177,7 @@ urlpatterns = [
     path('expert/agree/<int:id>', agree_expert),
     path('expert/refuse/<int:id>', refuse_expert),
     path('expert/getall', get_all_expert),
+    path('expert/experiment', get_json),
 
 
 ]
