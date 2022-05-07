@@ -16,7 +16,8 @@ class Expert(models.Model):
     #擅长领域
     field = models.CharField(max_length=20, blank=True, null=True)
     #自我介绍
-    self_profile = models.CharField(max_length=200, blank=True, null=True)
+    #self_profile = models.CharField(max_length=200, blank=True, null=True)
+    self_profile = models.TextField(blank=True, null=True)
     #身份证照片
     ID_pic = models.ImageField(upload_to="images/%Y%m/%d/icons",
                                          default='images/default_user_icon.jpg')
@@ -34,3 +35,6 @@ class Expert(models.Model):
     patents = models.ManyToManyField(Patents, related_name="expert_patents")
     #所有项目
     projects = models.ManyToManyField(Projects, related_name="expert_projects")
+    #称号
+    title = models.CharField(max_length=30, blank=True, null=True)
+

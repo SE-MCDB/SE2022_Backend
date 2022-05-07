@@ -12,6 +12,10 @@ from django.contrib import admin
 from core.models.enterprise_info import Enterprise_info
 from core.models.need import Need
 from core.models.order import Order
+from core.models.papers import Papers
+from core.models.projects import Projects
+from core.models.patents import Patents
+from core.models.expert import Expert
 from django.contrib.auth.models import Group
 
 # Register your models here.
@@ -21,6 +25,10 @@ admin.site.register([AdminUser])
 admin.site.register([Enterprise_info])
 admin.site.register([Need])
 admin.site.register([Order])
+admin.site.register([Papers])
+admin.site.register([Projects])
+admin.site.register([Patents])
+admin.site.register([Expert])
 #admin.site.register([Notification,PapModel,Notation,Interpretation,Updating])
 
 #super user

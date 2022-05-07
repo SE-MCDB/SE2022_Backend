@@ -10,6 +10,9 @@ import json
 import requests
 import os
 import demjson
+from core.models.papers import Papers
+from core.models.projects import Projects
+from core.models.patents import Patents
 
 
 @response_wrapper
@@ -186,7 +189,7 @@ def field_decode(field):
 def get_json(request:HttpRequest):
     f = open("computer_paper.txt",'rb')
     num = 0
-    while num < 500:
+    while num < 50:
         line = f.readline()[:-1].decode('utf-8')
         num += 1
         dic = demjson.decode(line)
@@ -225,11 +228,16 @@ def add_expert(dic):
             password_num += 1
             email_num += 1
 
-            new_user = User()
-            new_user.username = "expert"+str(name_num)
-            new_user.password = "200145"+str(password_num)
-            new_user.email = "expert"+str(email_num)+"@163.com"
-            new_user.is_confirmed = True
+            #new_user = User()
+            #new_user.username = "expert"+str(name_num)
+            #new_user.password = "200145"+str(password_num)
+            #new_user.email = "expert"+str(email_num)+"@163.com"
+            #new_user.is_confirmed = True
+
+            new_user = User.objects.create_user(
+                username="expert" + str(name_num), password="123456", email=("expert" + str(email_num) + "@163.com"),
+                is_confirmed=True)
+            new_user.save()
 
             expert_info = Expert()
             expert_info.scholarID = scholarId
@@ -242,10 +250,119 @@ def add_expert(dic):
                 expert_info.organization = dic1["org"]
             if dic1 is not None and dic1.__contains__("url"):
                 expert_info.url = dic1["url"]
+            if dic1 is not None and dic1.__contains__("info"):
+                expert_info.self_profile = dic1["info"]
+            if dic1 is not None and dic1.__contains__("phone"):
+                expert_info.phone = dic1["phone"]
+            if dic1 is not None and dic1.__contains__("title"):
+                expert_info.title = dic1["title"]
             expert_info.save()
             new_user.save()
             new_user.state = 5
             new_user.expert_info = expert_info
             new_user.save()
 
+@response_wrapper
+@require_http_methods('GET')
+def add_papers(request:HttpRequest):
+    experts = Expert.objects.all()
+    for expert in experts:
+        if expert.scholarID is not None:
+            url = "https://zhitulist.com/zhitu-data-service/search/scholar?id="+expert.scholarID
+            response = requests.get(url)
+            dic = json.loads(response.text)["data"]
+            papers = dic["papers"]["content"]
+            for paper in papers:
+                op = True
+                ps = Papers.objects.all()
+                for p in ps:
+                    if p.title == paper['title']:
+                        expert.papers.add(p)
+                        expert.save()
+                        op = False
+                        break
 
+                if op:
+                    p = Papers()
+                    p.title = paper["title"]
+                    p.cites = paper["cites"]
+                    p.isEI = paper['isEI']
+                    p.isSCI = paper['isSCI']
+                    p.pyear = paper['pyear']
+                    p.url = paper['url']
+                    p.save()
+                    expert.papers.add(p)
+                    expert.save()
+
+
+    return success_api_response("success")
+
+
+@response_wrapper
+@require_http_methods('GET')
+def add_patents(request:HttpRequest):
+    experts = Expert.objects.all()
+    for expert in experts:
+        if expert.scholarID is not None:
+            url = "https://zhitulist.com/zhitu-data-service/search/scholar?id=" + expert.scholarID
+            response = requests.get(url)
+            dic = json.loads(response.text)["data"]
+            patents = dic["patents"]["content"]
+            if patents != None:
+                for patent in patents:
+                    op = True
+                    ps = Patents.objects.all()
+                    for p in ps:
+                        if p.title == patent['title']:
+                            expert.patents.add(p)
+                            expert.save()
+                            op = False
+                            break
+
+                    if op:
+                        p = Patents()
+                        p.title = patent["title"]
+                        p.pyear = patent['pyear']
+                        p.url = patent['url']
+                        p.save()
+                        expert.patents.add(p)
+                        expert.save()
+
+    return success_api_response("success")
+
+
+@response_wrapper
+@require_http_methods('GET')
+def add_projects(request:HttpRequest):
+    experts = Expert.objects.all()
+    for expert in experts:
+        if expert.scholarID is not None:
+            url = "https://zhitulist.com/zhitu-data-service/search/scholar?id=" + expert.scholarID
+            response = requests.get(url)
+            dic = json.loads(response.text)["data"]
+            projects = dic["projects"]["content"]
+            if projects != None:
+                for project in projects:
+                    op = True
+                    ps = Projects.objects.all()
+                    for p in ps:
+                        if p.title == project['title']:
+                            expert.projects.add(p)
+                            expert.save()
+                            op = False
+                            break
+
+                    if op:
+                        p = Projects()
+                        p.title = project["title"]
+                        p.startYear = project['startYear']
+                        p.endYear = project['endYear']
+                        p.typeFirst = project['typeFirst']
+                        p.typeSecond = project['typeSecond']
+                        p.typeThird = project['typeThird']
+                        p.url = project['url']
+                        p.save()
+                        expert.projects.add(p)
+                        expert.save()
+
+    return success_api_response("success")
