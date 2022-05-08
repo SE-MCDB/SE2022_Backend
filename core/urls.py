@@ -36,7 +36,7 @@ from core.api.platform.order_api import get_pending_order, get_cooperating_order
 
 from core.api.enterprise import set_info, agree_enterprise, refuse_enterprise, get_enterpriseInfo, get_all_enterprise
 
-from core.api.expert import setinfo, agree_expert, refuse_expert, get_expertInfo, get_all_expert, get_json, add_papers, add_patents, add_projects, test
+from core.api.expert import setinfo, agree_expert, refuse_expert, get_expertInfo, get_all_expert, get_json, add_papers, add_patents, add_projects
 
 urlpatterns = [
 
@@ -183,7 +183,7 @@ urlpatterns = [
     path('expert/experiment1', add_papers),
     path('expert/experiment2', add_patents),
     path('expert/experiment3', add_projects),
-    path('expert/test', test)
+    # path('expert/test', test)
 
 
 ]
