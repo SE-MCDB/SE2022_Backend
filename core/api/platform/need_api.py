@@ -272,6 +272,24 @@ def create_need(request: HttpRequest):
 @response_wrapper
 # @jwt_auth()
 @require_GET
+def get_needs_info(request:HttpRequest):
+    """
+    get all need
+    """
+    needs = Need.objects.all()
+    data = []
+    for need in needs:
+        need_info = {"need_id": need.id, "title": need.title, "description": get_info(need.description),
+                     "start_time": str(need.start_time)[0:10], "money": need.money, "key_word": need.key_word,
+                     "end_time": str(need.end_time)[0:10], "field": need.field, "state": need.state,
+                     "emergency": need.emergency, "predict": need.predict, "real": need.real}
+        data.append(need_info)
+    return success_api_response({"data":data})
+
+
+@response_wrapper
+# @jwt_auth()
+@require_GET
 def get_all_need(request: HttpRequest):
     """
     get all need whose state == 0

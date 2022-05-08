@@ -29,14 +29,14 @@ from core.api.user import get_all_user_info,delete_user,change_user_info
 
 from core.api.platform.need_api import create_need, get_all_need, get_need_info, get_finished_need, \
   finish_need, get_proceeding_need, edit_need, delete_need, search_need, create_need_contact,\
-    get_need_contact, expert_recommend, get_saved_need, transform_need
+    get_need_contact, expert_recommend, get_saved_need, transform_need, get_needs_info
 
 from core.api.platform.order_api import get_pending_order, get_cooperating_order, get_finished_order, finish_order, accept_order, \
-  refuse_order, get_order_info, create_order, get_order_id, get_all_order, abandon_order
+  refuse_order, get_order_info, create_order, get_order_id, get_all_order, abandon_order, get_order_byID
 
 from core.api.enterprise import set_info, agree_enterprise, refuse_enterprise, get_enterpriseInfo, get_all_enterprise
 
-from core.api.expert import setinfo, agree_expert, refuse_expert, get_expertInfo, get_all_expert, get_json, add_papers, add_patents, add_projects
+from core.api.expert import setinfo, agree_expert, refuse_expert, get_expertInfo, get_all_expert, get_json, add_papers, add_patents, add_projects, test
 
 urlpatterns = [
 
@@ -150,6 +150,7 @@ urlpatterns = [
     path('need/get_contact', get_need_contact),     # 根据专家与企业获取最近需求
 
     path('need/<int:id>/expert_recommend', expert_recommend), # 基于需求的专家推荐
+    path('need/getall', get_needs_info),    #管理端获得全部需求
 
     ## order
     path('order', create_order),  # 企业创建新订单
@@ -162,7 +163,8 @@ urlpatterns = [
     path('user/<int:uid>/order/pending', get_pending_order), # 获取某个用户（企业或专家）新请求的订单
     path('user/<int:uid>/order/cooperating', get_cooperating_order), # 获取某个用户（企业或专家）正在合作的订单
     path('user/<int:uid>/order/all', get_all_order),  # 获取全部订单，按state排序
-    path('order/get', get_order_id),          # 根据专家、企业、需求获取对于订单 
+    path('order/get', get_order_id),          # 根据专家、企业、需求获取对于订单
+    path('order/byneed/<int:id>', get_order_byID),
 
     #enterprise
     path('enterprise/setinfo', set_info),
@@ -180,7 +182,8 @@ urlpatterns = [
     path('expert/experiment', get_json),
     path('expert/experiment1', add_papers),
     path('expert/experiment2', add_patents),
-    path('expert/experiment3', add_projects)
+    path('expert/experiment3', add_projects),
+    path('expert/test', test)
 
 
 ]

@@ -494,3 +494,29 @@ def abandon_order(request: HttpRequest, uid: int, id: int):
     else:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "The order is not in cooperation")
     return success_api_response({})
+
+
+@response_wrapper
+# @jwt_auth()
+@require_GET
+def get_order_byID(request:HttpRequest, id:int):
+    need = Need.objects.get(id=id)
+    orders = need.need_order.all()
+    data = []
+    for order in orders:
+        expert: User = order.user
+        enterprise: User = order.enterprise
+        need: Need = order.need
+        order_info = {"order_id": order.id, "create_time": format_time(order.create_time),
+                      "end_time": format_time(order.end_time),
+                      "address": need.address, "description": need.description,
+                      "phone": enterprise.enterprise_info.phone,
+                      "predict": need.predict, "real": need.real,
+                      "state": order.state, "expert_id": expert.id, "expert_name": expert.expert_info.name, "need": {
+                "need_id": need.id,
+                "title": need.title,
+                "enterprise_id": enterprise.id,
+                "enterprise_name": enterprise.enterprise_info.name
+            }}
+        data.append(order_info)
+    return success_api_response({"data":data})
