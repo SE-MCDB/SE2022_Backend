@@ -33,7 +33,7 @@ from core.api.platform.need_api import create_need, get_all_need, get_need_info,
 
 from core.api.platform.order_api import get_pending_order, get_cooperating_order, get_finished_order, finish_order, accept_order, \
   refuse_order, get_order_info, create_order, get_order_id, get_all_order, abandon_order, get_order_byID, \
-    admin_delete_order, admin_get_all_order
+    admin_delete_order, admin_get_all_order, get_user_orderid_byneedID
 
 from core.api.enterprise import set_info, agree_enterprise, refuse_enterprise, get_enterpriseInfo, get_all_enterprise
 
@@ -167,6 +167,8 @@ urlpatterns = [
     path('user/<int:uid>/order/all', get_all_order),  # 获取用户全部订单，按state排序
     path('order/get', get_order_id),          # 根据专家、企业、需求获取对于订单
     path('order/byneed/<int:id>', get_order_byID),
+    
+    path('need/<int:id>/order', get_user_orderid_byneedID), # 根据需求获取拒绝之外的订单
 
     path('admin/order/getall', admin_get_all_order),
     path('admin/order/<int:id>', admin_delete_order), 

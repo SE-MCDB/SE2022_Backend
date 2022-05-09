@@ -66,7 +66,25 @@ def cmp(x, y):
             if x['end_time'] > y['end_time']:
                 return -1
             else: return 1
-            
+
+@response_wrapper
+# @jwt_auth()
+@require_GET
+def get_user_orderid_byneedID(request: HttpRequest, id: int):
+    need_id = id
+
+    try:
+        need = Need.objects.get(id=need_id)
+    except:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-exist usr or need")
+    
+    res = []
+    
+    orders = need.need_order.exclude(state=2)
+    for order in orders:
+        res.append(order.id)
+    return success_api_response({"data": res})
+    
 @response_wrapper
 # @jwt_auth()
 @require_GET
