@@ -8,3 +8,29 @@ def format_time(time):
     else:
         print(2)
     return time
+
+
+def get_field(field):
+    # 获得需求领域
+    NEED_FIELD_CHOICES = {
+        0: '信息技术',
+        1: '装备制造',
+        2: '新材料',
+        3: '新能源',
+        4: '节能环保',
+        5: '生物医药',
+        6: '科学创意',
+        7: '检验检测',
+        8: '其他'
+    }
+    return NEED_FIELD_CHOICES[field]
+
+
+def get_state(state):
+    # 获得需求状态
+    NEED_STATE = {
+        0: '进行中',
+        1: '已结束',
+        2: '未发布'
+    }
+    return NEED_STATE[state]

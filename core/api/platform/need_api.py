@@ -12,7 +12,7 @@ from core.api.auth import jwt_auth
 from core.models.need import Need
 from core.models.needContact import NeedContact
 import pytz
-from django.utils import timezone
+from core.api.platform.utils import get_field, get_state
 
 def get_now_time():
     """获取当前时间"""
@@ -281,7 +281,7 @@ def get_needs_info(request:HttpRequest):
     for need in needs:
         need_info = {"need_id": need.id, "title": need.title, "description": get_info(need.description),
                      "start_time": str(need.start_time)[0:10], "money": need.money, "key_word": need.key_word,
-                     "end_time": str(need.end_time)[0:10], "field": need.field, "state": need.state,
+                     "end_time": str(need.end_time)[0:10], "field": get_field(need.field), "state": get_state(need.state),
                      "emergency": need.emergency, "predict": need.predict, "real": need.real, "enterprise_name": need.enterprise.enterprise_info.name}
         data.append(need_info)
     return success_api_response({"data":data})
