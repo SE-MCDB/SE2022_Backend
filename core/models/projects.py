@@ -14,4 +14,4 @@ class Projects(models.Model):
     def to_dict(self) -> dict:
         return {"title": self.title, "startYead": self.startYear, "endYear": self.endYear,
             "typeFirst": self.typeFirst, "typeSecond": self.typeSecond, "typeThird": self.typeThird,
-            "url": self.url}
+            "url": self.url, "scholars": self.scholars}

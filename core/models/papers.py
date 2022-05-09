@@ -11,4 +11,4 @@ class Papers(models.Model):
 
     def to_dict(self) -> dict:
         return {"title": self.title, "cites": self.cites, "pyear": self.pyear,
-        "isEI": self.isEI, "isSCI": self.isSCI, "url": self.url}
+        "isEI": self.isEI, "isSCI": self.isSCI, "url": self.url, "scholars": self.scholars}

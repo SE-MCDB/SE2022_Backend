@@ -8,4 +8,4 @@ class Patents(models.Model):
     scholars = models.TextField(blank=True, null=True)
 
     def to_dict(self) -> dict:
-        return {"title": self.title, "pyear": self.pyear, "url": self.url}
+        return {"title": self.title, "pyear": self.pyear, "url": self.url, "scholarrs": self.scholars}
