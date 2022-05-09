@@ -12,6 +12,7 @@ from core.api.auth import jwt_auth
 from core.models.need import Need
 from core.models.needContact import NeedContact
 import pytz
+from django.utils import timezone
 from core.api.platform.utils import get_field, get_state
 
 def get_now_time():
