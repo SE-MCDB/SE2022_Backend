@@ -13,6 +13,7 @@ from core.models.order import Order
 from django.utils import timezone
 from core.api.platform.need_api import finish_need
 import pytz
+from core.api.platform.utils import format_time
 
 def get_info(s):
     max = 20
@@ -29,12 +30,6 @@ def get_now_time():
     now_time_str = now_time.strftime("%Y-%m-%d %H:%M:%S")
     return now_time_str
 
-def format_time(time):
-    if time != None:
-        time = str(time)[0:19]
-    else:
-        print(2)
-    return time
 
 def get_diff_time(time):
 
@@ -72,6 +67,40 @@ def cmp(x, y):
                 return -1
             else: return 1
             
+@response_wrapper
+# @jwt_auth()
+@require_GET
+def admin_get_all_order(request: HttpRequest):
+    orders = Order.objects.all()
+    data = []
+    for order in orders:
+        data.append(order.to_dict())
+    return success_api_response({"data": data}) 
+
+@response_wrapper
+# @jwt_auth()
+@require_http_methods("DELETE")
+def admin_delete_order(request: HttpRequest, id: int):
+    try:
+        order = Order.objects.get(id=id)
+    except:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-exist order")
+    need = order.need
+
+    """
+    ORDER_STATE = (
+    (0, "待接受"),
+    (1, "正在合作中"),
+    (2, "已拒绝"),
+    (3, "合作结束"),
+    )
+    """
+
+    if order.state == 1 or order.state == 3:
+        need.real -= 1
+
+    Order.objects.filter(id=id).delete()
+    return success_api_response()
 
 @response_wrapper
 # @jwt_auth()

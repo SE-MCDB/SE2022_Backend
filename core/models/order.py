@@ -2,6 +2,7 @@ from django.db import models
 
 from .need import Need
 from .user import User
+from core.api.platform.utils import format_time
 
 ORDER_STATE = (
     (0, "待接受"),
@@ -24,3 +25,16 @@ class Order(models.Model):
     end_time = models.DateTimeField(blank=True, null=True)
     #订单目前状态
     state = models.IntegerField(choices=ORDER_STATE, default=0)
+
+    def to_dict(self) -> dict:
+        return {"order_id": self.id, "create_time": format_time(self.create_time),
+                      "end_time": format_time(self.end_time),
+                      "address": self.need.address, "description": self.need.description,
+                      "phone": self.enterprise.enterprise_info.phone,
+                      "predict": self.need.predict, "real": self.need.real,
+                      "state": self.state, "expert_id": self.user.id, "expert_name": self.user.expert_info.name, "need": {
+                "need_id": self.need.id,
+                "title": self.need.title,
+                "enterprise_id": self.enterprise.id,
+                "enterprise_name": self.enterprise.enterprise_info.name}
+        }

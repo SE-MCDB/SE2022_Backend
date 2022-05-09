@@ -32,7 +32,8 @@ from core.api.platform.need_api import create_need, get_all_need, get_need_info,
     get_need_contact, expert_recommend, get_saved_need, transform_need, get_needs_info
 
 from core.api.platform.order_api import get_pending_order, get_cooperating_order, get_finished_order, finish_order, accept_order, \
-  refuse_order, get_order_info, create_order, get_order_id, get_all_order, abandon_order, get_order_byID
+  refuse_order, get_order_info, create_order, get_order_id, get_all_order, abandon_order, get_order_byID, \
+    admin_delete_order, admin_get_all_order
 
 from core.api.enterprise import set_info, agree_enterprise, refuse_enterprise, get_enterpriseInfo, get_all_enterprise
 
@@ -163,16 +164,19 @@ urlpatterns = [
     path('user/<int:uid>/order/finished', get_finished_order), # 获取某个用户（企业或专家）已完成订单（拒绝和结束）
     path('user/<int:uid>/order/pending', get_pending_order), # 获取某个用户（企业或专家）新请求的订单
     path('user/<int:uid>/order/cooperating', get_cooperating_order), # 获取某个用户（企业或专家）正在合作的订单
-    path('user/<int:uid>/order/all', get_all_order),  # 获取全部订单，按state排序
+    path('user/<int:uid>/order/all', get_all_order),  # 获取用户全部订单，按state排序
     path('order/get', get_order_id),          # 根据专家、企业、需求获取对于订单
     path('order/byneed/<int:id>', get_order_byID),
 
+    path('admin/order/getall', admin_get_all_order),
+    path('admin/order/<int:id>', admin_delete_order), 
+
     #enterprise
-    path('enterprise/setinfo', set_info),
-    path('enterprise/getinfo/<int:id>', get_enterpriseInfo),
-    path('enterprise/agree/<int:id>', agree_enterprise),
-    path('enterprise/refuse/<int:id>', refuse_enterprise),
-    path('enterprise/getall', get_all_enterprise),
+    path('enterprise/setinfo', set_info),      ## 企业设置认证信息，进行认证
+    path('enterprise/getinfo/<int:id>', get_enterpriseInfo), ## 管理端获取企业认证信息
+    path('enterprise/agree/<int:id>', agree_enterprise),    ## 接受企业认证
+    path('enterprise/refuse/<int:id>', refuse_enterprise),  ## 拒绝企业认证
+    path('enterprise/getall', get_all_enterprise),   ## 获取待认证的企业
 
     #expert
     path('expert/setinfo', setinfo),                  ## 专家设置信息，进行专家认证
