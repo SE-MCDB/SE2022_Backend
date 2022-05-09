@@ -14,6 +14,50 @@ from core.models.papers import Papers
 from core.models.projects import Projects
 from core.models.patents import Patents
 
+@response_wrapper
+# @jwt_auth
+@require_http_methods("GET")
+def get_expert_info(request: HttpRequest, uid: int):
+    
+    try:
+        user: User = User.objects.get(id=uid)
+    except:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-exist user")
+
+    if user.state != 4:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-exist expert")
+
+    data = request.GET.dict()
+    tab = data.get('tab')
+
+    # https://github.com/imingx?tab=repositories
+
+    if not tab:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non tab")
+
+    if tab == "papers":
+        papers = user.expert_info.papers.all()
+        res = []    
+        for paper in papers:
+            res.append(paper.to_dict())
+        return success_api_response({"data": res})
+    elif tab == "projects":
+        projects = user.expert_info.projects.all()
+        res = []
+        for project in projects:
+            res.append(project.to_dict())
+        return success_api_response({"data": res})
+    elif tab == "patents":
+        patents = user.expert_info.patents.all()
+        res = []
+        for patent in patents:
+            res.append(patent.to_dict())
+        return success_api_response({"data": res})
+    else:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "not a useful tab")
+    
+
+    
 
 @response_wrapper
 @require_http_methods('POST')

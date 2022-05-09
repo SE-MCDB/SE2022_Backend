@@ -36,7 +36,8 @@ from core.api.platform.order_api import get_pending_order, get_cooperating_order
 
 from core.api.enterprise import set_info, agree_enterprise, refuse_enterprise, get_enterpriseInfo, get_all_enterprise
 
-from core.api.expert import setinfo, agree_expert, refuse_expert, get_expertInfo, get_all_expert, get_json, add_papers, add_patents, add_projects
+from core.api.expert import setinfo, agree_expert, refuse_expert, get_expertInfo, get_all_expert, get_json, add_papers, add_patents, add_projects, \
+  get_expert_info
 
 urlpatterns = [
 
@@ -174,17 +175,17 @@ urlpatterns = [
     path('enterprise/getall', get_all_enterprise),
 
     #expert
-    path('expert/setinfo', setinfo),
-    path('expert/getinfo/<int:id>', get_expertInfo),
-    path('expert/agree/<int:id>', agree_expert),
-    path('expert/refuse/<int:id>', refuse_expert),
-    path('expert/getall', get_all_expert),
+    path('expert/setinfo', setinfo),                  ## 专家设置信息，进行专家认证
+    path('expert/getinfo/<int:id>', get_expertInfo),  ## 管理端获取专家认证信息
+    path('expert/agree/<int:id>', agree_expert),      ## 接受专家认证
+    path('expert/refuse/<int:id>', refuse_expert),    ## 拒绝专家认证
+    path('expert/getall', get_all_expert),            ## 获取待认证的专家
     path('expert/experiment', get_json),
     path('expert/experiment1', add_papers),
     path('expert/experiment2', add_patents),
     path('expert/experiment3', add_projects),
     # path('expert/test', test)
-
+    path('expert/<int:uid>', get_expert_info), ## 获取专家信息，通过 ?tab = project, paper, patent等获取信息
 
 ]
 
