@@ -9,6 +9,7 @@ class Projects(models.Model):
     typeSecond = models.TextField(blank=True, null=True)
     typeThird = models.TextField(blank=True, null=True)
     url = models.TextField(blank=True, null=True)
+    scholars = models.TextField(blank=True, null=True)
 
     def to_dict(self) -> dict:
         return {"title": self.title, "startYead": self.startYear, "endYear": self.endYear,

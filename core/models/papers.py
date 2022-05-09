@@ -7,6 +7,7 @@ class Papers(models.Model):
     isEI = models.BooleanField(blank=True, null=True)
     isSCI = models.BooleanField(blank=True, null=True)
     url = models.TextField(blank=True, null=True)
+    scholars = models.TextField(blank=True, null=True)
 
     def to_dict(self) -> dict:
         return {"title": self.title, "cites": self.cites, "pyear": self.pyear,
