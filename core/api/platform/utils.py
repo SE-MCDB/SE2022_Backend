@@ -26,7 +26,7 @@ def get_field(field):
     return NEED_FIELD_CHOICES[field]
 
 
-def get_state(state):
+def get_need_state(state):
     # 获得需求状态
     NEED_STATE = {
         0: '进行中',
@@ -34,3 +34,14 @@ def get_state(state):
         2: '未发布'
     }
     return NEED_STATE[state]
+
+
+def get_order_state(state):
+    # 获得订单状态
+    ORDER_STATE = {
+        0: "待接受",
+        1: "正在合作中",
+        2: "已拒绝",
+        3: "合作结束"
+    }
+    return ORDER_STATE[state]

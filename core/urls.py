@@ -38,7 +38,7 @@ from core.api.platform.order_api import get_pending_order, get_cooperating_order
 from core.api.enterprise import set_info, agree_enterprise, refuse_enterprise, get_enterpriseInfo, get_all_enterprise
 
 from core.api.expert import setinfo, agree_expert, refuse_expert, get_expertInfo, get_all_expert, get_json, add_papers, add_patents, add_projects, \
-  get_expert_info
+  get_expert_info, add_patents_scholars, add_papers_scholars, add_projects_scholars
 
 urlpatterns = [
 
@@ -186,12 +186,14 @@ urlpatterns = [
     path('expert/agree/<int:id>', agree_expert),      ## 接受专家认证
     path('expert/refuse/<int:id>', refuse_expert),    ## 拒绝专家认证
     path('expert/getall', get_all_expert),            ## 获取待认证的专家
-    path('expert/experiment', get_json),
-    path('expert/experiment1', add_papers),
-    path('expert/experiment2', add_patents),
-    path('expert/experiment3', add_projects),
-    # path('expert/test', test)
     path('expert/<int:uid>', get_expert_info), ## 获取专家信息，通过 ?tab = project, paper, patent等获取信息
+    #path('expert/experiment', get_json),
+    #path('expert/experiment1', add_papers),
+    #path('expert/experiment2', add_patents),
+    #path('expert/experiment3', add_projects),
+    #path('expert/test1', add_patents_scholars),
+    #path('expert/test2', add_papers_scholars),
+    #path('expert/test3', add_projects_scholars),
 
 ]
 

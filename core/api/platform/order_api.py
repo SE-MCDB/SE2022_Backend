@@ -13,7 +13,7 @@ from core.models.order import Order
 from django.utils import timezone
 from core.api.platform.need_api import finish_need
 import pytz
-from core.api.platform.utils import format_time
+from core.api.platform.utils import format_time, get_order_state
 
 def get_info(s):
     max = 20
@@ -559,7 +559,7 @@ def get_order_byID(request:HttpRequest, id:int):
                       "address": need.address, "description": need.description,
                       "phone": enterprise.enterprise_info.phone,
                       "predict": need.predict, "real": need.real,
-                      "state": order.state, "expert_id": expert.id, "expert_name": expert.expert_info.name, "need": {
+                      "state": get_order_state(order.state), "expert_id": expert.id, "expert_name": expert.expert_info.name, "need": {
                 "need_id": need.id,
                 "title": need.title,
                 "enterprise_id": enterprise.id,

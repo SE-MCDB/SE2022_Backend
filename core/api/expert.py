@@ -228,6 +228,11 @@ def field_decode(field):
     return ans
 
 
+
+
+"""
+以下为更新数据库所用的api
+"""
 @response_wrapper
 @require_http_methods('GET')
 def get_json(request:HttpRequest):
@@ -409,4 +414,56 @@ def add_projects(request:HttpRequest):
                         expert.projects.add(p)
                         expert.save()
 
+    return success_api_response("success")
+
+
+@response_wrapper
+@require_http_methods('GET')
+def add_patents_scholars(request:HttpRequest):
+    patents = Patents.objects.all()
+    for patent in patents:
+        url = patent.url
+        patent_id = url[28:]
+        url = "https://zhitulist.com/zhitu-data-service/search/patent?id="+patent_id
+        response = requests.get(url)
+        dic = json.loads(response.text)["data"]
+        scholars = dic["scholars"]
+        s = ""
+        if scholars != None:
+            for scholar in scholars:
+                s = s + scholar["scholarName"] + ","
+        patent.scholars = s[:-1]
+        patent.save()
+    return success_api_response("success")
+
+
+@response_wrapper
+@require_http_methods('GET')
+def add_papers_scholars(request:HttpRequest):
+    papers = Papers.objects.all()
+    for paper in papers:
+        url = paper.url
+        paper_id = url[27:]
+        url = "https://zhitulist.com/zhitu-data-service/search/paper?id=" + paper_id
+        response = requests.get(url)
+        dic = json.loads(response.text)["data"]
+        scholars = dic["scholars"]
+        s = ""
+        if scholars != None:
+            for scholar in scholars:
+                s = s + scholar["scholarName"] + ","
+            paper.scholars = s[:-1]
+            paper.save()
+    return success_api_response("success")
+
+
+@response_wrapper
+@require_http_methods('GET')
+def add_projects_scholars(request:HttpRequest):
+    projects = Projects.objects.all()
+    for project in projects:
+        experts = project.expert_projects.all()
+        expert = experts[0]
+        project.scholars = expert.name
+        project.save()
     return success_api_response("success")
