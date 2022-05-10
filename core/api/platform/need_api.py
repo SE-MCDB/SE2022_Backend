@@ -283,7 +283,8 @@ def get_needs_info(request:HttpRequest):
         need_info = {"need_id": need.id, "title": need.title, "description": get_info(need.description),
                      "start_time": str(need.start_time)[0:10], "money": need.money, "key_word": need.key_word,
                      "end_time": str(need.end_time)[0:10], "field": get_field(need.field), "state": get_need_state(need.state),
-                     "emergency": need.emergency, "predict": need.predict, "real": need.real, "enterprise_name": need.enterprise.enterprise_info.name}
+                     "emergency": need.emergency, "predict": need.predict, "real": need.real, "enterprise_name": need.enterprise.enterprise_info.name, 
+                     "address": need.address}
         data.append(need_info)
     return success_api_response({"data":data})
 
@@ -306,7 +307,8 @@ def get_all_need(request: HttpRequest):
     data = []
     for need in needs:
         need_info = {"need_id" : need.id, "title": need.title, "description": get_info(need.description), "start_time": str(need.start_time)[0:10], "money": need.money,  "key_word": need.key_word,
-        "end_time": str(need.end_time)[0:10], "field": need.field, "state": need.state, "emergency": need.emergency, "predict": need.predict,"real": need.real}
+        "end_time": str(need.end_time)[0:10], "field": need.field, "state": need.state, "emergency": need.emergency, "predict": need.predict,"real": need.real, 
+        "address": need.address}
         data.append(need_info)
     data.sort(key=lambda x: x["end_time"])
     return success_api_response({"data": data})
