@@ -40,6 +40,8 @@ from core.api.enterprise import set_info, agree_enterprise, refuse_enterprise, g
 from core.api.expert import setinfo, agree_expert, refuse_expert, get_expertInfo, get_all_expert, get_json, add_papers, add_patents, add_projects, \
   get_expert_info, add_patents_scholars, add_papers_scholars, add_projects_scholars
 
+from core.api.feedback import get_feedback, make_feedback
+
 urlpatterns = [
 
     #user apis
@@ -194,6 +196,10 @@ urlpatterns = [
     #path('expert/test1', add_patents_scholars),
     #path('expert/test2', add_papers_scholars),
     #path('expert/test3', add_projects_scholars),
+
+    #feedback
+    path('feedback/getall', get_feedback),
+    path('user/feedback', make_feedback),
 
 ]
 

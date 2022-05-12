@@ -25,3 +25,4 @@ from .expert import Expert
 from .papers import Papers
 from .patents import Patents
 from .projects import Projects
+from .feedback import Feedback
