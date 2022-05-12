@@ -60,12 +60,28 @@ def get_type(qtype):
 #@jwt_auth()
 @require_http_methods('POST')
 def make_feedback(request:HttpRequest):
+    """
     name = request.GET.get("name")
     email = request.GET.get("email")
     sex = request.GET.get("sex")
     qtype_temp = request.GET.get("qtype")
     qtype = get_qtype(qtype_temp)
     description = request.GET.get("description")
+    feedback = Feedback()
+    feedback.name = name
+    feedback.email = email
+    feedback.sex = sex
+    feedback.qtype = qtype
+    feedback.description = description
+    feedback.save()
+    """
+    data: dict = parse_data(request)
+    name = data["name"]
+    email = data["email"]
+    sex = data["sex"]
+    qtype_temp = data["qtype"]
+    qtype = get_qtype(qtype_temp)
+    description = data["description"]
     feedback = Feedback()
     feedback.name = name
     feedback.email = email
