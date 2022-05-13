@@ -53,7 +53,7 @@ urlpatterns = [
     path('user/forget-password', FORGET_PASSWORD_API),
     path('user/profile', get_profile),
     path('user/icon', USER_ICON_API),
-    path('user/all',get_all_user_info),
+    path('user/<int:type>/all/<int:page>',get_all_user_info),
     path('user/delete',delete_user),
     path('user/changeinfo',change_user_info),
     

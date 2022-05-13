@@ -9,6 +9,8 @@ from core.models.notification import (Notification, USER_FOLLOW)
 from core.models.user import User
 from core.models.interpretation import Interpretation
 from .auth import getUserInfo
+from django.db.models import Q
+from core.models.feedback import Feedback
 # follow apis
 
 @response_wrapper
@@ -133,15 +135,23 @@ def change_organization(request: HttpRequest):
 
 
 @response_wrapper
-@jwt_auth()
+#@jwt_auth()
 @require_http_methods('GET')
-def get_all_user_info(request: HttpRequest):
-    models = User.objects.all().order_by('-id')
+def get_all_user_info(request: HttpRequest, type: int, page: int):
+    start = 10 * (page - 1)
+    end = 10 * page
+    models = User.objects.filter(Q(state=type) & Q(is_superuser=0)).all()
+    page_num = models.__len__() // 10
+    if models.__len__() % 10 != 0:
+        page_num += 1
+    models = models[start:end]
     data = list()
     for user in models:
-        if user.is_superuser != 1:
-            data.append(getUserInfo(user))    
-    return success_api_response(data)
+        data.append(getUserInfo(user))
+    return success_api_response({
+        "page_num": page_num,
+        "data": data
+    })
 
 
 @response_wrapper
