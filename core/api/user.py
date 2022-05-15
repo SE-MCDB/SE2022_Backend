@@ -140,10 +140,11 @@ def change_organization(request: HttpRequest):
 def get_all_user_info(request: HttpRequest, type: int, page: int):
     start = 10 * (page - 1)
     end = 10 * page
-    models = User.objects.filter(Q(state=type) & Q(is_superuser=0)).all()
-    page_num = models.__len__() // 10
-    if models.__len__() % 10 != 0:
-        page_num += 1
+    if type != 6:
+        models = User.objects.filter(Q(state=type) & Q(is_superuser=0)).all()
+    else:
+        models = User.objects.filter(is_superuser=0).all()
+    page_num = models.__len__()
     models = models[start:end]
     data = list()
     for user in models:
