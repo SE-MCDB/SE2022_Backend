@@ -70,18 +70,31 @@ def expert_recommend(request: HttpRequest, id: int):
     experts = User.objects.filter(state=4).all()
 
     lst = []
-    for expert in experts:
-        if random.randint(1, 2) == 1:
-            lst.append(
-                {"expert_id": expert.id, "scholar_id": expert.expert_info.scholarID, "name": expert.expert_info.name,
-                 "phone": expert.expert_info.phone, "profile": expert.expert_info.self_profile,
-                 "organization": expert.expert_info.organization, "paper": expert.expert_info.paper})
 
-    if not lst:
-        expert = experts[random.randint(0, experts.count() - 1)]
-        lst.append({"expert_id": expert.id, "scholar_id": expert.expert_info.scholarID, "name": expert.expert_info.name,
-                    "phone": expert.expert_info.phone, "profile": expert.expert_info.self_profile,
-                    "organization": expert.expert_info.organization, "paper": expert.expert_info.paper})
+    print(experts.count())
+
+    index = random.randint(0, experts.count() - 1)
+
+    expert = experts[index]
+    lst.append({"expert_id": expert.id, "scholar_id": expert.expert_info.scholarID, "name": expert.expert_info.name,
+                  "phone": expert.expert_info.phone, "profile": expert.expert_info.self_profile,
+                  "organization": expert.expert_info.organization, "paper": expert.expert_info.paper})
+
+    # for expert in experts:
+
+
+    # for expert in experts:
+    #     if random.randint(1, 2) == 1:
+    #         lst.append(
+    #             {"expert_id": expert.id, "scholar_id": expert.expert_info.scholarID, "name": expert.expert_info.name,
+    #              "phone": expert.expert_info.phone, "profile": expert.expert_info.self_profile,
+    #              "organization": expert.expert_info.organization, "paper": expert.expert_info.paper})
+
+    # if not lst:
+    #     expert = experts[random.randint(0, experts.count() - 1)]
+    #     lst.append({"expert_id": expert.id, "scholar_id": expert.expert_info.scholarID, "name": expert.expert_info.name,
+    #                 "phone": expert.expert_info.phone, "profile": expert.expert_info.self_profile,
+    #                 "organization": expert.expert_info.organization, "paper": expert.expert_info.paper})
 
     return success_api_response({"data": lst})
 
