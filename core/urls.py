@@ -42,6 +42,8 @@ from core.api.expert import setinfo, agree_expert, refuse_expert, get_expertInfo
 
 from core.api.feedback import get_feedback, make_feedback
 
+from core.api.ai_recommend import experiment, recommend
+
 urlpatterns = [
 
     #user apis
@@ -201,6 +203,10 @@ urlpatterns = [
     #feedback
     path('feedback/getall', get_feedback),
     path('user/feedback', make_feedback),
+
+    #ai
+    path('ai/experiment', experiment),
+    path('ai/recommend', recommend)
 
 ]
 
