@@ -206,7 +206,7 @@ urlpatterns = [
 
     #ai
     path('ai/experiment', experiment),
-    path('ai/recommend', recommend)
+    path('ai/recommend/<int:id>', recommend)
 
 ]
 

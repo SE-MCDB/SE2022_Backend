@@ -4,11 +4,14 @@ from django.views.decorators.http import require_GET
 
 from core.api.utils import (response_wrapper, success_api_response)
 from core.models.papers import Papers
+from core.models.need import Need
 import torch.nn as nn
 import torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModel
+from core.api.auth import getUserInfo
 
 import numpy
+
 
 class ContrastiveSciBERT(nn.Module):
     def __init__(self, out_dim, tau, device='cpu'):
@@ -87,8 +90,9 @@ def experiment(request:HttpRequest):
 
 @response_wrapper
 @require_GET
-def recommend(request:HttpRequest):
-    keyword = ["net;deep learning"]
+def recommend(request: HttpRequest, id: int):
+    need = Need.objects.get(id=id)
+    keyword = [need.key_word]
     key_vector = model.get_embeds(keyword)
     key_vector = key_vector / key_vector.norm(dim=1, keepdim=True)
     b = key_vector.detach().numpy()
@@ -110,7 +114,6 @@ def recommend(request:HttpRequest):
 
     result = numpy.matmul(a, b.T)
 
-    #假设取前三高的人作为被推荐专家
     i = 0
     while i < len(papers):
         list2.append(result[i][0])
@@ -129,13 +132,22 @@ def recommend(request:HttpRequest):
                 list1[temp2] = temp
             temp2 += 1
         temp1 += 1
-    print(list2)
-    print(list1)
-    return success_api_response("success")
 
+    datas = []
+    i = 0
+    op = True
+    while i < 1:
+        paper = Papers.objects.get(id=list1[i])
+        experts = paper.expert_papers.all()
+        for expert in experts:
+            user = expert.expert_info
+            for data in datas:
+                if data['id'] == user.id:
+                    op = False
+                    break
+            if op:
+                datas.append(getUserInfo(user))
+            op = True
+            i += 1
 
-
-
-
-
-
+    return success_api_response({"data": datas})
