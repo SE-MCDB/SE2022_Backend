@@ -35,3 +35,4 @@ test_report
 
 # cache/
 # static/
+model.pt
