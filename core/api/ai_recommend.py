@@ -136,7 +136,7 @@ def recommend(request: HttpRequest, id: int):
     datas = []
     i = 0
     op = True
-    while i < 1:
+    while i < 3:
         paper = Papers.objects.get(id=list1[i])
         experts = paper.expert_papers.all()
         for expert in experts:
