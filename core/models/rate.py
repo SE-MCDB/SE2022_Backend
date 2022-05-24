@@ -10,3 +10,4 @@ class Rate(models.Model):
     datetime = models.TextField()
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="order_rate")
     expert = models.ForeignKey(User, on_delete=models.CASCADE, related_name="expert_rate")
+    enterprise = models.ForeignKey(User, on_delete=models.CASCADE, related_name="enterprise_rate")

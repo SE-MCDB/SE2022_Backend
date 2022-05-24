@@ -47,7 +47,7 @@ def rate_order(request: HttpRequest):
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "cannot find orderid")
 
     rate = Rate(rate_taste=rate_taste, rate_speed=rate_speed, rate_level=rate_level, 
-        datetime=datetime, order_id=order_id, expert_id=order.user_id)
+        datetime=datetime, order_id=order_id, expert_id=order.user_id, enterprise_id=order.enterprise_id)
 
     if description:
         rate.description = description
