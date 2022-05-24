@@ -16,6 +16,7 @@ from core.models.papers import Papers
 from core.models.projects import Projects
 from core.models.patents import Patents
 from core.models.expert import Expert
+from core.models.rate import Rate
 from django.contrib.auth.models import Group
 
 # Register your models here.
