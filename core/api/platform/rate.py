@@ -1,11 +1,6 @@
-from curses.ascii import HT
 from django.views.decorators.http import require_http_methods, require_POST, require_GET
 from django.http import HttpRequest
-from numpy import require
 from pytz import timezone
-import functools
-
-from sqlalchemy import desc
 from core.api.utils import (failed_api_response, ErrorCode,
                     success_api_response, parse_data,
                     wrapped_api, response_wrapper)
@@ -53,3 +48,21 @@ def rate_order(request: HttpRequest):
         rate.description = description
     rate.save()
     return success_api_response({})
+
+@response_wrapper
+# @jwt_auth()
+@require_GET
+def get_order_rate(request: HttpRequest, order_id: int):
+    try:
+        order = Order.objects.get(id=order_id)
+    except:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "cannot find order")
+    
+    rate = order.order_rate.last()
+
+    rate_info = rate.to_dict()
+
+
+
+
+    

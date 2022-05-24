@@ -11,3 +11,14 @@ class Rate(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="order_rate")
     expert = models.ForeignKey(User, on_delete=models.CASCADE, related_name="expert_rate")
     enterprise = models.ForeignKey(User, on_delete=models.CASCADE, related_name="enterprise_rate")
+
+    def to_dict(self) -> dict:
+        return {
+            "rate_taste": self.rate_taste,
+            "rate_speed": self.rate_speed,
+            "rate_level": self.rate_level,
+            "description": self.description,
+            "datetime": self.datetime,
+            "expert_id": self.expert_id,
+            "enterprise_id": self.enterprise_id,
+        }
