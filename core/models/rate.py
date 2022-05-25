@@ -18,7 +18,7 @@ class Rate(models.Model):
             "rate_speed": self.rate_speed,
             "rate_level": self.rate_level,
             "description": self.description,
-            "datetime": self.datetime,
-            "expert_id": self.expert_id,
-            "enterprise_id": self.enterprise_id,
+            "datetime": self.datetime[0:15],
+            # "expert_id": self.expert_id,
+            # "enterprise_id": self.enterprise_id,
         }

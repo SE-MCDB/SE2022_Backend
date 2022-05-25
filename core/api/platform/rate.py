@@ -13,6 +13,10 @@ from django.utils import timezone
 from core.models.rate import Rate
 
 
+##############################################################
+# POST METHOD
+##############################################################
+
 @response_wrapper
 # @jwt_auth()
 @require_POST
@@ -22,7 +26,7 @@ def rate_order(request: HttpRequest):
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "cannot find data")
 
     formData = data.get('formData')
-
+    
     if not formData:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "cannot find formData")
 
@@ -41,6 +45,9 @@ def rate_order(request: HttpRequest):
     except:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "cannot find orderid")
 
+    if Rate.objects.filter(order=order).exists():
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "rate has already existed")
+
     rate = Rate(rate_taste=rate_taste, rate_speed=rate_speed, rate_level=rate_level, 
         datetime=datetime, order_id=order_id, expert_id=order.user_id, enterprise_id=order.enterprise_id)
 
@@ -49,20 +56,71 @@ def rate_order(request: HttpRequest):
     rate.save()
     return success_api_response({})
 
+
+##############################################################
+# GET METHOD
+##############################################################
+
+
 @response_wrapper
 # @jwt_auth()
 @require_GET
-def get_order_rate(request: HttpRequest, order_id: int):
+def get_order_rate(request: HttpRequest, id: int):
+    order_id = id
     try:
         order = Order.objects.get(id=order_id)
     except:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "cannot find order")
     
-    rate = order.order_rate.last()
+    # rate = order.order_rate.last()
+ 
+    # rate_info = rate.to_dict()
+    flag = 0
+    data = dict()
+    if Rate.objects.filter(order=order).exists():
+        flag = 1
 
-    rate_info = rate.to_dict()
+        rate = Rate.objects.get(order=order)
+        data.update(rate.to_dict())
+
+    return success_api_response({"flag": flag, "data": data})
 
 
-
-
+@response_wrapper
+# @jwt_auth()
+@require_GET
+def get_user_rate(request: HttpRequest, id: int):
+    # enterprise_id = id 
+    try:
+        user = User.objects.get(id=id)
+    except:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "cannot find user")
+    if user.state != 5 and user.state != 4:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-enterprise or expert user")
     
+    data = []
+
+    if user.state == 5: 
+        rates = user.enterprise_rate.all()
+    else:
+        rates = user.expert_rate.all()
+
+    for rate in rates:
+        info = dict()
+        info["rate"] = rate.to_dict()
+        info["order"] = {
+            'order_name': rate.order.need.title,
+        }
+        info['expert'] = {
+            'expert_id': rate.expert.id,
+            'expert_icon': str(rate.expert.icon)
+        }
+        info["enterprise"] = {
+            "enterprise_id": rate.enterprise.id,
+            "enterprise_icon": str(rate.enterprise.icon)
+        }
+        data.append(info)
+
+    return success_api_response({"data": data})
+
+

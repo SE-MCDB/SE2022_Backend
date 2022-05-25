@@ -44,7 +44,7 @@ from core.api.feedback import get_feedback, make_feedback
 
 from core.api.ai_recommend import experiment, recommend
 
-from core.api.platform.rate import rate_order, get_order_rate
+from core.api.platform.rate import rate_order, get_order_rate, get_user_rate
 
 urlpatterns = [
 
@@ -213,5 +213,6 @@ urlpatterns = [
     # 评价
     path('order/rate', rate_order),
     path('order/<int:id>/rate', get_order_rate),
+    path('user/<int:id>/rate', get_user_rate),
 ]
 
