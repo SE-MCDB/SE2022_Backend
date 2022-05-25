@@ -11,7 +11,7 @@ from core.models.need import Need
 from core.models.order import Order
 from django.utils import timezone
 from core.models.rate import Rate
-
+from django.db.models import Avg
 
 ##############################################################
 # POST METHOD
@@ -120,7 +120,19 @@ def get_user_rate(request: HttpRequest, id: int):
             "enterprise_icon": str(rate.enterprise.icon)
         }
         data.append(info)
+    flag = 0
+    if data:
+        flag = 1
+    if user.state == 4:
+        # 专家获取平均数
+        avg = dict()
+        avg['rate_taste'] = user.expert_rate.aggregate(Avg('rate_taste')).get('rate_taste__avg')
+        avg['rate_speed'] = user.expert_rate.aggregate(Avg('rate_speed')).get('rate_speed__avg')
+        avg['rate_level'] = user.expert_rate.aggregate(Avg('rate_level')).get('rate_level__avg')
 
-    return success_api_response({"data": data})
+        # print(user.expert_rate.all().values_list('rate_taste', 'rate_speed', 'rate_level'))
+        return success_api_response({"data": data, "avg": avg, "flag": flag})
+    else:
+        return success_api_response({"data": data, "flag": flag})
 
 
