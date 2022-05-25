@@ -113,10 +113,12 @@ def get_user_rate(request: HttpRequest, id: int):
         }
         info['expert'] = {
             'expert_id': rate.expert.id,
+            "expert_name": rate.expert.expert_info.name,
             'expert_icon': str(rate.expert.icon)
         }
         info["enterprise"] = {
             "enterprise_id": rate.enterprise.id,
+            "enterprise_name": rate.enterprise.enterprise_info.name,
             "enterprise_icon": str(rate.enterprise.icon)
         }
         data.append(info)
