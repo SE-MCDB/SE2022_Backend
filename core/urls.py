@@ -46,7 +46,6 @@ from core.api.ai_recommend import recommend
 
 from core.api.platform.rate import rate_order, get_order_rate, get_user_rate
 
-from core.api.zhitu_utils import search_expertID_by_paperID, get_expertInfo_by_expertId
 
 urlpatterns = [
 
@@ -215,8 +214,5 @@ urlpatterns = [
     path('order/rate', rate_order),
     path('order/<int:id>/rate', get_order_rate),
     path('user/<int:id>/rate', get_user_rate),
-
-    path('zhitu/search/<int:id>', search_expertID_by_paperID),
-    path('zhitu/get/<int:id>', get_expertInfo_by_expertId),
 ]
 

@@ -101,7 +101,8 @@ def recommend(request: HttpRequest, id: int):
     s = '['
     for id in id_lists:
         s = s + str(id) + ','
-    s = s[:-1]
+    if len(s) != 1:
+        s = s[:-1]
     s += ']'
     query = "milvus_id in " + s
     paper_ids = milvus_query_by_id(query)
