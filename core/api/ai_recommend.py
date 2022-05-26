@@ -9,8 +9,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModel
 from core.api.auth import getUserInfo
-
-import numpy
+from core.api.milvus_utils import get_milvus_connection, milvus_search, milvus_query_by_id
+from core.api.zhitu_utils import get_expertInfo_by_expertId, search_expertID_by_paperID
 
 
 class ContrastiveSciBERT(nn.Module):
@@ -74,80 +74,50 @@ class ContrastiveSciBERT(nn.Module):
 model = torch.load("model.pt")
 
 
-@response_wrapper
 @require_GET
-def experiment(request:HttpRequest):
-    papers = Papers.objects.all()
-    for paper in papers:
-        embed = model.get_embeds(paper.title)
-        embed = embed / embed.norm(dim=1, keepdim=True)
-        array = embed.detach().numpy()[0]
-        s = ','.join([str(f) for f in array])
-        paper.vector = s
-        paper.save()
-    return success_api_response("success")
-
-
 @response_wrapper
-@require_GET
 def recommend(request: HttpRequest, id: int):
+    get_milvus_connection()
     need = Need.objects.get(id=id)
     keyword = [need.key_word]
     key_vector = model.get_embeds(keyword)
     key_vector = key_vector / key_vector.norm(dim=1, keepdim=True)
-    b = key_vector.detach().numpy()
-    papers = Papers.objects.all()
-    a = numpy.zeros(shape=(len(papers), 128))
-    index = 0
-    list1 = []
-    list2 = []
-    for paper in papers:
-        list1.append(paper.id)
-        vector = paper.vector
-        list = vector.split(',')
-        i = 0
-        while i < 128:
-            list[i] = float(list[i])
-            i += 1
-        a[index] = list
-        index += 1
-
-    result = numpy.matmul(a, b.T)
-
-    i = 0
-    while i < len(papers):
-        list2.append(result[i][0])
-        i += 1
-
-    temp1 = 0
-    while temp1 < len(papers):
-        temp2 = temp1 + 1
-        while temp2 < len(papers):
-            if list2[temp1] < list2[temp2]:
-                temp = list2[temp1]
-                list2[temp1] = list2[temp2]
-                list2[temp2] = temp
-                temp = list1[temp1]
-                list1[temp1] = list1[temp2]
-                list1[temp2] = temp
-            temp2 += 1
-        temp1 += 1
-
-    datas = []
-    i = 0
-    op = True
-    while i < 3:
-        paper = Papers.objects.get(id=list1[i])
-        experts = paper.expert_papers.all()
-        for expert in experts:
+    b = key_vector.detach().numpy().tolist()
+    id_lists = milvus_search(collection_name="O2E_TEMP", query_vectors=b, topk=need.predict,
+                             partition_names=None)[0]
+    register_experts = []
+    scholarIDs = []
+    for id in id_lists:
+        paper = Papers.objects.get(vector=str(id))
+        expert_possible = paper.expert_papers.all()
+        for expert in expert_possible:
+            scholarIDs.append(expert.scholarID)
             user = expert.expert_info
-            for data in datas:
-                if data['id'] == user.id:
+            register_experts.append(getUserInfo(user))
+
+    #未注册专家推荐
+    possible_experts = []
+    id_lists = milvus_search(collection_name="O2E_ALL", query_vectors=b, topk=3, partition_names=None)[0]
+    s = '['
+    for id in id_lists:
+        s = s + str(id) + ','
+    s = s[:-1]
+    s += ']'
+    query = "milvus_id in " + s
+    paper_ids = milvus_query_by_id(query)
+    for paper_id in paper_ids:
+        expert_ids, title = search_expertID_by_paperID(paper_id['paper_id'])
+        for expert_id in expert_ids:
+            op = True
+            for scholarID in scholarIDs:
+                if expert_id == scholarID:
                     op = False
                     break
             if op:
-                datas.append(getUserInfo(user))
-            op = True
-            i += 1
-
-    return success_api_response({"data": datas})
+                expert_list = get_expertInfo_by_expertId(expert_id)
+                expert_list['title'] = title
+                possible_experts.append(expert_list)
+    return success_api_response({
+        "register": register_experts,
+        "other": possible_experts
+    })
