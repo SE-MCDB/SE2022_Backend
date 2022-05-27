@@ -135,6 +135,10 @@ def get_user_rate(request: HttpRequest, id: int):
         # print(user.expert_rate.all().values_list('rate_taste', 'rate_speed', 'rate_level'))
         return success_api_response({"data": data, "avg": avg, "flag": flag})
     else:
-        return success_api_response({"data": data, "flag": flag})
+        return success_api_response({"data": data, "flag": flag, "avg": {
+            "rate_taste": 0,
+            "rate_speed": 0,
+            "rate_level": 0
+        }})
 
 
