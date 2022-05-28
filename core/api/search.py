@@ -9,6 +9,7 @@ from django.views.decorators.http import require_GET,require_POST
 from core.api.utils import (ErrorCode, failed_api_response, parse_data,
                             response_wrapper, success_api_response)
 from ..models import User
+from django.db.models import Q
 
 'web PAGE'
 @response_wrapper
@@ -46,23 +47,30 @@ def search_user_list(request:HttpRequest,*args, **kwargs):
 
 'app ROLL'
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_GET
 def search_user_full_list(request:HttpRequest):
     #传入key 查找关键字
     search_key = request.GET.get("key")
-    models = User.objects.filter(username__icontains=search_key)
+    models = User.objects.filter(Q(username__icontains=search_key) | (Q(state=4) & Q(expert_info__name__icontains=search_key) ) 
+    | (Q(state=5) & Q(enterprise_info__name__icontains=search_key)) )
+
     data = list()
-    cur_user = request.user
+    # cur_user = request.user
     for user in models:
         if user.is_superuser != 1:
-            data.append({
+            user_info = {
                 'username': user.username,
                 'id': user.id,
                 'email': user.email,
                 'userpic': user.get_icon(),
                 'nickname': user.nick_name,
                 'institution': user.institution,
-                'is_following' : cur_user.is_followed(user.id)
-            })    
+                # 'is_following' : cur_user.is_followed(user.id)
+            }
+            if user.state == 4:
+                user_info['nickname'] = user.expert_info.name
+            if user.state == 5:
+                user_info['nickname'] = user.enterprise_info.name
+            data.append(user_info)    
     return success_api_response(data)
