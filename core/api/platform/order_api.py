@@ -114,8 +114,8 @@ def admin_delete_order(request: HttpRequest, id: int):
     )
     """
 
-    if order.state == 1 or order.state == 3:
-        need.real -= 1
+    # if order.state == 1 or order.state == 3:
+    #     need.real -= 1
 
     Order.objects.filter(id=id).delete()
     return success_api_response()
@@ -374,10 +374,10 @@ def finish_order(request: HttpRequest, uid: int, id: int):
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-enterprise user")
 
     if order.state == 1 or order.state == 0:
-        if order.state == 1:
-            need = order.need
-            if need.need_order.filter(state=3).count() + 1 >= need.predict:
-                finish_need(request, uid, need.id)
+        # if order.state == 1:
+            # need = order.need
+            # if need.need_order.filter(state=3).count() + 1 >= need.predict:
+            #     finish_need(request, uid, need.id)
         order.state = 3
         order.end_time = get_now_time()
         order.save()
@@ -410,15 +410,15 @@ def accept_order(request: HttpRequest, uid: int, id: int):
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-expert user")
 
     need: Need = order.need 
-    if need.real >= need.predict:
-        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "need is full")
+    # if need.real >= need.predict:
+    #     return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "need is full")
 
     if order.state == 0:
         Order.objects.filter(id=id).update(state=1)
     else:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "The order is not pending state(state=0)")
 
-    need.real = need.real + 1
+    # need.real = need.real + 1
     need.save()
     return success_api_response({})
 
@@ -508,8 +508,8 @@ def create_order(request: HttpRequest):
     if Order.objects.filter(user_id=expert_id, enterprise_id=enterprise_id, need_id=need_id).exclude(state=2).exists():
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "already exist order")
 
-    if need.real >= need.predict:
-        return failed_api_response(ErrorCode.INVAzLID_REQUEST_ARGS, "the need recruitment is full")
+    # if need.real >= need.predict:
+    #     return failed_api_response(ErrorCode.INVAzLID_REQUEST_ARGS, "the need recruitment is full")
     order: Order = Order(user_id=expert_id, enterprise_id=enterprise_id, need_id=need_id, state=0)
     order.save()
     return success_api_response({})
@@ -534,9 +534,9 @@ def abandon_order(request: HttpRequest, uid: int, id: int):
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-enterprise user")
 
     if order.state == 1 or order.state == 0:
-        if order.state == 1:
-            need = order.need
-            need.real -= 1
+        # if order.state == 1:
+        #     need = order.need
+        #     need.real -= 1
         order.delete()
     else:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "The order is not in cooperation")
