@@ -47,7 +47,7 @@ def search_user_list(request:HttpRequest,*args, **kwargs):
 
 'app ROLL'
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_GET
 def search_user_full_list(request:HttpRequest):
     #传入key 查找关键字
@@ -69,8 +69,8 @@ def search_user_full_list(request:HttpRequest):
                 # 'is_following' : cur_user.is_followed(user.id)
             }
             if user.state == 4:
-                user_info['nickname'] = user.expert_info.name
+                user_info['nickname'] = user.expert_info.name + '（专家）'
             if user.state == 5:
-                user_info['nickname'] = user.enterprise_info.name
+                user_info['nickname'] = user.enterprise_info.name + '（企业）'
             data.append(user_info)    
     return success_api_response(data)

@@ -65,13 +65,18 @@ def list_full_fans(request: HttpRequest, uid : int):
     data = list()
     for user in models:
         if user.id != request.user.id:
-            data.append({
+            user_info = {
                 'username': user.username,
                 'id': user.id,
                 'email': user.email,
                 'userpic': user.get_icon(),
                 'nickname': user.nick_name,
                 'institution': user.institution
-            })    
+            }
+            if user.state == 4:
+                user_info['institution'] = user.expert_info.name + '（专家）'
+            if user.state == 5:
+                user_info['institution'] = user.enterprise_info.name + '（企业）'
+            data.append(user_info) 
 
     return success_api_response(data)
