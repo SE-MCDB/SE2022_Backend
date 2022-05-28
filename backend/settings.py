@@ -146,13 +146,14 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-SERVER_IP = '114.116.168.211'
+# SERVER_IP = '114.116.168.211'
+SERVER_IP = '122.9.14.73'
 
 EMAIL_USE_SSL = True
 EMAIL_HOST = 'smtp.163.com'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'paperdaily2021@163.com'
-EMAIL_HOST_PASSWORD = 'PLZJKJNSRRLCGGJD'
+EMAIL_HOST_USER = 'paperdaily2022@163.com'
+EMAIL_HOST_PASSWORD = 'FFYBTQDWPAQSWEYV'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
