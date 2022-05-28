@@ -83,7 +83,7 @@ def recommend(request: HttpRequest, id: int):
     key_vector = model.get_embeds(keyword)
     key_vector = key_vector / key_vector.norm(dim=1, keepdim=True)
     b = key_vector.detach().numpy().tolist()
-    id_lists = milvus_search(collection_name="O2E_TEMP", query_vectors=b, topk=need.predict,
+    id_lists = milvus_search(collection_name="O2E_TEMP", query_vectors=b, topk=3,
                              partition_names=None)[0]
     register_experts = []
     scholarIDs = []
