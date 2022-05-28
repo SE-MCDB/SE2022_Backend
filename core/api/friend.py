@@ -69,11 +69,13 @@ def list_full_friends(request: HttpRequest, uid: int):
     models = set()
 
     for follower in followers:
-        eachFollowers=follower.followers.all()
-        for each in eachFollowers:
-            if each.username == user.username and each.id != request.user.id:
-                models.add(follower)
-                break
+        if follower.followers.filter(id=uid).exists():
+            models.add(follower)
+        # eachFollowers=follower.followers.all()
+        # for each in eachFollowers:
+        #     if each.username == user.username and each.id != request.user.id:
+        #         models.add(follower)
+        #         break
 
     data = list()
     for user in models:
