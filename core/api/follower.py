@@ -48,7 +48,7 @@ def list_followers(request: HttpRequest, uid: int, *args, **kwargs):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_GET
 def list_full_followers(request: HttpRequest, uid: int):
 

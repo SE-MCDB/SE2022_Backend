@@ -166,9 +166,41 @@ def get_chat_list(request: HttpRequest):
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "Invalid token.")
     rooms = list()
     for room in user.chatroom_list.all():
-        rooms.append(room.to_dict())
+        room_info = room.to_dict()
+
+        if room.owner.state == 4:
+            room_info['from_user'] = room.owner.expert_info.name
+        elif room.owner.state == 5:
+            room_info['from_user'] = room.owner.enterprise_info.name
+        else:
+            room_info['from_user'] = ''
+
+        if room.to_user.state == 4:
+            room_info['to_user'] = room.to_user.expert_info.name
+        elif room.to_user.state == 5:
+            room_info['to_user'] = room.to_user.enterprise_info.name
+        else:
+            room_info['to_user'] = ''
+
+        rooms.append(room_info)
     for room in user.joined_chatroom_list.all():
-        rooms.append(room.to_dict())    
+        room_info = room.to_dict()
+
+        if room.owner.state == 4:
+            room_info['from_user'] = room.owner.expert_info.name
+        elif room.owner.state == 5:
+            room_info['from_user'] = room.owner.enterprise_info.name
+        else:
+            room_info['from_user'] = ''
+
+        if room.to_user.state == 4:
+            room_info['to_user'] = room.to_user.expert_info.name
+        elif room.to_user.state == 5:
+            room_info['to_user'] = room.to_user.enterprise_info.name
+        else:
+            room_info['to_user'] = ''
+
+        rooms.append(room_info)    
     # re_data = { 'owned_chatroom_list': [room.to_dict() for room in user.chatroom_list.all()],
     # 'joined_chatroom_list': [room.to_dict() for room in user.joined_chatroom_list.all()] }
     re_data = {'chatroom_list' :  rooms}
