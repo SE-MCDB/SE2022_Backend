@@ -116,7 +116,7 @@ def delete_chat(request: HttpRequest):
 	return:
 	    - chatroom.to_dict()
 """
-@jwt_auth()
+# @jwt_auth()
 @require_GET
 @response_wrapper
 def get_chat(request: HttpRequest, id: int):
@@ -126,6 +126,21 @@ def get_chat(request: HttpRequest, id: int):
     except ObjectDoesNotExist:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "Bad Chatroom ID.")
     ret_data = chatroom.to_dict()
+   
+    if chatroom.owner.state == 4:
+        ret_data['from_user'] = chatroom.owner.expert_info.name
+    elif chatroom.owner.state == 5:
+        ret_data['from_user'] = chatroom.owner.enterprise_info.name
+    else:
+        ret_data['from_user'] = ''
+
+    if chatroom.to_user.state == 4:
+        ret_data['to_user'] = chatroom.to_user.expert_info.name
+    elif chatroom.to_user.state == 5:
+        ret_data['to_user'] = chatroom.to_user.enterprise_info.name
+    else:
+        ret_data['to_user'] = ''
+    
     return success_api_response(ret_data)
 
 
