@@ -46,6 +46,7 @@ from core.api.ai_recommend import recommend
 
 from core.api.platform.rate import rate_order, get_order_rate, get_user_rate
 
+from core.tests.generate_avatar import avatar
 
 urlpatterns = [
 
@@ -141,6 +142,9 @@ urlpatterns = [
     # downloads
     path('download/Interpretation/<int:id>', downloadInterpretation),
 
+    # 为默认头像用户产生随机头像
+    path('generateAvatar', avatar),
+
     # platform<---需求平台
 
     ## need
@@ -214,5 +218,6 @@ urlpatterns = [
     path('order/rate', rate_order),
     path('order/<int:id>/rate', get_order_rate),
     path('user/<int:id>/rate', get_user_rate),
+
 ]
 
