@@ -116,7 +116,7 @@ def delete_chat(request: HttpRequest):
 	return:
 	    - chatroom.to_dict()
 """
-# @jwt_auth()
+@jwt_auth()
 @require_GET
 @response_wrapper
 def get_chat(request: HttpRequest, id: int):
@@ -152,7 +152,7 @@ def get_chat(request: HttpRequest, id: int):
     return:
        current page of chatrooms
 """
-# @jwt_auth()
+@jwt_auth()
 @require_GET
 @response_wrapper
 def get_chat_list(request: HttpRequest):
