@@ -366,7 +366,8 @@ def get_all_need(request: HttpRequest):
         for order in orders:
             experts.append({
                 'expert_id': order.user.id,
-                'expert_icon': str(order.user.icon)
+                'expert_icon': str(order.user.icon),
+                'expert_name': order.user.expert_info.name,
                 })
         need_info['experts'] = experts
         data.append(need_info)
@@ -401,7 +402,8 @@ def get_finished_need(request: HttpRequest, uid: int):
         for order in orders:
             experts.append({
                 'expert_id': order.user.id,
-                'expert_icon': str(order.user.icon)
+                'expert_icon': str(order.user.icon),
+                'expert_name': order.user.expert_info.name,
                 })
         need_info['experts'] = experts
         data.append(need_info)                
@@ -433,7 +435,8 @@ def get_saved_need(request: HttpRequest, uid: int):
         for order in orders:
             experts.append({
                 'expert_id': order.user.id,
-                'expert_icon': str(order.user.icon)
+                'expert_icon': str(order.user.icon),
+                'expert_name': order.user.expert_info.name,
                 })
         need_info['experts'] = experts
         data.append(need_info)
@@ -492,7 +495,8 @@ def get_proceeding_need(request: HttpRequest, uid: int):
         for order in orders:
             experts.append({
                 'expert_id': order.user.id,
-                'expert_icon': str(order.user.icon)
+                'expert_icon': str(order.user.icon),
+                'expert_name': order.user.expert_info.name,
                 })
         need_info['experts'] = experts                    
         data.append(need_info)
