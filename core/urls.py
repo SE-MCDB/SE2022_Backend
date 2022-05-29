@@ -46,7 +46,7 @@ from core.api.ai_recommend import recommend
 
 from core.api.platform.rate import rate_order, get_order_rate, get_user_rate
 
-from core.tests.generate_avatar import avatar
+from core.tests.generate_avatar import avatar, get_user_num
 
 urlpatterns = [
 
@@ -218,6 +218,9 @@ urlpatterns = [
     path('order/rate', rate_order),
     path('order/<int:id>/rate', get_order_rate),
     path('user/<int:id>/rate', get_user_rate),
+
+    # 管理端获取用户数
+    path('user/all', get_user_num),
 
 ]
 

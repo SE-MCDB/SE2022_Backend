@@ -1,3 +1,4 @@
+from django.views.decorators.http import require_http_methods, require_POST, require_GET
 from django.http import HttpRequest
 from core.api.utils import (failed_api_response, ErrorCode,
                             success_api_response, parse_data,
@@ -24,3 +25,11 @@ def avatar(request: HttpRequest):
             print(e)
             return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "error generating avatar")
     return success_api_response({})
+
+@response_wrapper
+@require_GET
+def get_user_num(request: HttpRequest):
+    
+    count = User.objects.count() - 3
+
+    return success_api_response({"count": count})
