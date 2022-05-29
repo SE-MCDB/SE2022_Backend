@@ -70,7 +70,7 @@ urlpatterns = [
     path('comment/<int:id>', get_comment),
     path('comment', get_comment_list),
 
-      # user apis
+    # user apis
     path('user/<int:pid>/follow', follow),
     path('user/<int:pid>/unfollow', unfollow),
     path('user/organization', change_organization),
