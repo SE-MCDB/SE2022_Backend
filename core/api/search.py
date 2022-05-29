@@ -55,9 +55,13 @@ def search_user_full_list(request:HttpRequest):
     models = User.objects.filter(Q(username__icontains=search_key) | (Q(state=4) & Q(expert_info__name__icontains=search_key) ) 
     | (Q(state=5) & Q(enterprise_info__name__icontains=search_key)) )
 
+    if models.count() > 50:
+        length = 50
+    else:
+        length = models.count()
     data = list()
     # cur_user = request.user
-    for user in models:
+    for user in models[0:length]:
         if user.is_superuser != 1:
             user_info = {
                 'username': user.username,
@@ -73,4 +77,5 @@ def search_user_full_list(request:HttpRequest):
             if user.state == 5:
                 user_info['nickname'] = user.enterprise_info.name + '（企业）'
             data.append(user_info)    
+    
     return success_api_response(data)
