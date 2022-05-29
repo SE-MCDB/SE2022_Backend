@@ -362,7 +362,7 @@ def get_all_need(request: HttpRequest):
                      "end_time": str(need.end_time)[0:10], "field": need.field, "state": need.state,
                      "emergency": need.emergency, "address": need.address}
         experts = list()
-        orders = need.need_order.all()
+        orders = need.need_order.filter(Q(state=1) | Q(state=3) | Q(state=0))
         for order in orders:
             expert = {'expert_id': order.user.id,
                 'expert_icon': str(order.user.icon),
@@ -399,7 +399,7 @@ def get_finished_need(request: HttpRequest, uid: int):
                      "end_time": (need.end_time)[0:10], "field": need.field, "state": need.state,
                      "emergency": need.emergency}
         experts = list()
-        orders = need.need_order.all()
+        orders = need.need_order.filter(Q(state=1) | Q(state=3) | Q(state=0))
         for order in orders:
             expert = {'expert_id': order.user.id,
                 'expert_icon': str(order.user.icon),
@@ -433,7 +433,7 @@ def get_saved_need(request: HttpRequest, uid: int):
                      "end_time": (need.end_time)[0:10], "field": need.field, "state": need.state,
                      "emergency": need.emergency}
         experts = list()
-        orders = need.need_order.all()
+        orders = need.need_order.filter(Q(state=1) | Q(state=3) | Q(state=0))
         for order in orders:
             expert = {'expert_id': order.user.id,
                 'expert_icon': str(order.user.icon),
@@ -494,7 +494,7 @@ def get_proceeding_need(request: HttpRequest, uid: int):
                      "emergency": need.emergency}
         
         experts = list()
-        orders = need.need_order.all()
+        orders = need.need_order.filter(Q(state=1) | Q(state=3) | Q(state=0))
         for order in orders:
             expert = {'expert_id': order.user.id,
                 'expert_icon': str(order.user.icon),
