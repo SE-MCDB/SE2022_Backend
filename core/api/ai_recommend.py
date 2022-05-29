@@ -107,6 +107,7 @@ def recommend(request: HttpRequest, id: int):
     query = "milvus_id in " + s
     paper_ids = milvus_query_by_id(query)
     for paper_id in paper_ids:
+        num = 0
         expert_ids, title = search_expertID_by_paperID(paper_id['paper_id'])
         for expert_id in expert_ids:
             op = True
@@ -114,7 +115,8 @@ def recommend(request: HttpRequest, id: int):
                 if expert_id == scholarID:
                     op = False
                     break
-            if op:
+            if op and num < 3:
+                num += 1
                 expert_list = get_expertInfo_by_expertId(expert_id)
                 expert_list['title'] = title
                 possible_experts.append(expert_list)
