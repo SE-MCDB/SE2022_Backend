@@ -364,11 +364,12 @@ def get_all_need(request: HttpRequest):
         experts = list()
         orders = need.need_order.all()
         for order in orders:
-            experts.append({
-                'expert_id': order.user.id,
+            expert = {'expert_id': order.user.id,
                 'expert_icon': str(order.user.icon),
                 'expert_name': order.user.expert_info.name,
-                })
+                }
+            if expert not in experts:
+                experts.append(expert)
         need_info['experts'] = experts
         data.append(need_info)
     data.sort(key=lambda x: x["end_time"])
@@ -400,11 +401,12 @@ def get_finished_need(request: HttpRequest, uid: int):
         experts = list()
         orders = need.need_order.all()
         for order in orders:
-            experts.append({
-                'expert_id': order.user.id,
+            expert = {'expert_id': order.user.id,
                 'expert_icon': str(order.user.icon),
                 'expert_name': order.user.expert_info.name,
-                })
+                }
+            if expert not in experts:
+                experts.append(expert)
         need_info['experts'] = experts
         data.append(need_info)                
     data.sort(key=lambda x: x["end_time"])
@@ -433,11 +435,12 @@ def get_saved_need(request: HttpRequest, uid: int):
         experts = list()
         orders = need.need_order.all()
         for order in orders:
-            experts.append({
-                'expert_id': order.user.id,
+            expert = {'expert_id': order.user.id,
                 'expert_icon': str(order.user.icon),
                 'expert_name': order.user.expert_info.name,
-                })
+                }
+            if expert not in experts:
+                experts.append(expert)
         need_info['experts'] = experts
         data.append(need_info)
     data.sort(key=lambda x: x["end_time"])
@@ -493,11 +496,12 @@ def get_proceeding_need(request: HttpRequest, uid: int):
         experts = list()
         orders = need.need_order.all()
         for order in orders:
-            experts.append({
-                'expert_id': order.user.id,
+            expert = {'expert_id': order.user.id,
                 'expert_icon': str(order.user.icon),
                 'expert_name': order.user.expert_info.name,
-                })
+                }
+            if expert not in experts:
+                experts.append(expert)
         need_info['experts'] = experts                    
         data.append(need_info)
     data.sort(key=lambda x: x["end_time"])
