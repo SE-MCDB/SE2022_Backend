@@ -503,7 +503,7 @@ def create_order(request: HttpRequest):
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-expert user")
     if enterprise.state != 5:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-enterprise user")
-    if need.state != 0:
+    if need.state == 1:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "the need is finished")
     if Order.objects.filter(user_id=expert_id, enterprise_id=enterprise_id, need_id=need_id).exclude(state=2).exists():
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "already exist order")

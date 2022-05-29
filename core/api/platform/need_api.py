@@ -397,7 +397,7 @@ def get_finished_need(request: HttpRequest, uid: int):
         need_info = {"need_id": need.id, "title": need.title, "description": get_info(need.description),
                      "start_time": (need.start_time)[0:10], "money": need.money, "key_word": need.key_word,
                      "end_time": (need.end_time)[0:10], "field": need.field, "state": need.state,
-                     "emergency": need.emergency}
+                     "emergency": need.emergency, "address": need.address}
         experts = list()
         orders = need.need_order.filter(Q(state=1) | Q(state=3) | Q(state=0))
         for order in orders:
@@ -431,7 +431,7 @@ def get_saved_need(request: HttpRequest, uid: int):
         need_info = {"need_id": need.id, "title": need.title, "description": get_info(need.description),
                      "start_time": (need.start_time)[0:10], "money": need.money, "key_word": need.key_word,
                      "end_time": (need.end_time)[0:10], "field": need.field, "state": need.state,
-                     "emergency": need.emergency}
+                     "emergency": need.emergency, "address": need.address}
         experts = list()
         orders = need.need_order.filter(Q(state=1) | Q(state=3) | Q(state=0))
         for order in orders:
@@ -491,7 +491,7 @@ def get_proceeding_need(request: HttpRequest, uid: int):
         need_info = {"need_id": need.id, "title": need.title, "description": get_info(need.description),
                      "start_time": (need.start_time)[0:10], "money": need.money, "key_word": need.key_word,
                      "end_time": (need.end_time)[0:10], "field": need.field, "state": need.state,
-                     "emergency": need.emergency}
+                     "emergency": need.emergency, "address": need.address}
         
         experts = list()
         orders = need.need_order.filter(Q(state=1) | Q(state=3) | Q(state=0))
