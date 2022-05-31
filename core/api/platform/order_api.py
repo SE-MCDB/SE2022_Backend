@@ -39,7 +39,7 @@ def get_diff_time(time):
 
     if diff.__contains__("day"):
         diff = int(diff[0:diff.find('day') - 1])
-        if diff <= 4:
+        if diff <= 30:
             return str(diff) + "天前"
         else:
             return str(time)[0:10]
@@ -140,12 +140,15 @@ def get_all_order(request: HttpRequest, uid: int):
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "user type is not expert or company")
     
     orders = []
+    orders_reject = []
     for order in order_list:
         expert: User = order.user
         enterprise: User = order.enterprise
         need: Need = order.need
         order_info = {"order_id": order.id, "create_time": (order.create_time), "end_time": (order.end_time),
-            "state": order.state, "expert_id":expert.id, "expert_name": expert.expert_info.name, "need":{
+            "state": order.state, "expert_id":expert.id, "expert_name": expert.expert_info.name, 
+            "expert_pic": str(expert.icon),
+            "need":{
                 "need_id": need.id,
                 "title": need.title,
                 "enterprise_id": enterprise.id,
@@ -153,9 +156,13 @@ def get_all_order(request: HttpRequest, uid: int):
                 "enterprise_pic": str(enterprise.icon),
                 "enterprise_description": get_info(enterprise.enterprise_info.instruction),
             }}
-        orders.append(order_info)
+        if order.state == 2:
+            orders_reject.append(order_info)
+        else:
+            orders.append(order_info)
     orders.sort(key=functools.cmp_to_key(cmp))
-
+    orders_reject.sort(key=functools.cmp_to_key(cmp))
+    orders.extend(orders_reject)
     for order in orders:
         order["create_time"] = get_diff_time(order['create_time'])
         order["end_time"] = get_diff_time(order['end_time'])
@@ -212,10 +219,10 @@ def get_finished_order(request: HttpRequest, uid: int):
     
     if user.state == 5:
         # 企业
-        order_list = user.enterprise_order.filter(state__in=[2, 3])
+        order_list = user.enterprise_order.filter(state__in=[3])
     elif user.state == 4:
         # 专家
-        order_list = user.expert_order.filter(state__in=[2, 3])
+        order_list = user.expert_order.filter(state__in=[3])
     else:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "user type is not expert or company")
     
