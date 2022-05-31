@@ -168,14 +168,15 @@ def search_need(request: HttpRequest, *args, **kwargs):
     needs = Need.objects.none()
     for key_word in key_words:
         needs = needs.union(Need.objects.filter(Q(title__icontains=key_word) | Q(description__icontains=key_word)
-                                                | Q(key_word__icontains=key_word)).all().filter(state=0))
+                                                | Q(key_word__icontains=key_word)
+                                                | Q(address__icontains=key_word) | Q(enterprise__enterprise_info__name__icontains=key_word)).all().filter(state=0))
         print(needs.count())
 
     for need in needs:
         need_info = {"need_id": need.id, "title": need.title, "description": get_info(need.description),
                      "start_time": need.start_time, "money": need.money, "key_word": need.key_word,
                      "end_time": need.end_time, "field": need.field, "state": need.state, "emergency": need.emergency,
-                     "predict": need.predict, "real": need.real}
+                     "address": need.address}
         results.append(need_info)
     return success_api_response({"data": results})
 
@@ -216,10 +217,21 @@ def get_need_info(request: HttpRequest, id: int):
                  "start_time": need.start_time,
                  "end_time": need.end_time, "key_word": need.key_word, "field": need.field, "address": need.address,
                  "state": need.state,
-                 "emergency": need.emergency, "predict": need.predict, "real": need.real,
+                 "emergency": need.emergency, 
                  "enterprise_id": enterprise.id, "enterprise_name": enterprise.enterprise_info.name,
                  "enterprise_pic": str(enterprise.icon)}
-
+    order = list()
+    orders = need.need_order.exclude(state=2)
+    for o in orders:
+        order_info = {
+            "order_id": o.id,
+            "order_state": o.state,
+            "expert_id": o.user.id,
+            "expert_icon": str(o.user.icon),
+            "expert_name": o.user.expert_info.name    
+        } 
+        order.append(order_info)
+    need_info['order'] = order
     return success_api_response(need_info)
 
 
@@ -365,7 +377,8 @@ def get_all_need(request: HttpRequest):
         experts = list()
         orders = need.need_order.filter(Q(state=1) | Q(state=3) | Q(state=0))
         for order in orders:
-            expert = {'expert_id': order.user.id,
+            expert = {
+                'expert_id': order.user.id,
                 'expert_icon': str(order.user.icon),
                 'expert_name': order.user.expert_info.name,
                 }
@@ -402,7 +415,8 @@ def get_finished_need(request: HttpRequest, uid: int):
         experts = list()
         orders = need.need_order.filter(Q(state=1) | Q(state=3) | Q(state=0))
         for order in orders:
-            expert = {'expert_id': order.user.id,
+            expert = {
+                'expert_id': order.user.id,
                 'expert_icon': str(order.user.icon),
                 'expert_name': order.user.expert_info.name,
                 }
@@ -436,7 +450,8 @@ def get_saved_need(request: HttpRequest, uid: int):
         experts = list()
         orders = need.need_order.filter(Q(state=1) | Q(state=3) | Q(state=0))
         for order in orders:
-            expert = {'expert_id': order.user.id,
+            expert = {
+                'expert_id': order.user.id,
                 'expert_icon': str(order.user.icon),
                 'expert_name': order.user.expert_info.name,
                 }
@@ -497,7 +512,8 @@ def get_proceeding_need(request: HttpRequest, uid: int):
         experts = list()
         orders = need.need_order.filter(Q(state=1) | Q(state=3) | Q(state=0))
         for order in orders:
-            expert = {'expert_id': order.user.id,
+            expert = {
+                'expert_id': order.user.id,
                 'expert_icon': str(order.user.icon),
                 'expert_name': order.user.expert_info.name,
                 }
