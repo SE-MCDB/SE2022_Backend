@@ -228,7 +228,8 @@ def get_need_info(request: HttpRequest, id: int):
             "order_state": o.state,
             "expert_id": o.user.id,
             "expert_icon": str(o.user.icon),
-            "expert_name": o.user.expert_info.name    
+            "expert_name": o.user.expert_info.name,
+            "enterprise_id": o.enterprise.id  
         } 
         order.append(order_info)
     need_info['order'] = order
