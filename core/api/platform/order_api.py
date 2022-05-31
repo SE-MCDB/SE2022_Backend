@@ -156,6 +156,12 @@ def get_all_order(request: HttpRequest, uid: int):
                 "enterprise_pic": str(enterprise.icon),
                 "enterprise_description": get_info(enterprise.enterprise_info.instruction),
             }}
+        expert_description = expert.expert_info.organization
+        if expert.expert_info.title != None:
+            expert_description += ' ' + expert.expert_info.title
+        else:
+            expert_description += " 副教授 硕导"
+        order_info['expert_description'] = expert_description
         if order.state == 2:
             orders_reject.append(order_info)
         else:
@@ -242,6 +248,12 @@ def get_finished_order(request: HttpRequest, uid: int):
                 "enterprise_pic":  str(enterprise.icon),
                 "enterprise_description": get_info(enterprise.enterprise_info.instruction),
             }}
+        expert_description = expert.expert_info.organization
+        if expert.expert_info.title != None:
+            expert_description += ' ' + expert.expert_info.title
+        else:
+            expert_description += " 副教授 硕导"
+        order_info['expert_description'] = expert_description
         orders.append(order_info)
     
     orders.sort(key=lambda x: (x['state'], x["end_time"]), reverse=True)
@@ -296,6 +308,12 @@ def get_pending_order(request: HttpRequest, uid: int):
                 "enterprise_pic":  str(enterprise.icon),
                 "enterprise_description": get_info(enterprise.enterprise_info.instruction),
             }}
+        expert_description = expert.expert_info.organization
+        if expert.expert_info.title != None:
+            expert_description += ' ' + expert.expert_info.title
+        else:
+            expert_description += " 副教授 硕导"
+        order_info['expert_description'] = expert_description
         orders.append(order_info)
 
     orders.sort(key=lambda x: x["create_time"], reverse=True)
@@ -348,6 +366,12 @@ def get_cooperating_order(request: HttpRequest, uid: int):
                 "enterprise_pic": str(enterprise.icon),
                 "enterprise_description": get_info(enterprise.enterprise_info.instruction),
             }}
+        expert_description = expert.expert_info.organization
+        if expert.expert_info.title != None:
+            expert_description += ' ' + expert.expert_info.title
+        else:
+            expert_description += " 副教授 硕导"
+        order_info['expert_description'] = expert_description
         orders.append(order_info)
     orders.sort(key=lambda x: x["create_time"], reverse=True)
     for order in orders:
