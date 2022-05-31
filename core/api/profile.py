@@ -113,7 +113,7 @@ def get_profile(request: HttpRequest):
             'expert_field': user.expert_info.field,
             'expert_scholarprofile': user.expert_info.self_profile,
             'expert_phone': user.expert_info.phone,
-
+            'expert_title': user.expert_info.title,
         }
     return success_api_response(data)
 
