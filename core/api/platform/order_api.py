@@ -232,7 +232,9 @@ def get_finished_order(request: HttpRequest, uid: int):
         enterprise: User = order.enterprise
         need: Need = order.need
         order_info = {"order_id": order.id, "create_time": order.create_time, "end_time": order.end_time,
-            "state": order.state, "expert_id":expert.id, "expert_name": expert.expert_info.name, "need":{
+            "state": order.state, "expert_id":expert.id, "expert_name": expert.expert_info.name, 
+            "expert_pic": str(expert.icon),
+            "need":{
                 "need_id": need.id,
                 "title": need.title,
                 "enterprise_id": enterprise.id,
@@ -284,7 +286,9 @@ def get_pending_order(request: HttpRequest, uid: int):
         enterprise: User = order.enterprise
         need: Need = order.need
         order_info = {"order_id": order.id, "create_time": order.create_time, "end_time": order.end_time,
-            "state": order.state, "expert_id":expert.id, "expert_name": expert.expert_info.name, "need":{
+            "state": order.state, "expert_id":expert.id, "expert_name": expert.expert_info.name, 
+            "expert_pic": str(expert.icon),
+            "need":{
                 "need_id": need.id,
                 "title": need.title,
                 "enterprise_id": enterprise.id,
@@ -334,7 +338,9 @@ def get_cooperating_order(request: HttpRequest, uid: int):
         enterprise: User = order.enterprise
         need: Need = order.need
         order_info = {"order_id": order.id, "create_time": order.create_time, "end_time": order.end_time,
-            "state": order.state, "expert_id":expert.id, "expert_name": expert.expert_info.name, "need":{
+            "state": order.state, "expert_id":expert.id, "expert_name": expert.expert_info.name, 
+            "expert_pic": str(expert.icon),
+            "need":{
                 "need_id": need.id,
                 "title": need.title,
                 "enterprise_id": enterprise.id,
