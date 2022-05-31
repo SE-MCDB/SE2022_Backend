@@ -217,7 +217,8 @@ def get_need_info(request: HttpRequest, id: int):
                  "end_time": need.end_time, "key_word": need.key_word, "field": need.field, "address": need.address,
                  "state": need.state,
                  "emergency": need.emergency, "predict": need.predict, "real": need.real,
-                 "enterprise_id": enterprise.id, "enterprise_name": enterprise.enterprise_info.name}
+                 "enterprise_id": enterprise.id, "enterprise_name": enterprise.enterprise_info.name,
+                 "enterprise_pic": str(enterprise.icon)}
 
     return success_api_response(need_info)
 
