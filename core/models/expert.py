@@ -6,15 +6,15 @@ from .projects import Projects
 class Expert(models.Model):
     create_time = models.DateTimeField(auto_now=True, null=True)
     #知兔平台唯一的学者号
-    scholarID = models.CharField(max_length=20, blank=True, null=True)
+    scholarID = models.CharField(max_length=200, blank=True, null=True)
     #学者姓名
-    name = models.CharField(max_length=10, blank=True, null=True)
+    name = models.CharField(max_length=100, blank=True, null=True)
     #学者身份证号,管理端添加
     ID_num = models.CharField(max_length=20, blank=True, null=True)
     #工作单位
-    organization = models.CharField(max_length=20, blank=True, null=True)
+    organization = models.CharField(max_length=100, blank=True, null=True)
     #擅长领域
-    field = models.CharField(max_length=20, blank=True, null=True)
+    field = models.CharField(max_length=100, blank=True, null=True)
     #自我介绍
     #self_profile = models.CharField(max_length=200, blank=True, null=True)
     self_profile = models.TextField(blank=True, null=True)
@@ -22,13 +22,13 @@ class Expert(models.Model):
     ID_pic = models.ImageField(upload_to="images/%Y%m/%d/icons",
                                          default='images/default_user_icon.jpg')
     #学者官网
-    url = models.CharField(max_length=60, blank=True, null=True)
+    url = models.CharField(max_length=100, blank=True, null=True)
     #学者电话
     phone = models.CharField(max_length=15, blank=True, null=True)
     #专利
-    patent = models.CharField(max_length=50, blank=True, null=True)
+    patent = models.CharField(max_length=2000, blank=True, null=True)
     #论文
-    paper = models.CharField(max_length=50, blank=True, null=True)
+    paper = models.CharField(max_length=2000, blank=True, null=True)
     #所有论文
     papers = models.ManyToManyField(Papers, related_name="expert_papers")
     #所有专利
@@ -36,5 +36,5 @@ class Expert(models.Model):
     #所有项目
     projects = models.ManyToManyField(Projects, related_name="expert_projects")
     #称号
-    title = models.CharField(max_length=30, blank=True, null=True)
+    title = models.CharField(max_length=300, blank=True, null=True)
 
