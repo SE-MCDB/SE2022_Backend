@@ -272,8 +272,8 @@ def create_need(request: HttpRequest):
 
     try:
         money = int(data.get('money'))
-        predict = int(data.get('predict'))
-        real = int(data.get('real'))
+        # predict = int(data.get('predict'))
+        # real = int(data.get('real'))
         emergency = int(data.get('emergency'))
         state = int(data.get('state'))
         field = int(data.get('field'))
@@ -289,12 +289,12 @@ def create_need(request: HttpRequest):
     print("field", field)
     print("address", address)
     print("emergency", emergency)
-    print("predict", predict)
-    print("real", real)
+    # print("predict", predict)
+    # print("real", real)
     print("state", state)
 
     if title is None or description is None or money is None or start_time is None or end_time is None or key_word is None \
-            or field is None or address is None or emergency is None or predict is None or real is None or state is None:
+            or field is None or address is None or emergency is None or state is None:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "Invalid requset value")
 
     if not title or not description or not start_time:
@@ -302,7 +302,7 @@ def create_need(request: HttpRequest):
 
     need = Need(title=title, description=description, money=money, start_time=start_time,
                 end_time=end_time, key_word=key_word, field=field, address=address,
-                enterprise=user, state=state, emergency=emergency, predict=predict, real=real)
+                enterprise=user, state=state, emergency=emergency)
 
     need.save()
     return success_api_response({})
@@ -322,7 +322,7 @@ def get_needs_info(request: HttpRequest):
                      "start_time": str(need.start_time)[0:10], "money": need.money, "key_word": need.key_word,
                      "end_time": str(need.end_time)[0:10], "field": get_field(need.field),
                      "state": get_need_state(need.state),
-                     "emergency": need.emergency, "predict": need.predict, "real": need.real,
+                     "emergency": need.emergency, 
                      "enterprise_name": need.enterprise.enterprise_info.name,
                      "address": need.address}
         data.append(need_info)
@@ -556,14 +556,13 @@ def edit_need(request: HttpRequest, uid: int, id: int):
 
     try:
         money = int(data.get('money'))
-        predict = int(data.get('predict'))
         emergency = int(data.get('emergency'))
         field = int(data.get('field'))
     except:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-digit value(some digit value is wrong)")
 
     if title is None or description is None or money is None or start_time is None or end_time is None or key_word is None \
-            or field is None or address is None or emergency is None or predict is None:
+            or field is None or address is None or emergency is None:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "Invalid requset value")
 
     if not title or not description or not start_time:
@@ -572,6 +571,6 @@ def edit_need(request: HttpRequest, uid: int, id: int):
     Need.objects.filter(id=id).update(title=title, description=description, money=money,
                                       start_time=start_time, end_time=end_time, key_word=key_word, field=field,
                                       address=address,
-                                      emergency=emergency, predict=predict)
+                                      emergency=emergency)
 
     return success_api_response({})

@@ -31,7 +31,7 @@ class Order(models.Model):
                       "end_time": format_time(self.end_time),
                       "address": self.need.address, "description": self.need.description,
                       "phone": self.enterprise.enterprise_info.phone,
-                      "predict": self.need.predict, "real": self.need.real,
+                    #   "predict": self.need.predict, "real": self.need.real,
                       "state": self.state, "expert_id": self.user.id, "expert_name": self.user.expert_info.name, "need": {
                 "need_id": self.need.id,
                 "title": self.need.title,

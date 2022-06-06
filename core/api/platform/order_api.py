@@ -505,7 +505,6 @@ def get_order_info(request: HttpRequest, id: int):
     need: Need = order.need
     order_info = {"order_id": order.id, "create_time": format_time(order.create_time), "end_time": format_time(order.end_time),
         "address": need.address, "description": need.description, "phone": enterprise.enterprise_info.phone,
-        "predict": need.predict, "real": need.real,
         "state": order.state, "expert_id":expert.id, "expert_name": expert.expert_info.name, "need":{
             "need_id": need.id,
             "title": need.title,
@@ -595,7 +594,6 @@ def get_order_byID(request:HttpRequest, id:int):
                       "end_time": format_time(order.end_time),
                       "address": need.address, "description": need.description,
                       "phone": enterprise.enterprise_info.phone,
-                      "predict": need.predict, "real": need.real,
                       "state": get_order_state(order.state), "expert_id": expert.id, "expert_name": expert.expert_info.name, "need": {
                 "need_id": need.id,
                 "title": need.title,
