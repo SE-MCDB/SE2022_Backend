@@ -6,7 +6,7 @@
 
 ## Description
 
-This is a backend code of the `PaperDaily` project based on [`django2.2`](https://docs.djangoproject.com/en/2.2/).
+This is the backend code of the `PaperDaily` project based on [`django2.2`](https://docs.djangoproject.com/en/2.2/).
 
 ## Quick Start
 
