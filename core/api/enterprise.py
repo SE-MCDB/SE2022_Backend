@@ -1,3 +1,4 @@
+from codecs import register_error
 from core.models.enterprise_info import Enterprise_info
 from django.views.decorators.http import require_http_methods
 from django.http import HttpRequest
@@ -41,6 +42,12 @@ def set_info(request:HttpRequest):
     if not legal_representative:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "need a valid legal_representative")
     register_capital = request.POST.get("register_capital", None)
+
+    try:
+        register_capital = int(register_capital)
+    except:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "包含非数字字符")   
+
     print(register_capital)
     if not register_capital:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "need a valid register_capital")
