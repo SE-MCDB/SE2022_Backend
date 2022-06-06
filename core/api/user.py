@@ -168,32 +168,25 @@ def delete_user(request: HttpRequest):
     return success_api_response({"result": "Ok, all user info has been provided."})
 
 @response_wrapper
-@jwt_auth()
+#@jwt_auth()
 @require_http_methods('POST')
 def change_user_info(request: HttpRequest):
-    #TODO
     data: dict = parse_data(request)
     pid = data.get('id')
     institution = data.get('institution')
     username = data.get('name')
     email = data.get('mail')
-    usertype = data.get('usertype')
-
-    print(pid, institution, username, email, usertype)
-
+    
     if User.objects.filter(pk=pid).exists() is False:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS,'Your required user to change is not found!')
-    if User.objects.filter(username=username).exclude(id=pid).exists():
+    if User.objects.filter(username=username).exists() and len(User.objects.filter(username=username)) > 1:
         return failed_api_response(ErrorCode.ITEM_ALREADY_EXISTS, "Username conflicted.")
-    if User.objects.filter(email=email).exclude(id=pid).exists():
+    if User.objects.filter(email=email).exists() and len(User.objects.filter(username=username)) > 1:
         return failed_api_response(ErrorCode.ITEM_ALREADY_EXISTS, "Email conflicted.")
-    
+        
     user = User.objects.filter(pk=pid).first()
     user.username = username
     user.institution = institution
     user.email = email
-    if isinstance(usertype, int) is False:
-        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS,'Your user type should be an int.')
-    user.user_type = usertype
     user.save()
     return success_api_response({"result": "Ok, the user info has been changed."})
