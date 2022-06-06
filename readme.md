@@ -8,7 +8,7 @@
 
 This is a backend code of the `PaperDaily` project based on [`django2.2`](https://docs.djangoproject.com/en/2.2/).
 
-## Quickstart
+## Quick Start
 
 1. Install python3.7 or later
 
