@@ -1,8 +1,8 @@
 <h1 align="center">SE2022 Backend</h1>
 <div align="center">
 
-[![](https://img.shields.io/badge/backend-Django-96d6d1)](https://www.djangoproject.com/) [![](https://img.shields.io/badge/license-MIT-9cf)](./LICENSE)
-</div>
+  [![](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=green
+)](https://www.djangoproject.com/)     [![](https://img.shields.io/badge/License-MIT-9cf?style=for-the-badge)](./LICENSE)</div>
 
 ## Description
 
