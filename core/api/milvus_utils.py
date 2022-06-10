@@ -102,7 +102,7 @@ def milvus_get_by_id(collection_name, id):
         print(item)
 
 
-def milvus_query_by_id(query):
+def milvus_query_paper_by_id(query):
     """
     根据id获取论文知兔ID
     """
@@ -110,6 +110,19 @@ def milvus_query_by_id(query):
     res = collection.query(
         expr=query,
         output_fields=["paper_id"],
+        consistency_level="Strong"
+    )
+    return res
+
+
+def milvus_query_need_by_id(query):
+    """
+    根据id获取需求ID
+    """
+    collection = Collection("O2E_NEED")
+    res = collection.query(
+        expr=query,
+        output_fields=["need_id"],
         consistency_level="Strong"
     )
     return res

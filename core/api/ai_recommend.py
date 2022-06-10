@@ -5,11 +5,12 @@ from django.views.decorators.http import require_GET
 from core.api.utils import (response_wrapper, success_api_response)
 from core.models.papers import Papers
 from core.models.need import Need
+from core.models.user import User
 import torch.nn as nn
 import torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModel
 from core.api.auth import getUserInfo
-from core.api.milvus_utils import get_milvus_connection, milvus_search, milvus_query_by_id
+from core.api.milvus_utils import get_milvus_connection, milvus_search, milvus_query_paper_by_id, milvus_query_need_by_id
 from core.api.zhitu_utils import get_expertInfo_by_expertId, search_expertID_by_paperID
 
 
@@ -105,7 +106,7 @@ def recommend(request: HttpRequest, id: int):
         s = s[:-1]
     s += ']'
     query = "milvus_id in " + s
-    paper_ids = milvus_query_by_id(query)
+    paper_ids = milvus_query_paper_by_id(query)
     for paper_id in paper_ids:
         num = 0
         expert_ids, title = search_expertID_by_paperID(paper_id['paper_id'])
@@ -124,3 +125,54 @@ def recommend(request: HttpRequest, id: int):
         "register": register_experts,
         "other": possible_experts
     })
+
+
+@require_GET
+@response_wrapper
+def need_recommend(request:HttpRequest, id:int):
+    get_milvus_connection()
+    user = User.objects.get(id=id)
+    papers = user.expert_info.papers.all()
+    titles = []
+    for paper in papers:
+        titles.append(paper.title)
+    key_vector = model.get_embeds(titles)
+    key_vector = key_vector / key_vector.norm(dim=1, keepdim=True)
+    key_vector = key_vector.detach().numpy().tolist()
+    id_lists = milvus_search("O2E_NEED", query_vectors=key_vector, topk=2, partition_names=None)
+    ids = '['
+    for id_list in id_lists:
+        for milvus_id in id_list:
+            ids += str(milvus_id) + ','
+    ids = ids[:-1] + ']'
+    query = "milvus_id in "+ ids
+    need_ids = milvus_query_need_by_id(query)
+    need_infos = []
+    for need_id in need_ids:
+        need = Need.objects.get(pk=need_id['need_id'])
+        enterprise: User = need.enterprise
+        need_info = {
+            "need_id": need.id, "title": need.title, "description": need.description, "money": need.money,
+            "start_time": need.start_time,
+            "end_time": need.end_time, "key_word": need.key_word, "field": need.field, "address": need.address,
+            "state": need.state,
+            "emergency": need.emergency,
+            "enterprise_id": enterprise.id, "enterprise_name": enterprise.enterprise_info.name,
+            "enterprise_pic": str(enterprise.icon)
+        }
+        order = list()
+        orders = need.need_order.exclude(state=2)
+        for o in orders:
+            order_info = {
+                "order_id": o.id,
+                "order_state": o.state,
+                "expert_id": o.user.id,
+                "expert_icon": str(o.user.icon),
+                "expert_name": o.user.expert_info.name,
+                "enterprise_id": o.enterprise.id
+            }
+            order.append(order_info)
+        need_info['order'] = order
+        need_infos.append(need_info)
+
+    return success_api_response({"needs": need_infos[:3]})

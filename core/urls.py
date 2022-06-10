@@ -42,7 +42,7 @@ from core.api.expert import setinfo, agree_expert, refuse_expert, get_expertInfo
 
 from core.api.feedback import get_feedback, make_feedback
 
-from core.api.ai_recommend import recommend
+from core.api.ai_recommend import recommend, need_recommend
 
 from core.api.platform.rate import rate_order, get_order_rate, get_user_rate
 
@@ -213,6 +213,7 @@ urlpatterns = [
 
     # AI
     path('ai/recommend/<int:id>', recommend),
+    path('ai/needRecommend/<int:id>', need_recommend),
 
     # 评价
     path('order/rate', rate_order),
