@@ -15,6 +15,7 @@ from core.models.order import Order
 import pytz
 from django.utils import timezone
 from core.api.platform.utils import get_field, get_need_state
+from core.api.ai_recommend import insert_need
 
 
 def get_now_time():
@@ -305,6 +306,7 @@ def create_need(request: HttpRequest):
                 enterprise=user, state=state, emergency=emergency)
 
     need.save()
+    insert_need(need.id)
     return success_api_response({})
 
 
