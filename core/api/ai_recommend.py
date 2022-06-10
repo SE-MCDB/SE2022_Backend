@@ -150,30 +150,31 @@ def need_recommend(request:HttpRequest, id:int):
     need_infos = []
     for need_id in need_ids:
         need = Need.objects.get(pk=need_id['need_id'])
-        enterprise: User = need.enterprise
-        need_info = {
-            "need_id": need.id, "title": need.title, "description": need.description, "money": need.money,
-            "start_time": need.start_time,
-            "end_time": need.end_time, "key_word": need.key_word, "field": need.field, "address": need.address,
-            "state": need.state,
-            "emergency": need.emergency,
-            "enterprise_id": enterprise.id, "enterprise_name": enterprise.enterprise_info.name,
-            "enterprise_pic": str(enterprise.icon)
-        }
-        order = list()
-        orders = need.need_order.exclude(state=2)
-        for o in orders:
-            order_info = {
-                "order_id": o.id,
-                "order_state": o.state,
-                "expert_id": o.user.id,
-                "expert_icon": str(o.user.icon),
-                "expert_name": o.user.expert_info.name,
-                "enterprise_id": o.enterprise.id
+        if need.state == 0:
+            enterprise: User = need.enterprise
+            need_info = {
+                "need_id": need.id, "title": need.title, "description": need.description, "money": need.money,
+                "start_time": need.start_time,
+                "end_time": need.end_time, "key_word": need.key_word, "field": need.field, "address": need.address,
+                "state": need.state,
+                "emergency": need.emergency,
+                "enterprise_id": enterprise.id, "enterprise_name": enterprise.enterprise_info.name,
+                "enterprise_pic": str(enterprise.icon)
             }
-            order.append(order_info)
-        need_info['order'] = order
-        need_infos.append(need_info)
+            order = list()
+            orders = need.need_order.exclude(state=2)
+            for o in orders:
+                order_info = {
+                    "order_id": o.id,
+                    "order_state": o.state,
+                    "expert_id": o.user.id,
+                    "expert_icon": str(o.user.icon),
+                    "expert_name": o.user.expert_info.name,
+                    "enterprise_id": o.enterprise.id
+                }
+                order.append(order_info)
+            need_info['order'] = order
+            need_infos.append(need_info)
 
     return success_api_response({"needs": need_infos[:3]})
 
