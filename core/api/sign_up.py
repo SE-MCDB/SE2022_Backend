@@ -205,7 +205,7 @@ def confirm_forget_password(request: HttpRequest):
     if code is None or email is None or password is None:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "Please fill in all the blanks")
     if ConfirmString.objects.filter(code=code).exists() is False:
-        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS,
+        return failed_api_response(ErrorCode.WRONG_CONFIRM_CODE,
                                    "Invalid confirm code")
     confirm = ConfirmString.objects.get(code=code)
     if confirm.email != email:

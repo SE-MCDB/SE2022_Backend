@@ -9,7 +9,7 @@ from core.api.friend import list_friends, list_full_friends
 from core.api.my_post import list_posts
 from core.api.profile import get_profile
 from core.api.search import search_user_list,search_user_full_list
-from core.api.sign_up import change_password, change_email, CREATE_USER_API, FORGET_PASSWORD_API, confirm_forget_password
+from core.api.sign_up import change_password, change_email, CREATE_USER_API, FORGET_PASSWORD_API
 from core.api.comment import create_comment, delete_comment, get_comment, get_comment_list
 
 from core.api.user import follow, unfollow, list_favorite_recent, change_organization
@@ -57,7 +57,6 @@ urlpatterns = [
     path('user/change-password', change_password),
     path('user/change-email', change_email),
     path('user/forget-password', FORGET_PASSWORD_API),
-    path('user/confirm-forget-password', confirm_forget_password),
     path('user/profile', get_profile),
     path('user/icon', USER_ICON_API),
     path('user/<int:type>/all/<int:page>',get_all_user_info),
