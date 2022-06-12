@@ -40,7 +40,7 @@ from core.api.enterprise import set_info, agree_enterprise, refuse_enterprise, g
 from core.api.expert import setinfo, agree_expert, refuse_expert, get_expertInfo, get_all_expert, get_json, add_papers, add_patents, add_projects, \
   get_expert_info, add_patents_scholars, add_papers_scholars, add_projects_scholars
 
-from core.api.feedback import get_feedback, make_feedback
+from core.api.feedback import get_feedback, make_feedback, reply_feedback, get_user_unreplied_feedback, get_user_replied_feedback
 
 from core.api.ai_recommend import recommend, need_recommend
 
@@ -211,6 +211,11 @@ urlpatterns = [
     # Feedback
     path('feedback/getall', get_feedback),
     path('user/feedback', make_feedback),
+
+    path('feedback/reply', reply_feedback),
+
+    path('user/<int:id>/feedback/replied', get_user_replied_feedback),
+    path('user/<int:id>/feedback/unreplied', get_user_unreplied_feedback),
 
     # AI
     path('ai/recommend/<int:id>', recommend),

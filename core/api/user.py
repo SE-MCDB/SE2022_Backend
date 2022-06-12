@@ -178,6 +178,8 @@ def change_user_info(request: HttpRequest):
     email = data.get('mail')
     user = User.objects.filter(pk=pid).first()
 
+    print(pid, institution, username, email)
+
     if User.objects.filter(pk=pid).exists() is False:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS,'Your required user to change is not found!')
 

@@ -4,6 +4,88 @@ from .utils import (failed_api_response, ErrorCode,
                     success_api_response, parse_data,
                     wrapped_api, response_wrapper)
 from core.models.feedback import Feedback
+from core.models.user import User
+
+@response_wrapper
+# @jwt_auth()
+@require_http_methods('GET')
+def get_user_replied_feedback(request: HttpRequest, id: int):
+    try:
+        user = User.objects.get(id=id)
+    except:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-exist user")
+    feedbacks_list = []
+
+    feedbacks = user.user_feedback.filter(flag=1)
+    for feedback in feedbacks:
+        data = {
+            "feedback_id": feedback.id,
+            "user_id": feedback.user.id,
+            "name": feedback.name,
+            "email": feedback.email,
+            "sex": get_sex(feedback.sex),
+            "qtype": get_type(feedback.qtype),
+            "description": feedback.description,
+            "datatime": str(feedback.dataTime).split(' ')[0],
+            "flag": feedback.flag,
+            "message": feedback.message,
+        }
+        feedbacks_list.append(data)
+    return success_api_response({"data": feedbacks_list})
+
+
+
+@response_wrapper
+# @jwt_auth()
+@require_http_methods('GET')
+def get_user_unreplied_feedback(request: HttpRequest, id: int):
+    try:
+        user = User.objects.get(id=id)
+    except:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-exist user")
+
+    feedbacks_list = []
+    feedbacks = user.user_feedback.filter(flag=0)
+    for feedback in feedbacks:
+        data = {
+            "feedback_id": feedback.id,
+            "user_id": feedback.user.id,
+            "name": feedback.name,
+            "email": feedback.email,
+            "sex": get_sex(feedback.sex),
+            "qtype": get_type(feedback.qtype),
+            "description": feedback.description,
+            "datatime": str(feedback.dataTime).split(' ')[0],
+            "flag": feedback.flag,
+            "message": feedback.message,
+        }
+        feedbacks_list.append(data)
+    return success_api_response({"data": feedbacks_list})
+
+@response_wrapper
+# @jwt_auth()
+@require_http_methods('POST')
+def reply_feedback(request: HttpRequest):
+    data: dict = parse_data(request)
+    if not data:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "data is none")
+    id = data.get("feedback_id")
+    message = data.get("message")
+
+    try:
+        feedback = Feedback.objects.get(id=id)
+    except:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-exist feedback")
+    
+    if feedback.flag == 1:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "feedback has already existed")
+    
+    feedback.flag = 1
+    feedback.message = message
+    feedback.save()
+    return success_api_response({})
+
+
 
 
 @response_wrapper
@@ -14,12 +96,16 @@ def get_feedback(request:HttpRequest):
     datas = []
     for feedback in feedbacks:
         data = {
+            "feedback_id": feedback.id,
+            "user_id": feedback.user.id,
             "name": feedback.name,
             "email": feedback.email,
             "sex": get_sex(feedback.sex),
             "qtype": get_type(feedback.qtype),
             "description": feedback.description,
-            "datatime": str(feedback.dataTime).split(' ')[0]
+            "datatime": str(feedback.dataTime).split(' ')[0],
+            "flag": feedback.flag,
+            "message": feedback.message,
         }
         datas.append(data)
     return success_api_response({"data": datas})
@@ -78,6 +164,13 @@ def make_feedback(request:HttpRequest):
     data: dict = parse_data(request)
     name = data["name"]
     email = data["email"]
+    user_id = data["id"]
+
+    try:
+        user = User.objects.get(id=user_id)
+    except:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-exist user")
+
     sex = data["sex"]
     qtype_temp = data["qtype"]
     qtype = get_qtype(qtype_temp)
@@ -88,6 +181,7 @@ def make_feedback(request:HttpRequest):
     feedback.sex = sex
     feedback.qtype = qtype
     feedback.description = description
+    feedback.user = user
     feedback.save()
     return success_api_response("success")
 
