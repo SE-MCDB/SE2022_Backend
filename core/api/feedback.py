@@ -19,7 +19,7 @@ def get_feedback(request:HttpRequest):
             "sex": get_sex(feedback.sex),
             "qtype": get_type(feedback.qtype),
             "description": feedback.description,
-            "datatime": feedback.dataTime
+            "datatime": str(feedback.dataTime).split(' ')[0]
         }
         datas.append(data)
     return success_api_response({"data": datas})
