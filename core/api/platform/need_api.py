@@ -576,3 +576,15 @@ def edit_need(request: HttpRequest, uid: int, id: int):
                                       emergency=emergency)
 
     return success_api_response({})
+    
+    
+@response_wrapper
+# @jwt_auth()
+@require_http_methods(['DELETE'])
+def admin_delete_need(request: HttpRequest, id: int):
+    try:
+        need: Need = Need.objects.get(id=id)
+    except Need.DoesNotExist:
+        return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "non-exist need")
+    need.delete()
+    return success_api_response({})

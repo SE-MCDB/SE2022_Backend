@@ -29,7 +29,7 @@ from core.api.user import get_all_user_info,delete_user,change_user_info
 
 from core.api.platform.need_api import create_need, get_all_need, get_need_info, get_finished_need, \
   finish_need, get_proceeding_need, edit_need, delete_need, search_need, create_need_contact,\
-    get_need_contact, expert_recommend, get_saved_need, transform_need, get_needs_info, get_oneneed_allexperts
+    get_need_contact, expert_recommend, get_saved_need, transform_need, get_needs_info, get_oneneed_allexperts, admin_delete_need
 
 from core.api.platform.order_api import get_pending_order, get_cooperating_order, get_finished_order, finish_order, accept_order, \
   refuse_order, get_order_info, create_order, get_order_id, get_all_order, abandon_order, get_order_byID, \
@@ -165,6 +165,7 @@ urlpatterns = [
     path('need/<int:id>/expert_recommend', expert_recommend), # 基于需求的专家推荐
     path('need/getall', get_needs_info),    #管理端获得全部需求
     path('need/<int:id>/allexperts', get_oneneed_allexperts),  # 获取需求已对接全部专家id与头像url
+    path('need/<int:id>/delete', admin_delete_need),    #管理端删除需求
 
     ## order
     path('order', create_order),  # 企业创建新订单
