@@ -1,4 +1,5 @@
 import torch
+from django.db.models import Avg
 from django.http import HttpRequest
 from django.views.decorators.http import require_GET
 
@@ -84,17 +85,59 @@ def recommend(request: HttpRequest, id: int):
     key_vector = model.get_embeds(keyword)
     key_vector = key_vector / key_vector.norm(dim=1, keepdim=True)
     b = key_vector.detach().numpy().tolist()
-    id_lists = milvus_search(collection_name="O2E_TEMP", query_vectors=b, topk=3,
+    id_lists = milvus_search(collection_name="O2E_TEMP", query_vectors=b, topk=10,
                              partition_names=None)[0]
+    cites = []
     register_experts = []
     scholarIDs = []
     for id in id_lists:
         paper = Papers.objects.get(vector=str(id))
+        title = paper.title
         expert_possible = paper.expert_papers.all()
         for expert in expert_possible:
+            cite = 0
+            papers = expert.papers.all()
+            for paper in papers:
+                cite += paper.cites
+            cites.append(cite)
             scholarIDs.append(expert.scholarID)
             user = expert.expert_info
-            register_experts.append(getUserInfo(user))
+            dic = getUserInfo(user)
+            dic['title'] = title
+            avg = list()
+            avg_taste = user.expert_rate.aggregate(Avg('rate_taste')).get('rate_taste__avg')
+            if avg_taste is None:
+                avg_taste = 5
+            avg.append(avg_taste)
+
+            avg_speed = user.expert_rate.aggregate(Avg('rate_speed')).get('rate_speed__avg')
+            if avg_speed is None:
+                avg_speed = 5
+            avg.append(avg_speed)
+
+            avg_level = user.expert_rate.aggregate(Avg('rate_level')).get('rate_level__avg')
+            if avg_level is None:
+                avg_level = 5
+            avg.append(avg_level)
+            dic['comment'] = avg
+            register_experts.append(dic)
+    max_cite = max(cites)
+    i = 0
+    while i < len(register_experts):
+        j = i + 1
+        while j < len(register_experts):
+            if max_cite != 0:
+                score_i = sum(register_experts[i]["comment"]) + cites[i] / max_cite
+                score_j = sum(register_experts[j]["comment"]) + cites[j] / max_cite
+            else:
+                score_i = sum(register_experts[i]["comment"]) + cites[i]
+                score_j = sum(register_experts[j]["comment"]) + cites[j]
+            if score_j > score_i:
+                temp = register_experts[i]
+                register_experts[i] = register_experts[j]
+                register_experts[j] = temp
+            j += 1
+        i += 1
 
     #未注册专家推荐
     possible_experts = []
@@ -122,8 +165,8 @@ def recommend(request: HttpRequest, id: int):
                 expert_list['title'] = title
                 possible_experts.append(expert_list)
     return success_api_response({
-        "register": register_experts,
-        "other": possible_experts
+        "register": register_experts[:3],
+        "other": possible_experts[:3]
     })
 
 
