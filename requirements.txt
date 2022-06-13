@@ -15,3 +15,5 @@ pdfkit
 pymysql
 django-cors-headers
 requests
+torch
+transformers
