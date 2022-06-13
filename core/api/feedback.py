@@ -71,7 +71,7 @@ def reply_feedback(request: HttpRequest):
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "data is none")
     id = data.get("feedback_id")
     message = data.get("message")
-
+    print(id, message)
     try:
         feedback = Feedback.objects.get(id=id)
     except:

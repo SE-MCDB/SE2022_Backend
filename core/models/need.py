@@ -28,7 +28,7 @@ EMERGENCY_CODE = (
 
 class Need(models.Model):
     #需求标题
-    title = models.CharField(max_length=20)
+    title = models.CharField(max_length=100)
     #需求描述
     description = models.TextField()
     #预计经费（报酬）
@@ -38,11 +38,11 @@ class Need(models.Model):
     #有效时间（预计结束时间）
     end_time = models.CharField(max_length=30,blank=True, null=True)
     #关键字
-    key_word = models.CharField(max_length=100)
+    key_word = models.CharField(max_length=200)
     #技术领域
     field = models.IntegerField(choices=NEED_FIELD_CHOICES, default=8)
     #地址
-    address = models.CharField(max_length=20)
+    address = models.CharField(max_length=200)
     #需求公司
     enterprise = models.ForeignKey(User, on_delete=models.CASCADE, related_name="enterprise_need")
     #订单状态

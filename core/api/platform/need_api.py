@@ -294,7 +294,7 @@ def create_need(request: HttpRequest):
     # print("real", real)
     print("state", state)
 
-    if title is None or description is None or money is None or start_time is None or end_time is None or key_word is None \
+    if title is None or description is None or money is None or start_time is None or key_word is None \
             or field is None or address is None or emergency is None or state is None:
         return failed_api_response(ErrorCode.INVALID_REQUEST_ARGS, "Invalid requset value")
 
@@ -303,7 +303,7 @@ def create_need(request: HttpRequest):
 
     need = Need(title=title, description=description, money=money, start_time=start_time,
                 end_time=end_time, key_word=key_word, field=field, address=address,
-                enterprise=user, state=state, emergency=emergency)
+                enterprise=user, state=state, emergency=emergency, predict=4, real=0)
 
     need.save()
     insert_need(need.id)
