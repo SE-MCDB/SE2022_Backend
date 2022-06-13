@@ -368,8 +368,9 @@ def get_all_need(request: HttpRequest):
 
     need_finish = Need.objects.filter(Q(end_time__lt=time) & Q(state=0))
     need_finish.update(state=1)
-    # for need in need_finish:
-    #     need.need_contact.all().delete()
+    for need in need_finish:
+        need.need_order.update(state=3)
+        # need.need_contact.all().delete()
 
     data = []
     for need in needs:
@@ -488,7 +489,9 @@ def finish_need(request: HttpRequest, uid: int, id: int):
 
     Need.objects.filter(id=id).update(state=1)
 
-    need.need_contact.all().delete()
+    need.need_order.update(state=3)
+
+    # need.need_contact.all().delete()
 
     return success_api_response({})
 
