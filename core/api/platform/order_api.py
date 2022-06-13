@@ -118,7 +118,7 @@ def admin_delete_order(request: HttpRequest, id: int):
     #     need.real -= 1
 
     Order.objects.filter(id=id).delete()
-    return success_api_response()
+    return success_api_response({})
 
 @response_wrapper
 # @jwt_auth()
