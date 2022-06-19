@@ -11,7 +11,7 @@
  Target Server Version : 80018
  File Encoding         : 65001
 
- Date: 13/06/2022 17:36:43
+ Date: 19/06/2022 15:46:59
 */
 
 SET NAMES utf8mb4;
@@ -245,7 +245,7 @@ CREATE TABLE `core_authrecord` (
   PRIMARY KEY (`id`),
   KEY `core_authrecord_user_id_292a66b1_fk_core_user_id` (`user_id`),
   CONSTRAINT `core_authrecord_user_id_292a66b1_fk_core_user_id` FOREIGN KEY (`user_id`) REFERENCES `core_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1521 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1569 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of core_authrecord
@@ -1533,6 +1533,54 @@ INSERT INTO `core_authrecord` VALUES (1517, '2022-06-13 16:31:34.685769', '2022-
 INSERT INTO `core_authrecord` VALUES (1518, '2022-06-13 16:35:41.896905', '2022-06-19 16:35:41.896905', 20);
 INSERT INTO `core_authrecord` VALUES (1519, '2022-06-13 16:52:59.283074', '2022-06-19 16:52:59.283074', 655);
 INSERT INTO `core_authrecord` VALUES (1520, '2022-06-13 16:54:54.652225', '2022-06-19 16:54:54.652225', 20);
+INSERT INTO `core_authrecord` VALUES (1521, '2022-06-13 19:52:16.634849', '2022-06-19 19:52:16.634849', 90);
+INSERT INTO `core_authrecord` VALUES (1522, '2022-06-13 20:10:04.362220', '2022-06-19 20:10:04.362220', 19);
+INSERT INTO `core_authrecord` VALUES (1523, '2022-06-13 20:18:31.511247', '2022-06-19 20:18:31.511247', 24);
+INSERT INTO `core_authrecord` VALUES (1524, '2022-06-13 20:24:05.192522', '2022-06-19 20:24:05.192522', 20);
+INSERT INTO `core_authrecord` VALUES (1525, '2022-06-13 20:55:46.673068', '2022-06-19 20:55:46.673068', 19);
+INSERT INTO `core_authrecord` VALUES (1526, '2022-06-13 21:10:02.159567', '2022-06-19 21:10:02.159567', 20);
+INSERT INTO `core_authrecord` VALUES (1527, '2022-06-13 21:23:14.463607', '2022-06-19 21:23:14.463607', 24);
+INSERT INTO `core_authrecord` VALUES (1528, '2022-06-13 21:23:36.067265', '2022-06-19 21:23:36.067265', 19);
+INSERT INTO `core_authrecord` VALUES (1529, '2022-06-13 21:23:52.762899', '2022-06-19 21:23:52.762899', 24);
+INSERT INTO `core_authrecord` VALUES (1530, '2022-06-13 21:24:11.955181', '2022-06-19 21:24:11.955181', 19);
+INSERT INTO `core_authrecord` VALUES (1531, '2022-06-13 21:26:03.687783', '2022-06-19 21:26:03.687783', 325);
+INSERT INTO `core_authrecord` VALUES (1532, '2022-06-13 21:26:21.749820', '2022-06-19 21:26:21.749820', 19);
+INSERT INTO `core_authrecord` VALUES (1533, '2022-06-14 07:46:18.551569', '2022-06-20 07:46:18.551569', 19);
+INSERT INTO `core_authrecord` VALUES (1534, '2022-06-14 08:25:17.274593', '2022-06-20 08:25:17.274593', 19);
+INSERT INTO `core_authrecord` VALUES (1535, '2022-06-14 11:07:07.567730', '2022-06-20 11:07:07.567730', 19);
+INSERT INTO `core_authrecord` VALUES (1536, '2022-06-14 11:37:24.087239', '2022-06-20 11:37:24.087239', 20);
+INSERT INTO `core_authrecord` VALUES (1537, '2022-06-14 11:39:04.422810', '2022-06-20 11:39:04.422810', 24);
+INSERT INTO `core_authrecord` VALUES (1538, '2022-06-14 12:27:54.258346', '2022-06-20 12:27:54.258346', 19);
+INSERT INTO `core_authrecord` VALUES (1539, '2022-06-14 12:46:17.890574', '2022-06-20 12:46:17.890574', 19);
+INSERT INTO `core_authrecord` VALUES (1540, '2022-06-14 12:52:43.415710', '2022-06-20 12:52:43.415710', 19);
+INSERT INTO `core_authrecord` VALUES (1541, '2022-06-14 12:54:51.806262', '2022-06-20 12:54:51.806262', 19);
+INSERT INTO `core_authrecord` VALUES (1542, '2022-06-14 12:54:52.217503', '2022-06-20 12:54:52.217503', 19);
+INSERT INTO `core_authrecord` VALUES (1543, '2022-06-14 12:58:13.539479', '2022-06-20 12:58:13.539479', 20);
+INSERT INTO `core_authrecord` VALUES (1544, '2022-06-14 13:03:56.926603', '2022-06-20 13:03:56.926603', 19);
+INSERT INTO `core_authrecord` VALUES (1545, '2022-06-14 13:33:20.005776', '2022-06-20 13:33:20.005776', 19);
+INSERT INTO `core_authrecord` VALUES (1546, '2022-06-14 13:36:06.185722', '2022-06-20 13:36:06.185722', 19);
+INSERT INTO `core_authrecord` VALUES (1547, '2022-06-14 13:37:42.969979', '2022-06-20 13:37:42.969979', 19);
+INSERT INTO `core_authrecord` VALUES (1548, '2022-06-14 14:07:19.782120', '2022-06-20 14:07:19.782120', 19);
+INSERT INTO `core_authrecord` VALUES (1549, '2022-06-14 14:10:04.240615', '2022-06-20 14:10:04.240615', 24);
+INSERT INTO `core_authrecord` VALUES (1550, '2022-06-14 14:26:46.764052', '2022-06-20 14:26:46.764052', 19);
+INSERT INTO `core_authrecord` VALUES (1551, '2022-06-14 14:30:31.902112', '2022-06-20 14:30:31.902112', 405);
+INSERT INTO `core_authrecord` VALUES (1552, '2022-06-14 14:31:39.832173', '2022-06-20 14:31:39.832173', 19);
+INSERT INTO `core_authrecord` VALUES (1553, '2022-06-14 14:54:36.645244', '2022-06-20 14:54:36.645244', 20);
+INSERT INTO `core_authrecord` VALUES (1554, '2022-06-14 14:57:03.046836', '2022-06-20 14:57:03.046836', 90);
+INSERT INTO `core_authrecord` VALUES (1555, '2022-06-14 15:05:30.051357', '2022-06-20 15:05:30.051357', 26);
+INSERT INTO `core_authrecord` VALUES (1556, '2022-06-14 15:06:02.841500', '2022-06-20 15:06:02.841500', 20);
+INSERT INTO `core_authrecord` VALUES (1557, '2022-06-14 15:14:20.419117', '2022-06-20 15:14:20.419117', 20);
+INSERT INTO `core_authrecord` VALUES (1558, '2022-06-14 15:16:16.386688', '2022-06-20 15:16:16.386688', 20);
+INSERT INTO `core_authrecord` VALUES (1559, '2022-06-14 15:25:46.963952', '2022-06-20 15:25:46.963952', 83);
+INSERT INTO `core_authrecord` VALUES (1560, '2022-06-14 15:26:26.446130', '2022-06-20 15:26:26.446130', 19);
+INSERT INTO `core_authrecord` VALUES (1561, '2022-06-14 15:31:30.124984', '2022-06-20 15:31:30.124984', 20);
+INSERT INTO `core_authrecord` VALUES (1562, '2022-06-14 18:38:41.321099', '2022-06-20 18:38:41.321099', 24);
+INSERT INTO `core_authrecord` VALUES (1563, '2022-06-14 18:48:40.029559', '2022-06-20 18:48:40.029559', 19);
+INSERT INTO `core_authrecord` VALUES (1564, '2022-06-14 19:58:18.647913', '2022-06-20 19:58:18.647913', 163);
+INSERT INTO `core_authrecord` VALUES (1565, '2022-06-14 19:59:05.365091', '2022-06-20 19:59:05.365091', 19);
+INSERT INTO `core_authrecord` VALUES (1566, '2022-06-15 13:30:21.446902', '2022-06-21 13:30:21.446902', 19);
+INSERT INTO `core_authrecord` VALUES (1567, '2022-06-19 14:03:04.041545', '2022-06-25 14:03:04.041545', 19);
+INSERT INTO `core_authrecord` VALUES (1568, '2022-06-19 15:40:47.717952', '2022-06-25 15:40:47.717952', 19);
 COMMIT;
 
 -- ----------------------------
@@ -1569,7 +1617,7 @@ CREATE TABLE `core_chatroom` (
   KEY `core_chatroom_to_user_id_64fc9662_fk_core_user_id` (`to_user_id`),
   CONSTRAINT `core_chatroom_owner_id_b3f791c7_fk_core_user_id` FOREIGN KEY (`owner_id`) REFERENCES `core_user` (`id`),
   CONSTRAINT `core_chatroom_to_user_id_64fc9662_fk_core_user_id` FOREIGN KEY (`to_user_id`) REFERENCES `core_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of core_chatroom
@@ -1601,6 +1649,14 @@ INSERT INTO `core_chatroom` VALUES (83, '', 24, 658);
 INSERT INTO `core_chatroom` VALUES (84, '', 25, 119);
 INSERT INTO `core_chatroom` VALUES (85, '', 25, 401);
 INSERT INTO `core_chatroom` VALUES (86, '', 19, 325);
+INSERT INTO `core_chatroom` VALUES (87, '', 19, 191);
+INSERT INTO `core_chatroom` VALUES (88, '', 19, 617);
+INSERT INTO `core_chatroom` VALUES (89, '', 19, 330);
+INSERT INTO `core_chatroom` VALUES (90, '', 19, 76);
+INSERT INTO `core_chatroom` VALUES (91, '', 19, 147);
+INSERT INTO `core_chatroom` VALUES (92, '', 19, 242);
+INSERT INTO `core_chatroom` VALUES (93, '', 19, 83);
+INSERT INTO `core_chatroom` VALUES (94, '', 19, 52);
 COMMIT;
 
 -- ----------------------------
@@ -1616,7 +1672,7 @@ CREATE TABLE `core_chatroom_message` (
   KEY `core_chatroom_message_message_id_cb5ee97d_fk_core_message_id` (`message_id`),
   CONSTRAINT `core_chatroom_message_chatroom_id_ea2d1a15_fk_core_chatroom_id` FOREIGN KEY (`chatroom_id`) REFERENCES `core_chatroom` (`id`),
   CONSTRAINT `core_chatroom_message_message_id_cb5ee97d_fk_core_message_id` FOREIGN KEY (`message_id`) REFERENCES `core_message` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=411 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=418 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of core_chatroom_message
@@ -1700,6 +1756,9 @@ INSERT INTO `core_chatroom_message` VALUES (397, 44, 401);
 INSERT INTO `core_chatroom_message` VALUES (399, 44, 403);
 INSERT INTO `core_chatroom_message` VALUES (400, 44, 404);
 INSERT INTO `core_chatroom_message` VALUES (401, 44, 405);
+INSERT INTO `core_chatroom_message` VALUES (411, 44, 415);
+INSERT INTO `core_chatroom_message` VALUES (412, 44, 416);
+INSERT INTO `core_chatroom_message` VALUES (413, 44, 417);
 INSERT INTO `core_chatroom_message` VALUES (360, 55, 364);
 INSERT INTO `core_chatroom_message` VALUES (390, 55, 394);
 INSERT INTO `core_chatroom_message` VALUES (365, 62, 369);
@@ -1715,6 +1774,10 @@ INSERT INTO `core_chatroom_message` VALUES (381, 72, 385);
 INSERT INTO `core_chatroom_message` VALUES (384, 73, 388);
 INSERT INTO `core_chatroom_message` VALUES (385, 73, 389);
 INSERT INTO `core_chatroom_message` VALUES (410, 86, 414);
+INSERT INTO `core_chatroom_message` VALUES (414, 86, 418);
+INSERT INTO `core_chatroom_message` VALUES (415, 92, 419);
+INSERT INTO `core_chatroom_message` VALUES (416, 93, 420);
+INSERT INTO `core_chatroom_message` VALUES (417, 93, 421);
 COMMIT;
 
 -- ----------------------------
@@ -5506,14 +5569,14 @@ CREATE TABLE `core_feedback` (
   PRIMARY KEY (`id`),
   KEY `core_feedback_user_id_630c6a53_fk_core_user_id` (`user_id`),
   CONSTRAINT `core_feedback_user_id_630c6a53_fk_core_user_id` FOREIGN KEY (`user_id`) REFERENCES `core_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of core_feedback
 -- ----------------------------
 BEGIN;
 INSERT INTO `core_feedback` VALUES (1, '梁里', '379797156@qq.com', 0, '100000', '有时访问订单页面会卡顿。', '2022-05-13 14:42:26.033337', 234, 1, '您好，已经修复了');
-INSERT INTO `core_feedback` VALUES (2, '郭明明', 'imingx@qq.com', 0, '100000', '企业的态度很差，实际需求与书写的不同，我该如何维护我的合法权益？', '2022-05-18 15:46:57.067475', 19, 0, NULL);
+INSERT INTO `core_feedback` VALUES (2, '郭明明', 'imingx@qq.com', 0, '100000', '企业的态度很差，实际需求与书写的不同，我该如何维护我的合法权益？', '2022-05-18 15:46:57.067475', 24, 0, NULL);
 INSERT INTO `core_feedback` VALUES (3, '测试人员', '123456@163.com', 0, '100000', '测试bug', '2022-06-01 08:45:45.252876', 123, 0, NULL);
 INSERT INTO `core_feedback` VALUES (4, '代先森', '114514@qq.com', 1, '100000', '互测', '2022-06-06 16:11:21.000615', 90, 0, NULL);
 INSERT INTO `core_feedback` VALUES (5, 'dky', 'gg@gg.com', 0, '100000', '我今天还是发不了订单', '2022-06-07 10:38:32.104066', 83, 0, NULL);
@@ -5521,6 +5584,7 @@ INSERT INTO `core_feedback` VALUES (6, 'xcc', '123@163.com', 0, '000101', '测�
 INSERT INTO `core_feedback` VALUES (7, '123', '123@163.com', 0, '000100', '456', '2022-06-12 16:35:53.792098', 90, 1, '123');
 INSERT INTO `core_feedback` VALUES (8, 'xcc', '163@163.com', 1, '111111', '测试', '2022-06-12 16:38:24.998063', 192, 1, '您好，已修复');
 INSERT INTO `core_feedback` VALUES (9, 'xcc', '163@163.com', 0, '000011', '您好，我尝试了很多次还是发不了订单', '2022-06-12 23:47:55.097864', 19, 1, '您好，已经修复了，发不了订单是因为字段错误');
+INSERT INTO `core_feedback` VALUES (10, 'xcc', '163@163.com', 0, '001000', '账号被盗用', '2022-06-14 01:17:42.517478', 19, 0, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -5678,7 +5742,7 @@ CREATE TABLE `core_message` (
   KEY `core_message_to_user_id_b8c67874_fk_core_user_id` (`to_user_id`),
   CONSTRAINT `core_message_from_user_id_0692580a_fk_core_user_id` FOREIGN KEY (`from_user_id`) REFERENCES `core_user` (`id`),
   CONSTRAINT `core_message_to_user_id_b8c67874_fk_core_user_id` FOREIGN KEY (`to_user_id`) REFERENCES `core_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=415 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=422 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of core_message
@@ -5862,7 +5926,7 @@ INSERT INTO `core_message` VALUES (379, 'hello', '2022-06-03 13:24:53.360217', 0
 INSERT INTO `core_message` VALUES (380, '…', '2022-06-05 11:03:49.129033', 0, 19, 39);
 INSERT INTO `core_message` VALUES (381, 'test1', '2022-06-05 17:37:45.463123', 1, 24, 19);
 INSERT INTO `core_message` VALUES (382, 'nihao', '2022-06-05 17:40:24.415002', 1, 659, 24);
-INSERT INTO `core_message` VALUES (383, '太难了', '2022-06-05 17:46:36.246309', 0, 659, 26);
+INSERT INTO `core_message` VALUES (383, '太难了', '2022-06-05 17:46:36.246309', 1, 659, 26);
 INSERT INTO `core_message` VALUES (384, 'hello', '2022-06-05 22:35:21.061255', 0, 661, 658);
 INSERT INTO `core_message` VALUES (385, '你好吗', '2022-06-05 22:35:26.135252', 0, 661, 658);
 INSERT INTO `core_message` VALUES (386, '1111', '2022-06-05 22:59:33.491563', 1, 138, 19);
@@ -5894,6 +5958,13 @@ INSERT INTO `core_message` VALUES (411, '我已接受您的订单，需求名为
 INSERT INTO `core_message` VALUES (412, '我已向您发起订单，需求名为：删除用', '2022-06-13 12:48:42.898111', 1, 25, 39);
 INSERT INTO `core_message` VALUES (413, '我已拒绝您的订单，需求名为：删除用', '2022-06-13 12:49:21.334765', 0, 39, 25);
 INSERT INTO `core_message` VALUES (414, '我已向您发起订单，需求名为：Bert模型训练', '2022-06-13 15:18:39.074285', 0, 19, 325);
+INSERT INTO `core_message` VALUES (415, '1', '2022-06-13 21:23:26.374121', 1, 24, 19);
+INSERT INTO `core_message` VALUES (416, '我已向您发起订单，需求名为：人工智能', '2022-06-13 21:23:43.204508', 1, 19, 24);
+INSERT INTO `core_message` VALUES (417, '我已接受您的订单，需求名为：人工智能', '2022-06-13 21:24:01.663894', 1, 24, 19);
+INSERT INTO `core_message` VALUES (418, '我们的订单已完成，需求名为：Bert模型训练', '2022-06-13 21:26:38.658589', 0, 19, 325);
+INSERT INTO `core_message` VALUES (419, '我已向您发起订单，需求名为：ALPHA版本测试（助教）', '2022-06-14 15:25:10.888552', 0, 19, 242);
+INSERT INTO `core_message` VALUES (420, '我已向您发起订单，需求名为：ALPHA版本测试（助教）', '2022-06-14 15:25:17.669832', 1, 19, 83);
+INSERT INTO `core_message` VALUES (421, '我已接受您的订单，需求名为：ALPHA版本测试（助教）', '2022-06-14 15:25:53.301045', 1, 83, 19);
 COMMIT;
 
 -- ----------------------------
@@ -5918,7 +5989,7 @@ CREATE TABLE `core_need` (
   PRIMARY KEY (`id`),
   KEY `core_need_enterprise_id_1cf5c510_fk_core_user_id` (`enterprise_id`),
   CONSTRAINT `core_need_enterprise_id_1cf5c510_fk_core_user_id` FOREIGN KEY (`enterprise_id`) REFERENCES `core_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of core_need
@@ -5941,7 +6012,10 @@ INSERT INTO `core_need` VALUES (31, '量子物理', '111', 111, '2022-06-02 00:0
 INSERT INTO `core_need` VALUES (32, '无人驾驶', '无人驾驶多牛逼', 130, '2022-06-30 ', '2022-10-06 ', '无人驾驶;计算机视觉;目标检测', 0, '北京', 0, 1, 0, 0, 658);
 INSERT INTO `core_need` VALUES (33, '金属材料', '123', 132, '2022-06-09 ', '2022-06-30 ', '金属材料', 2, '北京', 0, 0, 0, 0, 658);
 INSERT INTO `core_need` VALUES (41, '456456', '456456', 456, '2022-06-13 00:00:00', '2022-06-15 00:00:00', '456', 4, '546', 2, 1, 4, 0, 19);
-INSERT INTO `core_need` VALUES (44, '613', '613', 111, '2022-06-13 ', '2022-06-15 ', '人工智能', 0, '北京', 0, 0, 4, 0, 25);
+INSERT INTO `core_need` VALUES (44, '613', '613', 111, '2022-06-13 ', '2022-06-15 ', '人工智能', 0, '北京', 1, 0, 4, 0, 25);
+INSERT INTO `core_need` VALUES (46, '人工智能', '需要一名精通人工智能的专家', 12, '2022-06-13 21:21:13', '2022-06-30 21:21:21', 'artificial intelligence', 0, '北京', 0, 0, 4, 0, 19);
+INSERT INTO `core_need` VALUES (47, '结束语', '关于软工的结束语', 12, '2022-06-14 07:47:57', '2022-06-16 07:48:02', 'segmentation;ai', 4, '武汉', 1, 1, 4, 0, 19);
+INSERT INTO `core_need` VALUES (48, 'ALPHA版本测试（助教）', '构建科研大数据知识图谱，实现智能搜索和知识问答。', 100, '2022-06-15 00:00:00', '2022-11-15 00:00:00', 'knowledge graph; scientific data; Smart Q&A', 0, '无', 0, 2, 4, 0, 19);
 COMMIT;
 
 -- ----------------------------
@@ -5960,7 +6034,7 @@ CREATE TABLE `core_needcontact` (
   CONSTRAINT `core_needcontact_enterprise_id_bf8f0ece_fk_core_user_id` FOREIGN KEY (`enterprise_id`) REFERENCES `core_user` (`id`),
   CONSTRAINT `core_needcontact_expert_id_ad968c3b_fk_core_user_id` FOREIGN KEY (`expert_id`) REFERENCES `core_user` (`id`),
   CONSTRAINT `core_needcontact_need_id_379285a1_fk_core_need_id` FOREIGN KEY (`need_id`) REFERENCES `core_need` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of core_needcontact
@@ -5973,8 +6047,8 @@ INSERT INTO `core_needcontact` VALUES (48, 19, 85, 13);
 INSERT INTO `core_needcontact` VALUES (49, 19, 268, 10);
 INSERT INTO `core_needcontact` VALUES (50, 19, 90, 10);
 INSERT INTO `core_needcontact` VALUES (51, 19, 110, 10);
-INSERT INTO `core_needcontact` VALUES (53, 19, 24, 10);
-INSERT INTO `core_needcontact` VALUES (55, 25, 24, 28);
+INSERT INTO `core_needcontact` VALUES (53, 19, 24, 46);
+INSERT INTO `core_needcontact` VALUES (55, 25, 24, 44);
 INSERT INTO `core_needcontact` VALUES (56, 26, 24, 20);
 INSERT INTO `core_needcontact` VALUES (57, 19, 333, 10);
 INSERT INTO `core_needcontact` VALUES (58, 19, 642, 27);
@@ -5990,6 +6064,12 @@ INSERT INTO `core_needcontact` VALUES (74, 658, 24, 32);
 INSERT INTO `core_needcontact` VALUES (75, 25, 119, 44);
 INSERT INTO `core_needcontact` VALUES (76, 25, 401, 44);
 INSERT INTO `core_needcontact` VALUES (77, 19, 325, 27);
+INSERT INTO `core_needcontact` VALUES (78, 19, 617, 47);
+INSERT INTO `core_needcontact` VALUES (79, 19, 330, 46);
+INSERT INTO `core_needcontact` VALUES (80, 19, 76, 46);
+INSERT INTO `core_needcontact` VALUES (81, 19, 147, 47);
+INSERT INTO `core_needcontact` VALUES (82, 19, 242, 48);
+INSERT INTO `core_needcontact` VALUES (83, 19, 83, 48);
 COMMIT;
 
 -- ----------------------------
@@ -6028,7 +6108,7 @@ CREATE TABLE `core_notification` (
   CONSTRAINT `core_notification_from_user_id_49f31e00_fk_core_user_id` FOREIGN KEY (`from_user_id`) REFERENCES `core_user` (`id`),
   CONSTRAINT `core_notification_pap_model_id_b10f5b1b_fk_core_papmodel_id` FOREIGN KEY (`pap_model_id`) REFERENCES `core_papmodel` (`id`),
   CONSTRAINT `core_notification_to_user_id_04c4932a_fk_core_user_id` FOREIGN KEY (`to_user_id`) REFERENCES `core_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3428 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3433 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of core_notification
@@ -6135,6 +6215,11 @@ INSERT INTO `core_notification` VALUES (3424, '2022-06-09 19:28:23.585294', 'Con
 INSERT INTO `core_notification` VALUES (3425, '2022-06-09 19:28:35.626599', 'Congratulation! you have a new fan', 0, 5, 19, NULL, 145);
 INSERT INTO `core_notification` VALUES (3426, '2022-06-09 19:29:05.391939', 'Congratulation! you have a new fan', 0, 5, 19, NULL, 599);
 INSERT INTO `core_notification` VALUES (3427, '2022-06-09 19:29:33.836577', 'Congratulation! you have a new fan', 0, 5, 19, NULL, 652);
+INSERT INTO `core_notification` VALUES (3428, '2022-06-14 08:27:23.535432', 'Congratulation! you have a new fan', 0, 5, 19, NULL, 85);
+INSERT INTO `core_notification` VALUES (3429, '2022-06-14 11:26:55.714622', 'Congratulation! you have a new fan', 0, 5, 19, NULL, 24);
+INSERT INTO `core_notification` VALUES (3430, '2022-06-14 14:31:09.032519', 'Congratulation! you have a new fan', 0, 5, 405, NULL, 19);
+INSERT INTO `core_notification` VALUES (3431, '2022-06-14 14:31:10.396509', 'Congratulation! you have a new fan', 0, 5, 405, NULL, 656);
+INSERT INTO `core_notification` VALUES (3432, '2022-06-14 14:31:55.105594', 'Congratulation! you have a new fan', 0, 5, 19, NULL, 405);
 COMMIT;
 
 -- ----------------------------
@@ -6156,7 +6241,7 @@ CREATE TABLE `core_order` (
   CONSTRAINT `core_order_enterprise_id_00f03d65_fk_core_user_id` FOREIGN KEY (`enterprise_id`) REFERENCES `core_user` (`id`),
   CONSTRAINT `core_order_need_id_3f125431_fk_core_need_id` FOREIGN KEY (`need_id`) REFERENCES `core_need` (`id`),
   CONSTRAINT `core_order_user_id_b03bbffd_fk_core_user_id` FOREIGN KEY (`user_id`) REFERENCES `core_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of core_order
@@ -6171,7 +6256,10 @@ INSERT INTO `core_order` VALUES (40, '2022-05-31 17:49:48.600532', '2022-05-31 1
 INSERT INTO `core_order` VALUES (41, '2022-05-31 17:55:18.784553', NULL, 1, 20, 42, 26);
 INSERT INTO `core_order` VALUES (42, '2022-06-02 15:18:06.829189', NULL, 0, 32, 314, 658);
 INSERT INTO `core_order` VALUES (52, '2022-06-13 12:44:24.884527', NULL, 1, 44, 39, 25);
-INSERT INTO `core_order` VALUES (54, '2022-06-13 15:18:39.076453', NULL, 0, 27, 325, 19);
+INSERT INTO `core_order` VALUES (54, '2022-06-13 15:18:39.076453', '2022-06-13 21:26:38.000000', 3, 27, 325, 19);
+INSERT INTO `core_order` VALUES (55, '2022-06-13 21:23:43.184263', NULL, 1, 46, 24, 19);
+INSERT INTO `core_order` VALUES (56, '2022-06-14 15:25:10.871541', NULL, 0, 48, 242, 19);
+INSERT INTO `core_order` VALUES (57, '2022-06-14 15:25:17.675280', NULL, 1, 48, 83, 19);
 COMMIT;
 
 -- ----------------------------
@@ -7862,9 +7950,9 @@ CREATE TABLE `core_papmodel` (
 -- Records of core_papmodel
 -- ----------------------------
 BEGIN;
-INSERT INTO `core_papmodel` VALUES (48, 520, '<p></p><p><img onerror=\'alert(\"You are hacked\")\' src=\"x\"><br></p>asdfasdf<br><p></p>', '2021-05-27 11:11:29.295444', 10);
-INSERT INTO `core_papmodel` VALUES (65, 95, '<p>很明显，安全性测试也是很必要的测试。经过我们的检验，我们的paperdaily十分安全！</p>', '2021-06-02 06:05:15.345506', 3);
-INSERT INTO `core_papmodel` VALUES (11114, 85, '<p><img src=\"https://img-blog.csdnimg.cn/2021012119373495.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxNjQ3NDM4,size_16,color_FFFFFF,t_70\" style=\"max-width:100%;\"/><br/></p><p><br/></p><pre><code>def fib_yield_while(max):<br/>  	a, b = 0, 1<br/>  	while max &gt; 0:<br/>    	a, b = b, a+b<br/>    	max -= 1<br/>    	yield a<br/>        <br/>def fib_yield_for(n):<br/>    a, b = 0, 1<br/>    for _ in range(n):<br/>        a, b = b, a + b<br/>        yield a<br/><br/>for i in fib_yield_for(10):<br/>    print(i, end=\' \')</code></pre><p><br/></p>', '2021-06-04 08:53:18.591829', 18);
+INSERT INTO `core_papmodel` VALUES (48, 522, '<p></p><p><img onerror=\'alert(\"You are hacked\")\' src=\"x\"><br></p>asdfasdf<br><p></p>', '2021-05-27 11:11:29.295444', 10);
+INSERT INTO `core_papmodel` VALUES (65, 98, '<p>很明显，安全性测试也是很必要的测试。经过我们的检验，我们的paperdaily十分安全！</p>', '2021-06-02 06:05:15.345506', 3);
+INSERT INTO `core_papmodel` VALUES (11114, 87, '<p><img src=\"https://img-blog.csdnimg.cn/2021012119373495.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQxNjQ3NDM4,size_16,color_FFFFFF,t_70\" style=\"max-width:100%;\"/><br/></p><p><br/></p><pre><code>def fib_yield_while(max):<br/>  	a, b = 0, 1<br/>  	while max &gt; 0:<br/>    	a, b = b, a+b<br/>    	max -= 1<br/>    	yield a<br/>        <br/>def fib_yield_for(n):<br/>    a, b = 0, 1<br/>    for _ in range(n):<br/>        a, b = b, a + b<br/>        yield a<br/><br/>for i in fib_yield_for(10):<br/>    print(i, end=\' \')</code></pre><p><br/></p>', '2021-06-04 08:53:18.591829', 18);
 COMMIT;
 
 -- ----------------------------
@@ -9201,12 +9289,14 @@ CREATE TABLE `core_rate` (
   CONSTRAINT `core_rate_enterprise_id_cba79e05_fk_core_user_id` FOREIGN KEY (`enterprise_id`) REFERENCES `core_user` (`id`),
   CONSTRAINT `core_rate_expert_id_a6c0ac68_fk_core_user_id` FOREIGN KEY (`expert_id`) REFERENCES `core_user` (`id`),
   CONSTRAINT `core_rate_order_id_57e8673e_fk_core_order_id` FOREIGN KEY (`order_id`) REFERENCES `core_order` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of core_rate
 -- ----------------------------
 BEGIN;
+INSERT INTO `core_rate` VALUES (8, 4, 5, 4, '十分推荐', 'Mon Jun 13 2022 21:24:23 GMT+0800 (中国标准时间)', 24, 17, 19);
+INSERT INTO `core_rate` VALUES (9, 3, 3, 5, '一般般', 'Tue Jun 14 2022 15:12:29 GMT+0800 (中国标准时间)', 325, 54, 19);
 COMMIT;
 
 -- ----------------------------
@@ -10014,7 +10104,7 @@ CREATE TABLE `core_user_followers` (
   KEY `core_user_followers_to_user_id_b212b292_fk_core_user_id` (`to_user_id`),
   CONSTRAINT `core_user_followers_from_user_id_72a22410_fk_core_user_id` FOREIGN KEY (`from_user_id`) REFERENCES `core_user` (`id`),
   CONSTRAINT `core_user_followers_to_user_id_b212b292_fk_core_user_id` FOREIGN KEY (`to_user_id`) REFERENCES `core_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of core_user_followers
@@ -10027,15 +10117,18 @@ INSERT INTO `core_user_followers` VALUES (16, 6, 3);
 INSERT INTO `core_user_followers` VALUES (7, 6, 5);
 INSERT INTO `core_user_followers` VALUES (18, 10, 5);
 INSERT INTO `core_user_followers` VALUES (31, 19, 23);
+INSERT INTO `core_user_followers` VALUES (95, 19, 24);
 INSERT INTO `core_user_followers` VALUES (62, 19, 39);
 INSERT INTO `core_user_followers` VALUES (68, 19, 42);
 INSERT INTO `core_user_followers` VALUES (86, 19, 63);
 INSERT INTO `core_user_followers` VALUES (61, 19, 76);
+INSERT INTO `core_user_followers` VALUES (94, 19, 85);
 INSERT INTO `core_user_followers` VALUES (51, 19, 90);
 INSERT INTO `core_user_followers` VALUES (81, 19, 138);
 INSERT INTO `core_user_followers` VALUES (91, 19, 145);
 INSERT INTO `core_user_followers` VALUES (89, 19, 271);
 INSERT INTO `core_user_followers` VALUES (90, 19, 348);
+INSERT INTO `core_user_followers` VALUES (98, 19, 405);
 INSERT INTO `core_user_followers` VALUES (60, 19, 431);
 INSERT INTO `core_user_followers` VALUES (83, 19, 484);
 INSERT INTO `core_user_followers` VALUES (92, 19, 599);
@@ -10050,6 +10143,8 @@ INSERT INTO `core_user_followers` VALUES (43, 35, 36);
 INSERT INTO `core_user_followers` VALUES (39, 36, 35);
 INSERT INTO `core_user_followers` VALUES (44, 38, 26);
 INSERT INTO `core_user_followers` VALUES (69, 90, 19);
+INSERT INTO `core_user_followers` VALUES (96, 405, 19);
+INSERT INTO `core_user_followers` VALUES (97, 405, 656);
 INSERT INTO `core_user_followers` VALUES (72, 659, 24);
 COMMIT;
 
