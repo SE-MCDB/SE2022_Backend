@@ -22,7 +22,9 @@ This is the backend code of the `PaperDaily` project based on [`django2.2`](http
 $ pip install -r requirements.txt
 ```
 
-5. Run server 
+5. Milvus: [`pdf`](https://github.com/SE-MCDB/SE2022_source/blob/main/%E5%8F%82%E8%80%83/%E8%AE%BA%E6%96%87%E6%A0%87%E9%A2%98%E5%90%91%E9%87%8F%E5%8C%96%E6%80%9D%E8%B7%AF.pdf), [`code`](./core/api/milvus_utils.py)
+
+6. Run server 
 
 ```
 $ python manage.py runserver 0:8000
